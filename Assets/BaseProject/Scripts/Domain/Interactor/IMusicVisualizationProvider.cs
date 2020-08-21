@@ -2,7 +2,7 @@
 
 namespace CreativeMode
 {
-    public interface IMusicVisualizer
+    public interface IMusicVisualizationProvider
     {
         IObservable<Palette> MusicPalette { get; }
         

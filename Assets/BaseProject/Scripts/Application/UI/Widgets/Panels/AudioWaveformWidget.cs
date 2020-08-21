@@ -10,7 +10,7 @@ public class AudioWaveformWidget : MonoBehaviour
     private float[] accumulatedSamples = new float[512];
     private Vector3[] pointsData = new Vector3[512];
 
-    private IMusicVisualizer MusicVisualizer => Instance<IMusicVisualizer>.Get();
+    private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
 
     private void Update()
     {

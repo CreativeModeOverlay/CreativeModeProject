@@ -6,7 +6,7 @@
     "com.naudio.upm": "https://github.com/CreativeModeOverlay/CM-NAudio-UPM.git#c4a002f3eb5182cf44103f11d8f5001d0fdf83c6",
     "com.neuecc.unirx": "https://github.com/CreativeModeOverlay/CM-UniRx-UPM.git#7.1.0",
     "com.pheonise.unity.desktopoverlay": "https://github.com/CreativeModeOverlay/CM-UnityDesktopOverlay-UPM.git#fc663eb7b9152b7f034929d3bcc6ddbdf056a10d",
-    "com.praeclarum.sqlite.net": "https://github.com/CreativeModeOverlay/CM-SqliteNet-UPM.git#553d0fe701f99340630e2a45ef725dc8e36c83e0",
+    "com.praeclarum.sqlite.net": "https://github.com/CreativeModeOverlay/CM-SqliteNet-UPM.git#0bac69f8f58f5892d841ab31b06635163b4e3b0f",
     "com.schellingb.unity.capture": "https://github.com/CreativeModeOverlay/CM-UnityCapture-UPM.git#e9dd008b51f784ff0fb869f8f1c18fe92963bd43",
     "com.twitchlib.unity": "https://github.com/CreativeModeOverlay/CM-TwitchLib.Unity-UPM.git#2714af1c03e1555118c873500b2a18677861ef86",
     "ru.threedisevenzeror.unitygifdecoder": "https://github.com/3DI70R/Unity-GifDecoder.git#1.0.3",

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CreativeMode.Impl
 {
-    public class MusicVisualizer : MonoBehaviour, IMusicVisualizer
+    public class MusicVisualizationProvider : MonoBehaviour, IMusicVisualizationProvider
     {
         public int waveformBufferSize = 16384;
         public int spectrumBufferSize = 8192;

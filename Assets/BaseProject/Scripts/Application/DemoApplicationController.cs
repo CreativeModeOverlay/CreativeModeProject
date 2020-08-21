@@ -7,7 +7,7 @@ using UnityRawInput;
 
 namespace CreativeMode
 {
-    public class ExampleApplicationController : MonoBehaviour
+    public class DemoApplicationController : MonoBehaviour
     {
         public CameraOverlayScene idleScene;
         public CameraOverlayScene mainScene;

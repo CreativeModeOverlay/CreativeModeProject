@@ -14,8 +14,10 @@ namespace CreativeMode
     [DefaultExecutionOrder(-100000)]
     public class CreativeModeEnvironment : MonoBehaviour
     {
+        [Header("Application settings")]
         public int framerate = 60;
 
+        [Header("Twitch settings")]
         [SerializeField] public string twitchOauth;
         [SerializeField] public string twitchUsername;
         [SerializeField] public string twitchChannelToJoin;
@@ -43,7 +45,7 @@ namespace CreativeMode
             Instance<INoteStorage>.Bind().Instance(new NoteStorage(notesDb));
             Instance<IChatStorage>.Bind().Instance(new ChatStorage(chatDb));
             
-            Instance<IMusicVisualizer>.Bind().UnityObject<MusicVisualizer>();
+            Instance<IMusicVisualizationProvider>.Bind().UnityObject<MusicVisualizationProvider>();
             Instance<IMusicPlaylistProvider>.Bind().UnityObject<MusicPlaylistProvider>();
             Instance<IMusicPlayer>.Bind().UnityObject<MusicPlayer>();
             

@@ -3,6 +3,7 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CreativeMode.Impl
 {
@@ -10,7 +11,9 @@ namespace CreativeMode.Impl
     {
         private IMusicPlaylistProvider Playlist => Instance<IMusicPlaylistProvider>.Get();
         
-        public MusicVisualizer visualizer;
+        [FormerlySerializedAs("visualizer")]
+        public MusicVisualizationProvider visualizationProvider;
+        
         public IObservable<AudioMetadata> CurrentMusic => onMusicChangedSubject;
 
         public float FadeInDuration { get; set; } = 0.5f;
@@ -61,7 +64,7 @@ namespace CreativeMode.Impl
                 OnPlaybackFinished();
             }
 
-            if (playerState == MediaPlayerState.WaitForVisualizersAndPlay && !visualizer.IsMusicChangeAnimationActive)
+            if (playerState == MediaPlayerState.WaitForVisualizersAndPlay && !visualizationProvider.IsMusicChangeAnimationActive)
                 Play();
         }
 
@@ -69,7 +72,7 @@ namespace CreativeMode.Impl
         {
             DOTween.Kill(outputAudioSource);
 
-            if (visualizer.IsMusicChangeAnimationActive)
+            if (visualizationProvider.IsMusicChangeAnimationActive)
             {
                 playerState = MediaPlayerState.WaitForVisualizersAndPlay;
                 return;
@@ -222,7 +225,7 @@ namespace CreativeMode.Impl
             {
                 case MediaPlayerState.Playing:
                 case MediaPlayerState.FadeIn:
-                    if (!visualizer.IsMusicChangeAnimationActive)
+                    if (!visualizationProvider.IsMusicChangeAnimationActive)
                     {
                         PlaySource();
                     }

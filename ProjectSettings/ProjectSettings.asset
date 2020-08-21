@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: CreativeModeSubmodule
+  companyName: ThreeDISevenZeroR
+  productName: CreativeMode
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -81,7 +81,7 @@ PlayerSettings:
   usePlayerLog: 1
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
-  useFlipModelSwapchain: 1
+  useFlipModelSwapchain: 0
   resizableWindow: 0
   useMacAppStoreValidation: 0
   macAppStoreCategory: public.app-category.games
@@ -266,7 +266,56 @@ PlayerSettings:
   AndroidMinifyDebug: 0
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 100
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: a529309f82fbf4d43b25c6c1cf6074d8, type: 3}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
+  - m_BuildTarget: Standalone
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 0}
+      m_Width: 1024
+      m_Height: 1024
+      m_Kind: 0
+    - serializedVersion: 2
+      m_Icon: {fileID: 0}
+      m_Width: 512
+      m_Height: 512
+      m_Kind: 0
+    - serializedVersion: 2
+      m_Icon: {fileID: 0}
+      m_Width: 256
+      m_Height: 256
+      m_Kind: 0
+    - serializedVersion: 2
+      m_Icon: {fileID: 0}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
+    - serializedVersion: 2
+      m_Icon: {fileID: 0}
+      m_Width: 64
+      m_Height: 64
+      m_Kind: 0
+    - serializedVersion: 2
+      m_Icon: {fileID: 0}
+      m_Width: 48
+      m_Height: 48
+      m_Kind: 0
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: 0ef090d12abc0204fad63beee241d840, type: 3}
+      m_Width: 32
+      m_Height: 32
+      m_Kind: 0
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: c945363e52b461e44a35ab583dfe968e, type: 3}
+      m_Width: 16
+      m_Height: 16
+      m_Kind: 0
   m_BuildTargetPlatformIcons: []
   m_BuildTargetBatching:
   - m_BuildTarget: Standalone

@@ -20,7 +20,7 @@ public class AudioEqualizerWidget : MonoBehaviour
     private float[] bandValue;
     private Texture2D bandTexture;
 
-    private IMusicVisualizer MusicVisualizer => Instance<IMusicVisualizer>.Get();
+    private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
 
     private void OnDestroy()
     {

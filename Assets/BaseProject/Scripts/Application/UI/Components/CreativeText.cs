@@ -89,6 +89,7 @@ public class CreativeText : Text
         
         var overlayObject = new GameObject($"IconOverlay ({texture.name})");
         overlayObject.transform.parent = transform;
+        overlayObject.AddComponent<CanvasRenderer>();
 
         var iconOverlay = overlayObject.AddComponent<IconOverlay>();
         iconOverlay.material = Canvas.GetDefaultCanvasMaterial();

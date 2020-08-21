@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace CreativeMode
 {
-    public class WidgetInteractionHandler : MonoBehaviour
+    public class TransparentWindowInputHandler : MonoBehaviour
     {
         public Camera targetCamera;
         public LayerMask layerMask;

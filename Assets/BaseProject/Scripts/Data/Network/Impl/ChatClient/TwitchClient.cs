@@ -1,10 +1,9 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
- using System.Runtime.CompilerServices;
- using System.Text;
+using System.Text;
 using Newtonsoft.Json;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
@@ -13,7 +12,7 @@ using UniRx;
 using UnityEngine;
 using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
 
- namespace CreativeMode
+ namespace CreativeMode.Impl
 {
     public class TwitchClient : IChatClient
     {
@@ -40,6 +39,15 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
 
         private IObservable<Client> CreateTwitchClientObservable(string oauth, string username, string joinChannel)
         {
+            if (string.IsNullOrWhiteSpace(oauth) || 
+                string.IsNullOrWhiteSpace(username) || 
+                string.IsNullOrWhiteSpace(joinChannel))
+            {
+                // TODO: move auth check to higher level
+                Debug.LogWarning("Disabling twitch client, no credentials specified");
+                return Observable.Empty<Client>();
+            }
+            
             return Observable.CreateSafe<Client>(s =>
             {
                 var client = new Client();
@@ -221,12 +229,19 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
 
         private IObservable<ExternalEmote[]> GetExternalEmotesForChannel(string channelName)
         {
-            // TODO: add ability to customize emote size
             return GetBttvEmoteByUrl(bttvGlobalEmoteApi)
-                .Merge(GetBttvEmoteByUrl(string.Format(bttvChannelEmoteApi, channelName)))
-                .Merge(GetFfzEmotesForChannel(channelName))
+                .Merge(GetBttvEmoteByChannelName(channelName))
+                .Merge(GetFfzEmotesByChannelName(channelName))
                 .ToList()
                 .Select(l => l.SelectMany(e => e).ToArray());
+        }
+
+        private IObservable<ExternalEmote[]> GetBttvEmoteByChannelName(string channelName)
+        {
+            if (string.IsNullOrWhiteSpace(channelName))
+                return Observable.Empty<ExternalEmote[]>();
+
+            return GetBttvEmoteByUrl(string.Format(bttvChannelEmoteApi, channelName));
         }
         
         private IObservable<ExternalEmote[]> GetBttvEmoteByUrl(string url)
@@ -263,8 +278,11 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
             });
         }
 
-        private IObservable<ExternalEmote[]> GetFfzEmotesForChannel(string channelName)
+        private IObservable<ExternalEmote[]> GetFfzEmotesByChannelName(string channelName)
         {
+            if (string.IsNullOrWhiteSpace(channelName))
+                return Observable.Empty<ExternalEmote[]>();
+
             return Observable.Start(() =>
             {
                 using (var stream = WebRequest.Create(string.Format(ffzEmoteApi, channelName))

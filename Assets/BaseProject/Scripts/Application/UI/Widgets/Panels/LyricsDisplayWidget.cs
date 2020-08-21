@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class LyricsDisplayWidget : MonoBehaviour
 {
     private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
-    private IMusicVisualizer MusicVisualizer => Instance<IMusicVisualizer>.Get();
+    private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
     private ImageLoader ImageLoader => Instance<ImageLoader>.Get();
 
     public Text textLinePrefab;

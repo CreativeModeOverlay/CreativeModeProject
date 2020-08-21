@@ -8,7 +8,7 @@ public class AlbumCoverLight : MonoBehaviour
     public Light[] vibrantLights;
     public Light[] backgroundLights;
     
-    private IMusicVisualizer MusicPlayer => Instance<IMusicVisualizer>.Get();
+    private IMusicVisualizationProvider MusicPlayer => Instance<IMusicVisualizationProvider>.Get();
 
     private void OnEnable()
     {

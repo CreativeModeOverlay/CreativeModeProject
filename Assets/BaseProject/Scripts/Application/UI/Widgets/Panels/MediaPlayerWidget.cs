@@ -35,7 +35,7 @@ public class MediaPlayerWidget : MonoBehaviour
     private Color currentTextColor;
 
     private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
-    private IMusicVisualizer MusicVisualizer => Instance<IMusicVisualizer>.Get();
+    private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
 
     private void Start()
     {

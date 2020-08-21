@@ -43,11 +43,11 @@
       "hash": "fc663eb7b9152b7f034929d3bcc6ddbdf056a10d"
     },
     "com.praeclarum.sqlite.net": {
-      "version": "https://github.com/CreativeModeOverlay/CM-SqliteNet-UPM.git#553d0fe701f99340630e2a45ef725dc8e36c83e0",
+      "version": "https://github.com/CreativeModeOverlay/CM-SqliteNet-UPM.git#0bac69f8f58f5892d841ab31b06635163b4e3b0f",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "553d0fe701f99340630e2a45ef725dc8e36c83e0"
+      "hash": "0bac69f8f58f5892d841ab31b06635163b4e3b0f"
     },
     "com.schellingb.unity.capture": {
       "version": "https://github.com/CreativeModeOverlay/CM-UnityCapture-UPM.git#e9dd008b51f784ff0fb869f8f1c18fe92963bd43",
