@@ -8,8 +8,9 @@ public class ChatInteractor : IChatInteractor
 {
     private IChatClient ChatClient => Instance<IChatClient>.Get();
     private IChatStorage ChatStorage => Instance<IChatStorage>.Get();
-
+    
     private IconAtlas iconAtlas;
+    private EmoteSize emoteSize;
 
     private Subject<Unit> onClearChatMessagesBehaviour = new Subject<Unit>();
     
@@ -19,9 +20,10 @@ public class ChatInteractor : IChatInteractor
     public IObservable<Unit> OnClearChatMessages => onClearChatMessagesBehaviour
         .Concat(ChatClient.OnChatCleared);
 
-    public ChatInteractor(IconAtlas atlas)
+    public ChatInteractor(IconAtlas atlas, EmoteSize size)
     {
         iconAtlas = atlas;
+        emoteSize = size;
 
         ChatClient.ChatMessages.Subscribe(m =>
         {
@@ -53,7 +55,7 @@ public class ChatInteractor : IChatInteractor
                 icons = m.messageEmotes.Select(e => new TextIcon
                 {
                     atlas = iconAtlas.Texture,
-                    rect = iconAtlas.GetIcon(e.iconUrl),
+                    rect = iconAtlas.GetIcon(GetEmoteUrl(e)),
                     position = e.position,
                     isModifier = e.isModifier
                 }).ToArray()
@@ -65,5 +67,17 @@ public class ChatInteractor : IChatInteractor
 
             canDropOnDesktop = true
         };
+    }
+
+    private string GetEmoteUrl(ChatMessageRemote.Emote e)
+    {
+        switch (emoteSize)
+        {
+            case EmoteSize.Size1x: return e.url1x;
+            case EmoteSize.Size2x: return e.url2x;
+            case EmoteSize.Size4x: return e.url4x;
+        }
+        
+        throw new ArgumentException($"Unknown emote size {emoteSize}");
     }
 }

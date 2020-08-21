@@ -20,8 +20,10 @@ namespace CreativeMode
         public struct Emote
         {
             public int position;
-            public string iconUrl;
             public bool isModifier;
+            public string url1x;
+            public string url2x;
+            public string url4x;
         }
     }
 }

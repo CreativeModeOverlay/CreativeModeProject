@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CreativeMode;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Networking;
-using Object = UnityEngine.Object;
 
 public class IconAtlas : IDisposable
 {
@@ -76,12 +73,15 @@ public class IconAtlas : IDisposable
                 var frame = image.Frames[icon.animationFrame];
                 ClearRect(icon.uvRect);
                 BlitToAtlas(frame.sprite.texture, icon.blitRect);
-
-                icon.animationTimer = frame.duration;
+                
                 icon.animationFrame++;
+                icon.animationTimer += frame.duration;
 
                 if (icon.animationFrame >= image.Frames.Length)
                     icon.animationFrame = 0;
+                
+                if (icon.animationTimer < 0) 
+                    icon.animationTimer = 0;
             }
         }
     }

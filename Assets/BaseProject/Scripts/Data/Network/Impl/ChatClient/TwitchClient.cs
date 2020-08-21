@@ -13,11 +13,14 @@ using UniRx;
 using UnityEngine;
 using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
 
-namespace CreativeMode
+ namespace CreativeMode
 {
     public class TwitchClient : IChatClient
     {
-        private const string twitchEmotePlaceholder = "https://static-cdn.jtvnw.net/emoticons/v1/{0}/2.0";
+        private const string twitchEmotePlaceholder1x = "https://static-cdn.jtvnw.net/emoticons/v1/{0}/1.0";
+        private const string twitchEmotePlaceholder2x = "https://static-cdn.jtvnw.net/emoticons/v1/{0}/2.0";
+        private const string twitchEmotePlaceholder4x = "https://static-cdn.jtvnw.net/emoticons/v1/{0}/4.0";
+        
         private const string bttvGlobalEmoteApi = "https://api.betterttv.net/2/emotes";
         private const string bttvChannelEmoteApi = "https://api.betterttv.net/2/channels/{0}";
         private const string ffzEmoteApi = "https://api.frankerfacez.com/v1/room/{0}";
@@ -117,11 +120,13 @@ namespace CreativeMode
                 builder.Remove(startPosition, length);
                 offset -= length;
             
-                emotes.Add(new ChatMessageRemote.Emote()
+                emotes.Add(new ChatMessageRemote.Emote
                 {
                     position = startPosition,
-                    iconUrl = e.url,
-                    isModifier = e.modifierEmote
+                    isModifier = e.modifierEmote,
+                    url1x = e.url1x,
+                    url2x = e.url2x,
+                    url4x = e.url4x,
                 });
             }
 
@@ -150,7 +155,9 @@ namespace CreativeMode
         {
             return set.Emotes.Select(e => new EmoteSpan
             {
-                url = string.Format(twitchEmotePlaceholder, e.Id),
+                url1x = string.Format(twitchEmotePlaceholder1x, e.Id),
+                url2x = string.Format(twitchEmotePlaceholder2x, e.Id),
+                url4x = string.Format(twitchEmotePlaceholder4x, e.Id),
                 startIndex = e.StartIndex,
                 endIndex = e.EndIndex + 1
             });
@@ -199,8 +206,10 @@ namespace CreativeMode
                         {
                             startIndex = startIndex,
                             endIndex = endIndex,
-                            url = e.url,
-                            modifierEmote = e.isModifier
+                            modifierEmote = e.isModifier,
+                            url1x = e.url1x,
+                            url2x = e.url2x,
+                            url4x = e.url4x
                         });
                         break;
                     }
@@ -212,14 +221,15 @@ namespace CreativeMode
 
         private IObservable<ExternalEmote[]> GetExternalEmotesForChannel(string channelName)
         {
-            return GetBttvEmoteByUrl(bttvGlobalEmoteApi, "2x")
-                .Merge(GetBttvEmoteByUrl(string.Format(bttvChannelEmoteApi, channelName), "2x"))
-                .Merge(GetFfzEmotesForChannel(channelName, "2"))
+            // TODO: add ability to customize emote size
+            return GetBttvEmoteByUrl(bttvGlobalEmoteApi)
+                .Merge(GetBttvEmoteByUrl(string.Format(bttvChannelEmoteApi, channelName)))
+                .Merge(GetFfzEmotesForChannel(channelName))
                 .ToList()
                 .Select(l => l.SelectMany(e => e).ToArray());
         }
         
-        private IObservable<ExternalEmote[]> GetBttvEmoteByUrl(string url, string size)
+        private IObservable<ExternalEmote[]> GetBttvEmoteByUrl(string url)
         {
             return Observable.Start(() =>
             {
@@ -230,20 +240,30 @@ namespace CreativeMode
                     var reader = new StreamReader(stream);
                     var jsonText = reader.ReadToEnd();
                     var response = JsonConvert.DeserializeObject<BttvResponse>(jsonText);
-
-                    return response.emotes.Select(e => new ExternalEmote
+                    
+                    return response.emotes.Select(e =>
                     {
-                        name = e.code,
-                        isModifier = IsModifierEmote(e.code),
-                        url = "http:" + response.urlTemplate
-                            .Replace("{{id}}", e.id)
-                            .Replace("{{image}}", size)
+                        string GetEmoteUrl(string size)
+                        {
+                            return "http:" + response.urlTemplate
+                                .Replace("{{id}}", e.id)
+                                .Replace("{{image}}", size);
+                        }
+                        
+                        return new ExternalEmote
+                        {
+                            name = e.code,
+                            isModifier = IsModifierEmote(e.code),
+                            url1x = GetEmoteUrl("1x"),
+                            url2x = GetEmoteUrl("2x"),
+                            url4x = GetEmoteUrl("3x"),
+                        };
                     }).ToArray();
                 }
             });
         }
 
-        private IObservable<ExternalEmote[]> GetFfzEmotesForChannel(string channelName, string size)
+        private IObservable<ExternalEmote[]> GetFfzEmotesForChannel(string channelName)
         {
             return Observable.Start(() =>
             {
@@ -261,16 +281,21 @@ namespace CreativeMode
 
                     return icons.Select(e =>
                     {
-                        if (!e.urls.TryGetValue(size, out var emoteUrl))
+                        string GetEmoteUrl(string size)
                         {
-                            emoteUrl = e.urls.LastOrDefault().Value;
-                        };
+                            if (!e.urls.TryGetValue(size, out var emoteUrl))
+                                emoteUrl = e.urls.LastOrDefault().Value;
+
+                            return "http:" + emoteUrl;
+                        }
 
                         return new ExternalEmote
                         {
                             name = e.name,
-                            url = "http:" + emoteUrl,
-                            isModifier = e.modifier
+                            isModifier = e.modifier,
+                            url1x = GetEmoteUrl("1"),
+                            url2x = GetEmoteUrl("2"),
+                            url4x = GetEmoteUrl("4"),
                         };
                     }).ToArray();
                 }
@@ -285,7 +310,9 @@ namespace CreativeMode
 
         private struct EmoteSpan
         {
-            public string url;
+            public string url1x;
+            public string url2x;
+            public string url4x;
             public int startIndex;
             public int endIndex;
             public bool modifierEmote;
@@ -294,10 +321,13 @@ namespace CreativeMode
         private struct ExternalEmote
         {
             public string name;
-            public string url;
             public bool isModifier;
+            public string url1x;
+            public string url2x;
+            public string url4x;
         }
         
+#pragma warning disable 649
         private struct BttvEmoteResponse
         {
             public string id;
@@ -318,16 +348,17 @@ namespace CreativeMode
             public Dictionary<string, FrankerFaceZEmoteSet> sets;
         }
         
-        public struct FrankerFaceZEmoteSet
+        private struct FrankerFaceZEmoteSet
         {
             public FrankerFaceZEmote[] emoticons;
         }
         
-        public struct FrankerFaceZEmote
+        private struct FrankerFaceZEmote
         {
             public string name;
             public bool modifier;
             public Dictionary<string, string> urls;
         }
+#pragma warning restore 649
     }
 }

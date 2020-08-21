@@ -1,0 +1,22 @@
+{
+    "name": "CreativeMode.Application",
+    "references": [
+        "GUID:bcbdbe8e10b675a4593c765c2bffbf19",
+        "GUID:25b8c26814124644c9af4f0cb279b277",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:979687d3583de504baa51066df850e39",
+        "GUID:1980cebdcbda5c04394c20c65d489f78",
+        "GUID:723092ca6fbc6134cbb893bd23d11e82"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

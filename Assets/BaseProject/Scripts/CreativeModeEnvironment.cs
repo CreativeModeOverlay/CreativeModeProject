@@ -7,8 +7,12 @@ using UnityRawInput;
 
 namespace CreativeMode
 {
+    /// <summary>
+    /// Dependency injection configuration and other settings that should be applied
+    /// before running original app logic
+    /// </summary>
     [DefaultExecutionOrder(-100000)]
-    public class CreativeModeApp : MonoBehaviour
+    public class CreativeModeEnvironment : MonoBehaviour
     {
         public int framerate = 60;
 
@@ -52,9 +56,11 @@ namespace CreativeMode
             Instance<AudioLoader>.Bind().Instance(new AudioLoader { MaxThreadCount = 2 });
 
             Instance<IChatClient>.Bind().Instance(new TwitchClient(twitchOauth, twitchUsername, twitchChannelToJoin));
-            Instance<IChatInteractor>.Bind()
-                .Instance(new ChatInteractor(
-                    new IconAtlas(Instance<ImageLoader>.Get(), 2048, 2048, 64, 64)));
+
+            var chatEmoteAtlas = new IconAtlas(Instance<ImageLoader>.Get(), 
+                2048, 2048, 64, 64);
+            
+            Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(chatEmoteAtlas, EmoteSize.Size2x));
         }
 
         private SQLiteConnection OpenDb(string name)

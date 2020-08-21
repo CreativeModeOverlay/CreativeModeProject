@@ -52,7 +52,6 @@ namespace CreativeMode.Impl
         private MediaPlayerState playerState;
         private IDisposable musicLoadDisposable;
         private AudioLoader AudioLoader => Instance<AudioLoader>.Get();
-        private bool musicMarkedAsPlayed;
 
         private void Update()
         {
@@ -213,7 +212,6 @@ namespace CreativeMode.Impl
             
             currentMusic = audio;
             currentMusicInfo = asset.Meta;
-            musicMarkedAsPlayed = false;
             
             onMusicChangedSubject.OnNext(asset.Meta);
             outputAudioSource.clip = audio.Asset.Clip;
