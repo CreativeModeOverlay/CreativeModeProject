@@ -1,0 +1,107 @@
+﻿#pragma kernel ConvertTextureToBuffer
+#pragma kernel ComputeClusters
+#pragma kernel MoveClusters
+
+struct Cluster 
+{
+    int count;
+    float4 mean;
+    float4 darkest;
+    float4 lightest;
+};
+
+uint TextureWidth;
+uint TextureHeight;
+uint BufferWidth;
+float2 DownSampleStep = float2(1, 1);
+Texture2D<float4> InputTexture;
+
+RWStructuredBuffer<float4> ColorBuffer;
+RWStructuredBuffer<int> ColorClusterBuffer;
+int ColorBufferSize;
+
+RWStructuredBuffer<Cluster> ClusterBuffer;
+int ClusterCount;
+
+float GetLuminance(float4 color) 
+{
+    return (0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b);
+}
+
+[numthreads(16, 16, 1)]
+void ConvertTextureToBuffer(uint3 id : SV_DispatchThreadID) 
+{
+    if(id.x >= TextureWidth || id.y >= TextureHeight) return;
+    ColorBuffer[id.y * BufferWidth + id.x] = InputTexture[id.xy * DownSampleStep];
+}
+
+[numthreads(64, 1, 1)]
+void ComputeClusters(uint id : SV_DispatchThreadID) 
+{
+    if(id >= ColorBufferSize) return;
+    
+    float4 color = ColorBuffer[id];
+    float closestDistance = 999999;
+    int closestCluster;
+    
+    for(int i = 0; i < ClusterCount; i++) 
+    {
+        float4 clusterCenter = ClusterBuffer[i].mean;
+        float d = distance(clusterCenter.rgb, color.rgb);
+        
+        if(d < closestDistance) 
+        {
+            closestCluster = i;
+            closestDistance = d;   
+        }
+    }
+    
+    ColorClusterBuffer[id] = closestCluster;
+}
+
+[numthreads(16, 1, 1)]
+void MoveClusters(uint id : SV_DispatchThreadID) 
+{
+    if(id >= ClusterCount) return;
+
+    float4 mean = float4(0, 0, 0, 0);
+    float4 lightest = float4(0, 0, 0, 0);
+    float4 darkest = float4(0, 0, 0, 0);
+    
+    int colorCount = 0;
+    float lightestValue = 0;
+    float darkestValue = 1;
+
+    for(int cb = 0; cb < ColorBufferSize; cb++) 
+    {
+        if(ColorClusterBuffer[cb] == id)
+        {
+            float4 c = ColorBuffer[cb];
+            float luminance = GetLuminance(c);
+            
+            mean += c;
+            
+            if(luminance > lightestValue) 
+            {
+                lightest = c;
+                lightestValue = luminance;
+            }
+            
+            if(luminance < darkestValue)
+            {
+                darkest = c;
+                darkestValue = luminance;
+            }
+            
+            colorCount++;
+        }
+    }
+
+    Cluster cluster;
+    cluster.mean = colorCount > 0 ? mean / colorCount : float4(0, 0, 0, 1);
+    cluster.lightest = lightest;
+    cluster.darkest = darkest;
+    cluster.count = colorCount;
+
+    ClusterBuffer[id] = cluster;
+}

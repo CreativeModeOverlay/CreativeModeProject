@@ -1,0 +1,21 @@
+{
+    "name": "CreativeMode.Data",
+    "references": [
+        "GUID:bcbdbe8e10b675a4593c765c2bffbf19",
+        "GUID:87be3d11bcb3784428c6efa91f4b999b",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:c08899ce2277eda47840a36a0e7ea216",
+        "GUID:d93c1dab21224134eb12776e52e9240a",
+        "GUID:b89b4e34254b84b42a6028250be63fd2",
+        "GUID:e2b36bbf7e479ff479f6d7b31cc060a6"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
