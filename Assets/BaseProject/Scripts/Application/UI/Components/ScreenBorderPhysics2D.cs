@@ -7,6 +7,7 @@ public class ScreenBorderPhysics2D : MonoBehaviour
     public Camera screenCamera;
     public float distance;
     public float thickness;
+    public float thicknessInnerOffset;
     public PhysicsMaterial2D borderMaterial;
 
     [SerializeField]
@@ -26,11 +27,13 @@ public class ScreenBorderPhysics2D : MonoBehaviour
         while (colliders.Count < 4)
             colliders.Add(gameObject.AddComponent<BoxCollider2D>());
         
-        var bottomLeftWorld = screenCamera.ScreenToWorldPoint(
-            new Vector3(borders.left, borders.bottom, distance));
+        var bottomLeftWorld = screenCamera.ScreenToWorldPoint(new Vector3(
+                borders.left - thicknessInnerOffset, 
+                borders.bottom - thicknessInnerOffset, distance));
         
-        var topRightWorld = screenCamera.ScreenToWorldPoint(
-            new Vector3(Screen.width - borders.right, Screen.height - borders.top, distance));
+        var topRightWorld = screenCamera.ScreenToWorldPoint(new Vector3(
+                Screen.width - borders.right - thicknessInnerOffset, 
+                Screen.height - borders.top - thicknessInnerOffset, distance));
 
         var bottomLeft = screenCamera.transform.InverseTransformPoint(bottomLeftWorld);
         var topRight = screenCamera.transform.InverseTransformPoint(topRightWorld);

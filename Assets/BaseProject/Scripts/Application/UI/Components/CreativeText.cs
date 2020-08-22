@@ -5,189 +5,216 @@ using CreativeMode;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Extended TextView with support for project-related stuff
+/// </summary>
 public class CreativeText : Text
 {
-    public float iconSize = 1.2f;
-    public float iconPosition = 0f;
-    public string iconPlaceholderString;
+    private const string iconPlaceholderText = " "; // Height space
+    
+    public float iconScale = 1.2f;
+    public float modifierIconScale = 1.2f;
 
-    private bool isUpdated;
-    private List<IconOverlay> overlays = new List<IconOverlay>();
+    private TextWithIcons currentText;
+
+    private List<IconDisplayLayer> displayLayers 
+        = new List<IconDisplayLayer>();
+    
+    private List<PlaceholderIcon> placeholderIcons 
+        = new List<PlaceholderIcon>();
 
     public void SetText(TextWithIcons textWithIcons)
     {
         if (!Application.isPlaying)
             return;
-        
-        var builder = new StringBuilder(textWithIcons.text);
-        var offset = 0;
 
-        foreach (var o in overlays)
-            o.ClearIcons();
+        currentText = textWithIcons;
+        UpdateText();
+    }
 
-        if (textWithIcons.icons != null && textWithIcons.icons.Length > 0)
+    private void UpdateText()
+    {
+        placeholderIcons.Clear();
+
+        if (currentText.icons != null && currentText.icons.Length > 0)
         {
-            var tagStart = "<color=#00000000>";
-            var tagEnd = "</color>";
-            var formattedPlaceholder = tagStart + iconPlaceholderString + tagEnd;
-            var previousIcon = new IconData();
+            var builder = new StringBuilder(currentText.text);
+            var previousIcon = new PlaceholderIcon();
+            var offset = 0;
 
-            foreach (var e in textWithIcons.icons)
+            foreach (var e in currentText.icons)
             {
-                var overlay = GetOrCreateOverlay(e.atlas);
-                var newIcon = new IconData { rect = e.rect };
+                GetOrCreateLayer(e.atlas);
+                var newIcon = new PlaceholderIcon
+                {
+                    atlas = e.atlas,
+                    rect = e.rect,
+                    isModifier = e.isModifier
+                };
 
                 if (e.isModifier)
                 {
-                    newIcon.startIndex = previousIcon.startIndex;
-                    newIcon.endIndex = previousIcon.endIndex;
-                    newIcon.sizeScale = 1.2f;
+                    newIcon.charIndex = previousIcon.charIndex;
                 }
                 else
                 {
                     var startPosition = e.position + offset;
-                    newIcon.startIndex = startPosition + tagStart.Length;
-                    newIcon.endIndex = startPosition + formattedPlaceholder.Length - tagEnd.Length;
-                    newIcon.sizeScale = 1f;
-                    
-                    builder.Insert(startPosition, formattedPlaceholder);
-                    offset += formattedPlaceholder.Length;
+                    newIcon.charIndex = startPosition;
+
+                    builder.Insert(startPosition, iconPlaceholderText);
+                    offset += iconPlaceholderText.Length;
                 }
-                
-                overlay.AddIcon(newIcon);
+
+                placeholderIcons.Add(newIcon);
                 previousIcon = newIcon;
             }
+
+            text = builder.ToString();
         }
-
-        text = builder.ToString();
-    }
-
-    protected override void OnPopulateMesh(VertexHelper toFill)
-    {
-        base.OnPopulateMesh(toFill);
-        isUpdated = true;
-    }
-
-    private void LateUpdate()
-    {
-        if (isUpdated)
+        else
         {
-            isUpdated = false;
-
-            foreach (var o in overlays)
-                o.SetAllDirty();
+            text = currentText.text;
         }
     }
-
-    private IconOverlay GetOrCreateOverlay(Texture texture)
+    
+    private IconDisplayLayer GetOrCreateLayer(Texture texture)
     {
-        foreach (var o in overlays)
+        foreach (var o in displayLayers)
         {
-            if (o.atlas == texture)
+            if (o.AtlasTexture == texture)
                 return o;
         }
         
-        var overlayObject = new GameObject($"IconOverlay ({texture.name})");
+        var overlayObject = new GameObject($"IconLayer ({texture.name})");
         overlayObject.transform.parent = transform;
         overlayObject.AddComponent<CanvasRenderer>();
 
-        var iconOverlay = overlayObject.AddComponent<IconOverlay>();
-        iconOverlay.material = Canvas.GetDefaultCanvasMaterial();
-        iconOverlay.atlas = texture;
-        iconOverlay.textComponent = this;
+        var iconLayer = overlayObject.AddComponent<IconDisplayLayer>();
+        iconLayer.material = Canvas.GetDefaultCanvasMaterial();
+        iconLayer.AtlasTexture = texture;
 
-        var t = iconOverlay.rectTransform;
-        t.pivot = ((RectTransform) transform).pivot;
+        var t = iconLayer.rectTransform;
         t.anchorMin = Vector2.zero;
         t.anchorMax = Vector2.one;
         t.sizeDelta = Vector2.zero;
         t.localPosition = Vector3.zero;
         t.localRotation = Quaternion.identity;
         t.localScale = Vector3.one;
+        t.pivot = rectTransform.pivot;
         
-        overlays.Add(iconOverlay);
-        return iconOverlay;
+        displayLayers.Add(iconLayer);
+        return iconLayer;
     }
 
-    private class IconOverlay : Graphic
+    public override void SetVerticesDirty()
     {
-        public CreativeText textComponent;
-        public Texture atlas;
-        
-        private TextGenerator generator;
-        private List<IconData> icons = new List<IconData>();
+        base.SetVerticesDirty();
+        for(var i = 0; i < displayLayers.Count; i++)
+            displayLayers[i].SetVerticesDirty();
+    }
 
-        public void AddIcon(IconData icon)
+    public override void SetLayoutDirty()
+    {
+        base.SetLayoutDirty();
+        for(var i = 0; i < displayLayers.Count; i++)
+            displayLayers[i].SetLayoutDirty();
+    }
+
+    protected override void OnPopulateMesh(VertexHelper toFill)
+    {
+        base.OnPopulateMesh(toFill);
+        OnPopulateIcons();
+    }
+
+    private void OnPopulateIcons()
+    {
+        foreach (var layer in displayLayers)
+            layer.ClearIcons();
+
+        var generator = cachedTextGeneratorForLayout;
+
+        foreach (var icon in placeholderIcons)
         {
-            icons.Add(icon);
+            if(icon.charIndex >= generator.characterCount)
+                continue;
+            
+            var character = generator.characters[icon.charIndex];
+            var layer = GetOrCreateLayer(icon.atlas);
+
+            layer.AddIcon(new DisplayIcon
+            {
+                position = character.cursorPos,
+                size = character.charWidth,
+                rect = icon.rect,
+                scale = icon.isModifier ? modifierIconScale * iconScale : iconScale
+            });
         }
+    }
+    
+    private class IconDisplayLayer : Graphic
+    {
+        public Texture AtlasTexture { get; set; }
+        
+        public override Texture mainTexture => AtlasTexture;
+        
+        private List<DisplayIcon> icons = new List<DisplayIcon>();
+        private bool isUpdated;
 
         public void ClearIcons()
         {
             icons.Clear();
-            SetAllDirty();
         }
 
-        protected override void Awake()
+        public void AddIcon(DisplayIcon icon)
         {
-            base.Awake();
-            material = defaultMaterial;
-            generator = new TextGenerator();
+            icons.Add(icon);
         }
-
-        public override Texture mainTexture => atlas;
 
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();
-
-            var generationSettings = textComponent.GetGenerationSettings(textComponent.rectTransform.rect.size);
+            var vertexOffset = 0;
             
-            var fontSize = (float) generationSettings.fontSize;
-            var halfWidth = fontSize / 2f * textComponent.iconSize;
-            var halfHeight = fontSize / 2f * textComponent.iconSize;
-            var drawingOffset = fontSize * textComponent.iconPosition;
-            var offset = 0;
-
-            generator.Invalidate();
-            generator.PopulateWithErrors(textComponent.text, generationSettings, gameObject);
-
             for (var i = 0; i < icons.Count; i++)
             {
-                var emote = icons[i];
+                var icon = icons[i];
+                var center = icon.position;
+                var rect = icon.rect;
+                var size = icon.size * icon.scale;
+                var scaledSizeOffset = (size - icon.size) / 2f;
+                var offset = new Vector3(-scaledSizeOffset, scaledSizeOffset, 0);
                 
-                if(emote.startIndex >= generator.characterCount || emote.endIndex >= generator.characterCount)
-                    continue;
-
-                var startCharacter = generator.characters[emote.startIndex];
-                var endCharacter = generator.characters[emote.endIndex];
-                var xCenter = (startCharacter.cursorPos.x + endCharacter.cursorPos.x) / 2f;
-                var yCenter = endCharacter.cursorPos.y - drawingOffset;
-                var rect = emote.rect;
-                var halfWidthScaled = halfWidth * emote.sizeScale;
-                var halfHeightScaled = halfWidth * emote.sizeScale;
-
-                vh.AddVert(new Vector3(xCenter - halfWidthScaled, yCenter - halfHeightScaled),
+                vh.AddVert(offset + new Vector3(center.x, center.y - size),
                     color, new Vector2(rect.xMin, rect.yMin));
-                vh.AddVert(new Vector3(xCenter - halfWidthScaled, yCenter + halfHeightScaled),
+                vh.AddVert(offset +new Vector3(center.x, center.y),
                     color, new Vector2(rect.xMin, rect.yMax));
-                vh.AddVert(new Vector3(xCenter + halfWidthScaled, yCenter + halfHeightScaled),
+                vh.AddVert(offset +new Vector3(center.x + size, center.y),
                     color, new Vector2(rect.xMax, rect.yMax));
-                vh.AddVert(new Vector3(xCenter + halfWidthScaled, yCenter - halfHeightScaled),
+                vh.AddVert(offset +new Vector3(center.x + size, center.y - size),
                     color, new Vector2(rect.xMax, rect.yMin));
-                vh.AddTriangle(offset, offset + 1, offset + 2);
-                vh.AddTriangle(offset + 2, offset + 3, offset);
-                offset += 4;
+                vh.AddTriangle(vertexOffset, vertexOffset + 1, vertexOffset + 2);
+                vh.AddTriangle(vertexOffset + 2, vertexOffset + 3, vertexOffset);
+                
+                vertexOffset += 4;
             }
         }
     }
 
     [Serializable]
-    private struct IconData
+    private struct PlaceholderIcon
     {
-        public int startIndex;
-        public int endIndex;
+        public int charIndex;
+        public bool isModifier;
+        public Texture atlas;
         public Rect rect;
-        public float sizeScale;
+    }
+    
+    [Serializable]
+    private struct DisplayIcon
+    {
+        public Vector3 position;
+        public float size;
+        public float scale;
+        public Rect rect;
     }
 }

@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 
 public class PhysicsChatSpawner : MonoBehaviour
 {
-    public const float ChatMessageDuration = 300f;
-    public const float ChatEmoteDuration = 60f;
+    public float chatMessageDuration = 300f;
+    public float chatEmoteDuration = 60f;
     
     public PhysicsWidgetContainer physicsWidgetPrefab;
     public ChatMessageWidget chatMessagePrefab;
@@ -34,6 +34,9 @@ public class PhysicsChatSpawner : MonoBehaviour
     
     private void Awake()
     {
+        // Workaround, so messages can be spawned in local space without additional calculations
+        ((RectTransform) transform).pivot = Vector2.zero;
+        
         Chat.ChatMessages
             .Where(CanSpawnMessage)
             .Subscribe(SpawnChatMessage)
@@ -112,7 +115,7 @@ public class PhysicsChatSpawner : MonoBehaviour
             authorId = message.author,
             widget = widget,
             message = message,
-            destroyTime = Time.time + (isEmoteMessage ? ChatEmoteDuration : ChatMessageDuration)
+            destroyTime = Time.time + (isEmoteMessage ? chatEmoteDuration : chatMessageDuration)
         });
     }
 
@@ -122,7 +125,9 @@ public class PhysicsChatSpawner : MonoBehaviour
         var position = Input.mousePosition;
 
         position.y = spawnHeight;
-        position.x = Mathf.Lerp(spawnSidePadding, containerWidth - spawnSidePadding, position.x / containerWidth);
+        position.x = Mathf.Lerp(spawnSidePadding, 
+            containerWidth - spawnSidePadding, 
+            position.x / containerWidth);
 
         return position;
     }
