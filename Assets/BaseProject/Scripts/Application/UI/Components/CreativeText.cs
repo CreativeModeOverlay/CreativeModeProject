@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CreativeMode;
+using CreativeMode.Impl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,26 @@ public class CreativeText : Text
     
     private List<PlaceholderIcon> placeholderIcons 
         = new List<PlaceholderIcon>();
+
+    private CreativeUIManager uiManager;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        uiManager = CreativeUIManager.Instance;
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        uiManager.RegisterText(this);
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        uiManager.UnregisterText(this);
+    }
 
     public void SetSpannedText(SpannedText spannedText)
     {
@@ -86,12 +107,13 @@ public class CreativeText : Text
                     
                     return;
 
-                case IconTag icon:
-                    GetOrCreateLayer(icon.texture); // just create layer for later if it not exists
+                case UrlIconTag icon:
+                    
+                    GetOrCreateLayer(uiManager.AtlasTexture); // just create layer for later if it not exists
                     var newIcon = new PlaceholderIcon
                     {
-                        atlas = icon.texture,
-                        rect = icon.rect,
+                        atlas = uiManager.AtlasTexture,
+                        rect = uiManager.GetIcon(icon.url),
                         isModifier = icon.isModifier,
                         color = colorStack.Peek()
                     };

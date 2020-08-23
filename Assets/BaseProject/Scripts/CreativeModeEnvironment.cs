@@ -24,6 +24,8 @@ namespace CreativeMode
 
         private void Awake()
         {
+            MainThreadDispatcher.Initialize();
+            
             Application.targetFrameRate = framerate;
             WindowsUtils.DisableWindowGhosting();
             RawKeyInput.Start(true);
@@ -59,10 +61,7 @@ namespace CreativeMode
 
             Instance<IChatClient>.Bind().Instance(new TwitchClient(twitchOauth, twitchUsername, twitchChannelToJoin));
 
-            var chatEmoteAtlas = new IconAtlas(Instance<ImageLoader>.Get(), 
-                2048, 2048, 64, 64);
-            
-            Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(chatEmoteAtlas, EmoteSize.Size2x));
+            Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
         }
 
         private SQLiteConnection OpenDb(string name)

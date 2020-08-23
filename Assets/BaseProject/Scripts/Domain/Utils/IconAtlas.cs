@@ -51,12 +51,9 @@ public class IconAtlas : IDisposable
         iconXCount = atlasWidth / iconWidth;
         iconYCount = atlasHeight / iconHeight;
         maxIconCount = iconXCount * iconYCount;
-
-        Observable.EveryUpdate()
-            .Subscribe(frame => UpdateAnimation());
     }
     
-    private void UpdateAnimation()
+    public void UpdateAnimation()
     {
         var delta = Time.time - lastAnimationTime;
         lastAnimationTime = Time.time;

@@ -20,10 +20,9 @@ namespace CreativeMode
         public float scale;
     }
 
-    public class IconTag
+    public class UrlIconTag
     {
-        public Rect rect;
-        public Texture texture;
+        public string url;
         public bool isModifier;
     }
 

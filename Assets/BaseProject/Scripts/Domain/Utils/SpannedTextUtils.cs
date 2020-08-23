@@ -48,7 +48,7 @@ namespace CreativeMode
         
         public static bool IsIconsOnly(this SpannedText text)
         {
-            return IsBlank(text) && HasTag<IconTag>(text);
+            return IsBlank(text) && HasTag<UrlIconTag>(text);
         }
 
         public static bool HasTag<T>(this SpannedText text)

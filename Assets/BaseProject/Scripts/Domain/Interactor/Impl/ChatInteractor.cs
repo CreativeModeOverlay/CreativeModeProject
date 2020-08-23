@@ -11,7 +11,6 @@ public class ChatInteractor : IChatInteractor
     private IChatClient ChatClient => Instance<IChatClient>.Get();
     private IChatStorage ChatStorage => Instance<IChatStorage>.Get();
 
-    private IconAtlas iconAtlas;
     private EmoteSize emoteSize;
 
     private Subject<Unit> onClearChatMessagesBehaviour = new Subject<Unit>();
@@ -22,9 +21,8 @@ public class ChatInteractor : IChatInteractor
     public IObservable<Unit> OnClearChatMessages => onClearChatMessagesBehaviour
         .Concat(ChatClient.OnChatCleared);
 
-    public ChatInteractor(IconAtlas atlas, EmoteSize size)
+    public ChatInteractor(EmoteSize size)
     {
-        iconAtlas = atlas;
         emoteSize = size;
 
         ChatClient.ChatMessages.Subscribe(m =>
@@ -107,10 +105,9 @@ public class ChatInteractor : IChatInteractor
         {
             textStartIndex = e.startIndex,
             textEndIndex = e.endIndex,
-            tag = new IconTag
+            tag = new UrlIconTag
             {
-                rect = iconAtlas.GetIcon(GetEmoteUrl(e)),
-                texture = iconAtlas.Texture,
+                url = GetEmoteUrl(e),
                 isModifier = e.isModifier
             }
         };
@@ -122,11 +119,10 @@ public class ChatInteractor : IChatInteractor
         {
             textStartIndex = match.Index,
             textEndIndex = match.Index + match.Length,
-            tag = new IconTag
+            tag = new UrlIconTag
             {
-                rect = iconAtlas.GetIcon(TwemojiUtils.GetEmojiUrl(match.Value)),
-                texture = iconAtlas.Texture
-            }
+                url = TwemojiUtils.GetEmojiUrl(match.Value)
+            },
         };
     }
 
