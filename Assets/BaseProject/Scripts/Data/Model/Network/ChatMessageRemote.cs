@@ -11,7 +11,6 @@ namespace CreativeMode
         
         public string message;
         public Emote[] messageEmotes;
-        public string rawMessage;
         
         public bool hasMention;
         public bool isBroadcaster;
@@ -19,7 +18,8 @@ namespace CreativeMode
         
         public struct Emote
         {
-            public int position;
+            public int startIndex;
+            public int endIndex;
             public bool isModifier;
             public string url1x;
             public string url2x;

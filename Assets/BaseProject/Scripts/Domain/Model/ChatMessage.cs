@@ -9,8 +9,7 @@ namespace CreativeMode
         public string author;
         public Color authorColor;
 
-        public TextWithIcons message;
-        public string rawMessage;
+        public SpannedText message;
         
         public bool hasMention;
         public bool isBroadcaster;

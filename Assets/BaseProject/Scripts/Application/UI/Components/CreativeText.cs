@@ -15,7 +15,7 @@ public class CreativeText : Text
     public float iconScale = 1.2f;
     public float modifierIconScale = 1.2f;
 
-    private TextWithIcons currentText;
+    private SpannedText currentSpannedText;
 
     private List<IconDisplayLayer> displayLayers 
         = new List<IconDisplayLayer>();
@@ -23,60 +23,99 @@ public class CreativeText : Text
     private List<PlaceholderIcon> placeholderIcons 
         = new List<PlaceholderIcon>();
 
-    public void SetText(TextWithIcons textWithIcons)
+    public void SetSpannedText(SpannedText spannedText)
     {
         if (!Application.isPlaying)
             return;
 
-        currentText = textWithIcons;
+        supportRichText = true;
+        currentSpannedText = spannedText;
         UpdateText();
     }
 
     private void UpdateText()
     {
         placeholderIcons.Clear();
+        
+        var builder = new StringBuilder();
+        var previousIcon = new PlaceholderIcon();
+        var colorStack = new Stack<Color32>(2);
+        colorStack.Push(Color.white);
 
-        if (currentText.icons != null && currentText.icons.Length > 0)
+        void AppendText(string text)
         {
-            var builder = new StringBuilder(currentText.text);
-            var previousIcon = new PlaceholderIcon();
-            var offset = 0;
+            // TODO: Very hacky way to escape brackets by inserting empty tag
+            // Seems like no official solution for escaping characters
+            builder.Append(text.Replace("<", "<<i></i>"));
+        }
 
-            foreach (var e in currentText.icons)
+        void AppendTag(object tag, bool isClosing)
+        {
+            switch (tag)
             {
-                GetOrCreateLayer(e.atlas);
-                var newIcon = new PlaceholderIcon
-                {
-                    atlas = e.atlas,
-                    rect = e.rect,
-                    isModifier = e.isModifier
-                };
+                case BoldTag _: builder.Append(isClosing ? "</b>" : "<b>"); return;
+                case ItalicTag _: builder.Append(isClosing ? "</i>" : "<i>"); return;
+                case SizeTag s: builder.Append(isClosing ? "</size>" : $"<size={s.size}>"); return;
+                
+                case SizeScaleTag s:
+                    if (isClosing)
+                    {
+                        builder.Append("</size>");
+                    }
+                    else
+                    {
+                        var scaledSize = Mathf.RoundToInt(fontSize * s.scale);
+                        builder.Append($"<size={scaledSize}>");
+                    }
+                    
+                    return;
+                
+                case ColorTag c:
+                    var colorHex = ColorUtility.ToHtmlStringRGBA(c.color);
+                    builder.Append(isClosing ? "</color>" : $"<color=#{colorHex}>");
 
-                if (e.isModifier)
-                {
-                    newIcon.charIndex = previousIcon.charIndex;
-                }
-                else
-                {
-                    var startPosition = e.position + offset;
-                    newIcon.charIndex = startPosition;
+                    if (isClosing)
+                    {
+                        if(colorStack.Count > 1) 
+                            colorStack.Pop();
+                    }
+                    else
+                    {
+                        colorStack.Push(c.color);
+                    }
+                    
+                    return;
 
-                    builder.Insert(startPosition, iconPlaceholderText);
-                    offset += iconPlaceholderText.Length;
-                }
+                case IconTag icon:
+                    GetOrCreateLayer(icon.texture); // just create layer for later if it not exists
+                    var newIcon = new PlaceholderIcon
+                    {
+                        atlas = icon.texture,
+                        rect = icon.rect,
+                        isModifier = icon.isModifier,
+                        color = colorStack.Peek()
+                    };
 
-                placeholderIcons.Add(newIcon);
-                previousIcon = newIcon;
+                    if (icon.isModifier)
+                    {
+                        newIcon.charIndex = previousIcon.charIndex;
+                    }
+                    else
+                    {
+                        newIcon.charIndex = builder.Length;
+                        builder.Append(iconPlaceholderText);
+                    }
+
+                    placeholderIcons.Add(newIcon);
+                    previousIcon = newIcon;
+                    break;
             }
+        }
 
-            text = builder.ToString();
-        }
-        else
-        {
-            text = currentText.text;
-        }
+        SpannedTextUtils.Enumerate(currentSpannedText, AppendText, AppendTag);
+        text = builder.ToString();
     }
-    
+
     private IconDisplayLayer GetOrCreateLayer(Texture texture)
     {
         foreach (var o in displayLayers)
@@ -146,7 +185,8 @@ public class CreativeText : Text
                 position = character.cursorPos,
                 size = character.charWidth,
                 rect = icon.rect,
-                scale = icon.isModifier ? modifierIconScale * iconScale : iconScale
+                scale = icon.isModifier ? modifierIconScale * iconScale : iconScale,
+                color = icon.color
             });
         }
     }
@@ -185,13 +225,13 @@ public class CreativeText : Text
                 var offset = new Vector3(-scaledSizeOffset, scaledSizeOffset, 0);
                 
                 vh.AddVert(offset + new Vector3(center.x, center.y - size),
-                    color, new Vector2(rect.xMin, rect.yMin));
+                    icon.color, new Vector2(rect.xMin, rect.yMin));
                 vh.AddVert(offset +new Vector3(center.x, center.y),
-                    color, new Vector2(rect.xMin, rect.yMax));
+                    icon.color, new Vector2(rect.xMin, rect.yMax));
                 vh.AddVert(offset +new Vector3(center.x + size, center.y),
-                    color, new Vector2(rect.xMax, rect.yMax));
+                    icon.color, new Vector2(rect.xMax, rect.yMax));
                 vh.AddVert(offset +new Vector3(center.x + size, center.y - size),
-                    color, new Vector2(rect.xMax, rect.yMin));
+                    icon.color, new Vector2(rect.xMax, rect.yMin));
                 vh.AddTriangle(vertexOffset, vertexOffset + 1, vertexOffset + 2);
                 vh.AddTriangle(vertexOffset + 2, vertexOffset + 3, vertexOffset);
                 
@@ -207,6 +247,7 @@ public class CreativeText : Text
         public bool isModifier;
         public Texture atlas;
         public Rect rect;
+        public Color color;
     }
     
     [Serializable]
@@ -216,5 +257,6 @@ public class CreativeText : Text
         public float size;
         public float scale;
         public Rect rect;
+        public Color color;
     }
 }

@@ -111,26 +111,17 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
         private ChatMessageRemote ConvertMessage(TwitchChatMessage message, ExternalEmote[] externalEmotes)
         {
             var emotes = new List<ChatMessageRemote.Emote>();
-            var offset = 0;
-
             var emoteSpans = new List<EmoteSpan>();
             emoteSpans.AddRange(GetEmoteSpansFromTwitch(message.EmoteSet));
             emoteSpans.AddRange(GetExternalEmoteSpans(message.Message, externalEmotes));
             emoteSpans.Sort((l, r) => l.startIndex - r.startIndex);
 
-            var builder = new StringBuilder(message.Message);
-            
             foreach (var e in emoteSpans)
             {
-                var length = e.endIndex - e.startIndex;
-                var startPosition = offset + e.startIndex;
-                
-                builder.Remove(startPosition, length);
-                offset -= length;
-            
                 emotes.Add(new ChatMessageRemote.Emote
                 {
-                    position = startPosition,
+                    startIndex = e.startIndex,
+                    endIndex = e.endIndex,
                     isModifier = e.modifierEmote,
                     url1x = e.url1x,
                     url2x = e.url2x,
@@ -153,8 +144,7 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
                 authorColor = authorColor,
                 isBroadcaster = message.IsBroadcaster,
                 isModerator = message.IsModerator,
-                message = builder.ToString(),
-                rawMessage = message.Message,
+                message = message.Message,
                 messageEmotes = emotes.ToArray()
             };
         }

@@ -80,8 +80,8 @@ public class PhysicsChatSpawner : MonoBehaviour
 
     private void SpawnChatMessage(ChatMessage message)
     {
-        var isEmoteMessage = message.message.IsIconsOnly && 
-                             message.message.icons.Length <= emoteMessageEmoteThreshold;
+        var isEmoteMessage = message.message.IsIconsOnly() && 
+                             message.message.GetTagCount<IconTag>() <= emoteMessageEmoteThreshold;
         
         var messagePrefab = isEmoteMessage
             ? emoteMessagePrefab : chatMessagePrefab;

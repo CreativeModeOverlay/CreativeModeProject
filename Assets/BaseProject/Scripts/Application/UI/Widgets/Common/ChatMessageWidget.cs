@@ -30,7 +30,7 @@ public class ChatMessageWidget : MonoBehaviour, IPointerClickHandler
         messageAuthor.text = message.author;
         messageAuthor.color = message.authorColor;
         
-        messageText.SetText(message.message);
+        messageText.SetSpannedText(message.message);
         
         isBroadcasterIcon.SetActive(message.isBroadcaster);
         isModeratorIcon.SetActive(message.isModerator);

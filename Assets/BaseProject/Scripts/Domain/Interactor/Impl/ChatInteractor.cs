@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CreativeMode;
 using UniRx;
+using UnityEngine;
 
 public class ChatInteractor : IChatInteractor
 {
     private IChatClient ChatClient => Instance<IChatClient>.Get();
     private IChatStorage ChatStorage => Instance<IChatStorage>.Get();
-    
+
     private IconAtlas iconAtlas;
     private EmoteSize emoteSize;
 
@@ -31,7 +32,7 @@ public class ChatInteractor : IChatInteractor
             {
                 AuthorId = m.authorId,
                 AuthorName = m.author,
-                Message = m.rawMessage,
+                Message = m.message,
                 Date = DateTime.Now
             });
         });
@@ -49,18 +50,7 @@ public class ChatInteractor : IChatInteractor
             authorId = m.authorId,
             author = m.author,
             authorColor = m.authorColor,
-            message = new TextWithIcons
-            {
-                text = m.message,
-                icons = m.messageEmotes.Select(e => new TextIcon
-                {
-                    atlas = iconAtlas.Texture,
-                    rect = iconAtlas.GetIcon(GetEmoteUrl(e)),
-                    position = e.position,
-                    isModifier = e.isModifier
-                }).ToArray()
-            },
-            rawMessage = m.rawMessage,
+            message = ParseChatMessageSpans(m.message, m.authorId, m.messageEmotes),
             hasMention = m.hasMention,
             isBroadcaster = m.isBroadcaster,
             isModerator = m.isModerator,
@@ -68,7 +58,7 @@ public class ChatInteractor : IChatInteractor
             canDropOnDesktop = true
         };
     }
-
+    
     private string GetEmoteUrl(ChatMessageRemote.Emote e)
     {
         switch (emoteSize)
@@ -79,5 +69,81 @@ public class ChatInteractor : IChatInteractor
         }
         
         throw new ArgumentException($"Unknown emote size {emoteSize}");
+    }
+    
+    private SpannedText ParseChatMessageSpans(string chatMessageText, 
+        string authorId, ChatMessageRemote.Emote[] emotes)
+    {
+        var tags = SpannedTextUtils.ParseHtmlTags(chatMessageText, (tag, value) =>
+        {
+            switch (tag.ToLowerInvariant())
+            {
+                case "b": return BoldTag.Instance;
+                case "i": return ItalicTag.Instance;
+                
+                case "s":
+                case "size": 
+                    return SpannedTextUtils.ParseSizeScaleSpan(value);
+                
+                case "c": 
+                case "color": 
+                    return SpannedTextUtils.ParseColorSpan(value);
+            }
+
+            return null;
+        });
+
+        tags.AddRange(emotes.Select(e => new TextTag
+        {
+            textStartIndex = e.startIndex,
+            textEndIndex = e.endIndex,
+            tag = new IconTag
+            {
+                rect = iconAtlas.GetIcon(GetEmoteUrl(e)),
+                texture = iconAtlas.Texture,
+                isModifier = e.isModifier
+            }
+        }));
+
+        SanitizeTags(authorId, tags);
+        return new SpannedText(chatMessageText, tags);
+    }
+
+    private void SanitizeTags(string authorId, List<TextTag> tags)
+    {
+        for (var i = tags.Count - 1; i >= 0; i--)
+        {
+            var tag = tags[i];
+
+            if (!CheckTagUsagePermission(authorId, tag.tag))
+            {
+                tags.RemoveAt(i);
+                continue;
+            }
+
+            if(tag.isClosing)
+                continue;
+            
+            switch (tag.tag)
+            {
+                case SizeScaleTag s:
+                    s.scale = Mathf.Clamp(s.scale, 0.5f, 2f);
+                    break;
+                
+                case ColorTag c:
+                    c.color.a = (byte) Mathf.Clamp(c.color.a, 96, 255);
+                    break;
+                
+                default:
+                    continue;
+            }
+
+            tags[i] = tag;
+        }
+    }
+
+    private bool CheckTagUsagePermission(string authorId, object tag)
+    {
+        return true; // TODO: permission system for tags?
     }
 }

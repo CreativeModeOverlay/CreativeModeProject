@@ -20,7 +20,7 @@ public class ScreenBorderPhysics2D : MonoBehaviour
         UpdateBorders();
     }
     
-    [ContextMenu("Create borders")]
+    [ContextMenu("Update borders")]
     public void UpdateBorders()
     {
         GetComponents(colliders);
@@ -32,8 +32,8 @@ public class ScreenBorderPhysics2D : MonoBehaviour
                 borders.bottom - thicknessInnerOffset, distance));
         
         var topRightWorld = screenCamera.ScreenToWorldPoint(new Vector3(
-                Screen.width - borders.right - thicknessInnerOffset, 
-                Screen.height - borders.top - thicknessInnerOffset, distance));
+                Screen.width - borders.right + thicknessInnerOffset, 
+                Screen.height - borders.top + thicknessInnerOffset, distance));
 
         var bottomLeft = screenCamera.transform.InverseTransformPoint(bottomLeftWorld);
         var topRight = screenCamera.transform.InverseTransformPoint(topRightWorld);
