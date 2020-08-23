@@ -9,7 +9,7 @@ namespace CreativeMode
     public static class SpannedTextUtils
     {
         private static readonly Regex htmlTagRegex = new Regex(@"(\<\w+?\>)|(\<\w+?\=\S+?\>)|(\<\/\w+?\>)");
-
+        
         public static bool IsBlank(this SpannedText text)
         {
             if (text.TagCount == 0)
@@ -142,7 +142,7 @@ namespace CreativeMode
             
             return new SpannedText(htmlString, tags);
         }
-        
+
         public static List<TextTag> ParseHtmlTags(string text, 
             Func<string, string, object> tagGenerator)
         {

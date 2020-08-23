@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using CreativeMode;
 using UniRx;
 using UnityEngine;
@@ -93,7 +94,16 @@ public class ChatInteractor : IChatInteractor
             return null;
         });
 
-        tags.AddRange(emotes.Select(e => new TextTag
+        tags.AddRange(emotes.Select(CreateEmoteTag));
+        tags.AddRange(TwemojiUtils.MatchEmojis(chatMessageText).Select(CreateEmojiTag));
+
+        SanitizeTags(authorId, tags);
+        return new SpannedText(chatMessageText, tags);
+    }
+
+    private TextTag CreateEmoteTag(ChatMessageRemote.Emote e)
+    {
+        return new TextTag
         {
             textStartIndex = e.startIndex,
             textEndIndex = e.endIndex,
@@ -103,10 +113,21 @@ public class ChatInteractor : IChatInteractor
                 texture = iconAtlas.Texture,
                 isModifier = e.isModifier
             }
-        }));
+        };
+    }
 
-        SanitizeTags(authorId, tags);
-        return new SpannedText(chatMessageText, tags);
+    private TextTag CreateEmojiTag(Match match)
+    {
+        return new TextTag
+        {
+            textStartIndex = match.Index,
+            textEndIndex = match.Index + match.Length,
+            tag = new IconTag
+            {
+                rect = iconAtlas.GetIcon(TwemojiUtils.GetEmojiUrl(match.Value)),
+                texture = iconAtlas.Texture
+            }
+        };
     }
 
     private void SanitizeTags(string authorId, List<TextTag> tags)
