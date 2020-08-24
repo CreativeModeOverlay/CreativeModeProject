@@ -4,5 +4,6 @@ using UnityRawInput;
 
 public interface IInputManager
 {
-    IObservable<Unit> OnHotkey(params RawKey[] keys);
+    IObservable<Unit> OnHotkeyPressed(params RawKey[] keys);
+    IObservable<bool> OnHotkey(params RawKey[] keys);
 }

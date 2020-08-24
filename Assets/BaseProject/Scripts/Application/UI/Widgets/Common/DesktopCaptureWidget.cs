@@ -1,29 +1,39 @@
-﻿using System;
-using CreativeMode;
-using CreativeMode.Impl;
+﻿using CreativeMode;
 using UnityEngine;
 using UniRx;
 
 public class DesktopCaptureWidget : BaseFocusableImageWidget
 {
     [SerializeField] 
-    private int monitorIndex;
+    public int monitorIndex;
+    public FocusParams defaultFocus;
 
     public override bool FlipY => true;
 
-    private IDisposable monitorSubscription;
+    private CompositeDisposable disposables;
     private IDesktopCaptureManager DesktopCapture => Instance<IDesktopCaptureManager>.Get();
 
     private void OnEnable()
     {
-        monitorSubscription = DesktopCapture
+        disposables = new CompositeDisposable();
+
+        DesktopCapture
             .CaptureMonitor(monitorIndex)
-            .Subscribe(SetMonitor);
+            .Subscribe(SetMonitor)
+            .AddTo(disposables);
+
+        DesktopCapture.FocusPoint
+            .Subscribe(f =>
+            {
+                Focus = f.isFocused && f.focusMonitorIndex == monitorIndex 
+                    ? f.focusParams : defaultFocus;
+            })
+            .AddTo(disposables);
     }
 
     private void OnDisable()
     {
-        monitorSubscription?.Dispose();
+        disposables?.Dispose();
     }
 
     private void SetMonitor(MonitorInfo m)

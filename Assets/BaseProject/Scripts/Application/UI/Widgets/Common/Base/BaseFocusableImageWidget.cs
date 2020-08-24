@@ -19,7 +19,7 @@ namespace CreativeMode
         public Rect FullVisibleRegion { get; private set; }
         public bool FullImageVisible { get; private set; }
         
-        public FocusParams Focus
+        protected virtual FocusParams Focus
         {
             get => focusParams;
             set
@@ -35,7 +35,7 @@ namespace CreativeMode
         public virtual bool FlipY => false;
 
         [SerializeField]
-        private FocusParams focusParams = new FocusParams();
+        private FocusParams focusParams;
         private DisplayParams currentDisplayParams;
         private DisplayParams targetDisplayParams;
         private Rect screenContainerRect;

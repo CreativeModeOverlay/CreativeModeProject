@@ -6,22 +6,90 @@ using UnityEngine;
 
 namespace CreativeMode.Impl
 {
+    [DefaultExecutionOrder(-100)]
     public class DesktopCaptureManager : MonoBehaviour, IDesktopCaptureManager
     {
-        private ReplaySubject<Unit> everyInit = new ReplaySubject<Unit>(1);
+        public Vector2 maxFocusedWindowSize;
+        public FocusParams windowFocusParams;
+        public FocusParams zoomFocusParams;
         
-        private List<int> activeMonitors = new List<int>();
-        private Dictionary<int, IObservable<MonitorInfo>> monitorObservables 
+        public bool IsZoomActive { get; set; }
+        public float ZoomAmount { get; set; }
+        
+        private readonly ReplaySubject<Unit> everyInit = new ReplaySubject<Unit>(1);
+        
+        private readonly List<int> activeMonitors = new List<int>();
+        private readonly Dictionary<int, IObservable<MonitorInfo>> monitorObservables 
             = new Dictionary<int, IObservable<MonitorInfo>>();
 
-        private IObservable<WindowInfo> focusedWindowShare = Observable.EveryUpdate()
-            .Select(_ => WindowsUtils.GetFocusedWindow())
-            .SubscribeOn(Scheduler.ThreadPool)
-            .ObserveOn(Scheduler.MainThread)
-            .Share();
+        public IObservable<WindowInfo> ActiveWindow { get; private set; }
+        public IObservable<FocusInfo> FocusPoint { get; private set; }
+        
+        private void Awake()
+        {
+            ZoomAmount = zoomFocusParams.zoom;
+            
+            ActiveWindow = Observable.EveryUpdate()
+                .Select(_ => WindowsUtils.GetFocusedWindow())
+                .SubscribeOn(Scheduler.ThreadPool)
+                .ObserveOn(Scheduler.MainThread)
+                .Share();
 
-        public IObservable<WindowInfo> FocusedWindow => focusedWindowShare;
+            FocusPoint = ActiveWindow.Select(w =>
+            {
+                if (IsZoomActive)
+                {
+                    var zoomFocus = zoomFocusParams;
+                    zoomFocus.zoom = ZoomAmount;
+                    zoomFocus.focusCenter = GetCursorPosition();
 
+                    return new FocusInfo
+                    {
+                        isFocused = true,
+                        focusParams = zoomFocus,
+                        focusRegion = GetScreenRect(),
+                        focusMonitorIndex = GetMonitorIndex(zoomFocus.focusCenter),
+                    };
+                }
+                
+                if (CanFocusOnWindow(w))
+                {
+                    var windowFocus = windowFocusParams;
+                    windowFocus.focusCenter = w.programRect.center;
+
+                    return new FocusInfo
+                    {
+                        isFocused = true,
+                        focusRegion = w.programRect,
+                        focusParams = windowFocus,
+                        focusMonitorIndex = GetMonitorIndex(windowFocus.focusCenter),
+                    };
+                }
+
+                return default;
+            }).Share();
+        }
+
+        private void OnEnable()
+        {
+            Manager.onReinitialized += OnInitialize;
+        }
+
+        private void OnDisable()
+        {
+            Manager.onReinitialized -= OnInitialize;
+        }
+
+        private void Start()
+        {
+            OnInitialize();
+        }
+
+        private void Update()
+        {
+            Capture();
+        }
+        
         public IObservable<MonitorInfo> CaptureMonitor(int monitorIndex)
         {
             if (monitorObservables.TryGetValue(monitorIndex, out var existingSubscription))
@@ -49,26 +117,6 @@ namespace CreativeMode.Impl
 
             return subscription;
         }
-        
-        private void OnEnable()
-        {
-            Manager.onReinitialized += OnInitialize;
-        }
-
-        private void OnDisable()
-        {
-            Manager.onReinitialized -= OnInitialize;
-        }
-
-        private void Start()
-        {
-            OnInitialize();
-        }
-
-        private void Update()
-        {
-            Capture();
-        }
 
         private void OnInitialize()
         {
@@ -81,6 +129,31 @@ namespace CreativeMode.Impl
             {
                 Manager.GetMonitor(activeMonitors[i]).Render();
             }
+        }
+
+        private int GetMonitorIndex(Vector2 point)
+        {
+            return 0; // TODO: actual monitor index?
+        }
+        
+        private bool CanFocusOnWindow(WindowInfo window)
+        {
+            var screenRect = GetScreenRect();
+
+            return window.valid &&
+                   window.programRect.width < maxFocusedWindowSize.x &&
+                   window.programRect.height < maxFocusedWindowSize.y &&
+                   screenRect.Contains(window.programRect.center);
+        }
+
+        private Vector2 GetCursorPosition()
+        {
+            return Input.mousePosition;
+        }
+
+        private Rect GetScreenRect()
+        {
+            return new Rect(0, 0, Screen.width, Screen.height);
         }
     }
 }

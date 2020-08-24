@@ -14,7 +14,7 @@ public class ChatMessageWidget : MonoBehaviour, IPointerClickHandler
     public GameObject isModeratorIcon;
     public GameObject isBroadcasterIcon;
     public Image flashForeground;
-    public Image bottomLine;
+    public Graphic[] authorColorGraphics;
     public CanvasGroup canvasGroup;
     
     private ChatMessage message;
@@ -35,10 +35,8 @@ public class ChatMessageWidget : MonoBehaviour, IPointerClickHandler
         isBroadcasterIcon.SetActive(message.isBroadcaster);
         isModeratorIcon.SetActive(message.isModerator);
 
-        if (bottomLine)
-        {
-            bottomLine.color = message.authorColor;
-        }
+        foreach (var authorGraphics in authorColorGraphics)
+            authorGraphics.color = message.authorColor;
     }
 
     public void Flash(float duration)

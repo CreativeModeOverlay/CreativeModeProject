@@ -22,6 +22,7 @@ namespace CreativeMode
         private IInputManager InputManager => Instance<IInputManager>.Get();
         private IOverlayManager OverlayManager => Instance<IOverlayManager>.Get();
         private IChatInteractor ChatInteractor => Instance<IChatInteractor>.Get();
+        private IDesktopCaptureManager CaptureManager => Instance<IDesktopCaptureManager>.Get();
         
         private IOverlayElement currentScene;
 
@@ -37,26 +38,29 @@ namespace CreativeMode
 
         private void SubscribeHotkeys()
         {
-            InputManager.OnHotkey(RawKey.F1)
+            InputManager.OnHotkeyPressed(RawKey.F1)
                 .Subscribe(_ => { OnShowMainScreen(); });
             
-            InputManager.OnHotkey(RawKey.F2)
+            InputManager.OnHotkeyPressed(RawKey.F2)
                 .Subscribe(_ => { OnShowMusicIntermission(); });
             
-            InputManager.OnHotkey(RawKey.F3)
+            InputManager.OnHotkeyPressed(RawKey.F3)
                 .Subscribe(_ => { OnShowIdleScreen(); });
 
-            InputManager.OnHotkey(RawKey.F4)
+            InputManager.OnHotkeyPressed(RawKey.F4)
                 .Subscribe(_ => { OnClearChat(); });
             
-            InputManager.OnHotkey(RawKey.MediaPlayPause)
+            InputManager.OnHotkeyPressed(RawKey.MediaPlayPause)
                 .Subscribe(_ => { OnMediaPlayPause(); });
             
-            InputManager.OnHotkey(RawKey.MediaNextTrack)
+            InputManager.OnHotkeyPressed(RawKey.MediaNextTrack)
                 .Subscribe(_ => { OnMediaNextTrack(); });
             
-            InputManager.OnHotkey(RawKey.MediaPrevTrack)
+            InputManager.OnHotkeyPressed(RawKey.MediaPrevTrack)
                 .Subscribe(_ => { OnMediaPreviousTrack(); });
+
+            InputManager.OnHotkey(RawKey.LeftControl, RawKey.LeftShift, RawKey.Z)
+                .Subscribe(z => CaptureManager.IsZoomActive = z);
         }
 
         private void OnClearChat()

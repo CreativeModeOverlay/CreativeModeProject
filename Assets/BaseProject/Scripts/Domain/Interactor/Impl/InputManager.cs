@@ -1,10 +1,11 @@
 ﻿using System;
 using UniRx;
+using UnityEngine;
 using UnityRawInput;
 
 public class InputManager : IInputManager
 {
-    public IObservable<Unit> OnHotkey(params RawKey[] keys)
+    public IObservable<Unit> OnHotkeyPressed(params RawKey[] keys)
     {
         return Observable.CreateSafe<Unit>(o =>
         {
@@ -29,5 +30,37 @@ public class InputManager : IInputManager
                 RawKeyInput.OnKeyDown -= KeyDownEvent;
             });
         });
+    }
+
+    public IObservable<bool> OnHotkey(params RawKey[] keys)
+    {
+        return Observable.CreateSafe<bool>(o =>
+        {
+            bool KeyUpdatedEvent()
+            {
+                foreach (var t in keys)
+                {
+                    if (!RawKeyInput.IsKeyDown(t))
+                    {
+                        o.OnNext(false);
+                        return false;
+                    }
+                }
+
+                o.OnNext(true);
+                return true;
+            }
+
+            bool KeyDownEvent(RawKey k) => KeyUpdatedEvent();
+            bool KeyUpEvent(RawKey k) => KeyUpdatedEvent();
+
+            RawKeyInput.OnKeyDown += KeyDownEvent;
+            RawKeyInput.OnKeyUp += KeyUpEvent;
+            return Disposable.Create(() =>
+            {
+                RawKeyInput.OnKeyDown -= KeyDownEvent;
+                RawKeyInput.OnKeyUp -= KeyUpEvent;
+            });
+        }).StartWith(false).DistinctUntilChanged();
     }
 }
