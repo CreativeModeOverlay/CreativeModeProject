@@ -96,11 +96,11 @@ namespace CreativeMode
         {
             var containerRect = screenContainer.rect;
 
-            var screenRect = Rect.MinMaxRect(s.paddingLeft, s.paddingBottom,
-                containerRect.width - s.paddingRight, containerRect.height - s.paddingTop);
+            var screenRect = Rect.MinMaxRect(s.padding.left, s.padding.bottom,
+                containerRect.width - s.padding.right, containerRect.height - s.padding.top);
 
-            var monitorRect = Rect.MinMaxRect(s.cropLeft, s.cropBottom,
-                width - s.cropRight, height - s.cropTop);
+            var monitorRect = Rect.MinMaxRect(s.crop.left, s.crop.bottom,
+                width - s.crop.right, height - s.crop.top);
 
             var minScale = minZoomType == ZoomType.CenterFit
                 ? Mathf.Min(
@@ -120,7 +120,7 @@ namespace CreativeMode
                 monitorRect.width * targetScale,
                 monitorRect.height * targetScale);
 
-            var paddingOffset = new Vector2(s.paddingLeft, s.paddingBottom);
+            var paddingOffset = new Vector2(s.padding.left, s.padding.bottom);
 
             var positionOffset = new Vector2(
                 (screenRect.width - scaledMonitorRect.width) / 2f,
@@ -129,8 +129,8 @@ namespace CreativeMode
             var halfWidth = screenRect.width / 2f;
             var halfHeight = screenRect.height / 2f;
 
-            var xCapture = Mathf.Clamp(s.focusCenter.x - s.cropLeft, monitorRect.xMin, monitorRect.xMax) * targetScale;
-            var yCapture = Mathf.Clamp(s.focusCenter.y - s.cropBottom, monitorRect.yMin, monitorRect.yMax) *
+            var xCapture = Mathf.Clamp(s.focusCenter.x - s.crop.left, monitorRect.xMin, monitorRect.xMax) * targetScale;
+            var yCapture = Mathf.Clamp(s.focusCenter.y - s.crop.bottom, monitorRect.yMin, monitorRect.yMax) *
                            targetScale;
 
             var focusOffset = new Vector2(
@@ -157,8 +157,8 @@ namespace CreativeMode
 
             if (FlipY)
             {
-                uvRect = Rect.MinMaxRect(s.cropLeft, s.cropTop,
-                    width - s.cropRight, height - s.cropBottom);
+                uvRect = Rect.MinMaxRect(s.crop.left, s.crop.top,
+                    width - s.crop.right, height - s.crop.bottom);
 
                 uvRect = Rect.MinMaxRect(
                     uvRect.xMin / width,
@@ -168,8 +168,8 @@ namespace CreativeMode
             }
             else
             {
-                uvRect = Rect.MinMaxRect(s.cropLeft, s.cropBottom,
-                    width - s.cropRight, height - s.cropTop);
+                uvRect = Rect.MinMaxRect(s.crop.left, s.crop.bottom,
+                    width - s.crop.right, height - s.crop.top);
 
                 uvRect = Rect.MinMaxRect(
                     uvRect.xMin / width,
@@ -186,16 +186,16 @@ namespace CreativeMode
                 uvRect = uvRect,
 
                 safeRegion = new Rect(
-                    -focusOffset.x / targetScale + s.cropLeft,
-                    -focusOffset.y / targetScale + s.cropBottom,
+                    -focusOffset.x / targetScale + s.crop.left,
+                    -focusOffset.y / targetScale + s.crop.bottom,
                     Mathf.Min(screenRect.width, scaledMonitorRect.width) / targetScale,
                     Mathf.Min(screenRect.height, scaledMonitorRect.height) / targetScale),
 
                 fullRegionRect = Rect.MinMaxRect(
-                    Mathf.Clamp(SafeVisibleRegion.xMin - s.paddingLeft, monitorRect.xMin, monitorRect.xMax),
-                    Mathf.Clamp(SafeVisibleRegion.yMin - s.paddingBottom, monitorRect.yMin, monitorRect.yMax),
-                    Mathf.Clamp(SafeVisibleRegion.xMax + s.paddingRight, monitorRect.xMin, monitorRect.xMax),
-                    Mathf.Clamp(SafeVisibleRegion.yMax + s.paddingTop, monitorRect.yMin, monitorRect.yMax)),
+                    Mathf.Clamp(SafeVisibleRegion.xMin - s.padding.left, monitorRect.xMin, monitorRect.xMax),
+                    Mathf.Clamp(SafeVisibleRegion.yMin - s.padding.bottom, monitorRect.yMin, monitorRect.yMax),
+                    Mathf.Clamp(SafeVisibleRegion.xMax + s.padding.right, monitorRect.xMin, monitorRect.xMax),
+                    Mathf.Clamp(SafeVisibleRegion.yMax + s.padding.top, monitorRect.yMin, monitorRect.yMax)),
 
                 fullyVisible = fullyVisible
             };

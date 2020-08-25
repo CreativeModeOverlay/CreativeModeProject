@@ -12,19 +12,28 @@ namespace CreativeMode.Impl
         public Vector2 maxFocusedWindowSize;
         public FocusParams windowFocusParams;
         public FocusParams zoomFocusParams;
-        
-        public bool IsZoomActive { get; set; }
-        public float ZoomAmount { get; set; }
-        
-        private readonly ReplaySubject<Unit> everyInit = new ReplaySubject<Unit>(1);
-        
-        private readonly List<int> activeMonitors = new List<int>();
-        private readonly Dictionary<int, IObservable<MonitorInfo>> monitorObservables 
-            = new Dictionary<int, IObservable<MonitorInfo>>();
 
         public IObservable<WindowInfo> ActiveWindow { get; private set; }
         public IObservable<FocusInfo> FocusPoint { get; private set; }
         
+        public bool IsZoomActive { get; set; }
+        public float ZoomAmount { get; set; }
+
+        public IObservable<ICensorRegion> OnCensorRegionAdded => onCensorRegionAddedSubject;
+        public IObservable<ICensorRegion> OnCensorRegionRemoved => onCensorRegionRemovedSubject;
+
+        private readonly ReplaySubject<Unit> everyInit = new ReplaySubject<Unit>(1);
+        private readonly List<int> activeMonitors = new List<int>();
+        private readonly Dictionary<int, IObservable<MonitorInfo>> monitorObservables 
+            = new Dictionary<int, IObservable<MonitorInfo>>();
+
+        private Subject<ICensorRegion> onCensorRegionAddedSubject = new Subject<ICensorRegion>();
+        private Subject<ICensorRegion> onCensorRegionRemovedSubject = new Subject<ICensorRegion>();
+        private List<ICensorRegion> activeCensorRegions = new List<ICensorRegion>();
+
+        private CensorRegion windowCensorRegion = new CensorRegion();
+        private bool isWindowCensoringActive;
+
         private void Awake()
         {
             ZoomAmount = zoomFocusParams.zoom;
@@ -68,6 +77,9 @@ namespace CreativeMode.Impl
 
                 return default;
             }).Share();
+            
+            onCensorRegionAddedSubject.Subscribe(r => activeCensorRegions.Add(r));
+            onCensorRegionRemovedSubject.Subscribe(r => activeCensorRegions.Remove(r));
         }
 
         private void OnEnable()
@@ -118,6 +130,20 @@ namespace CreativeMode.Impl
             return subscription;
         }
 
+        public IObservable<Rect> GetMonitorSize(int index)
+        {
+            return everyInit.Select(m =>
+            {
+                var monitor = Manager.GetMonitor(index);
+                return new Rect(0, 0, monitor.width, monitor.height);
+            });
+        }
+
+        public ICensorRegion[] GetActiveCensorRegions()
+        {
+            return activeCensorRegions.ToArray();
+        }
+
         private void OnInitialize()
         {
             everyInit.OnNext(Unit.Default);
@@ -154,6 +180,12 @@ namespace CreativeMode.Impl
         private Rect GetScreenRect()
         {
             return new Rect(0, 0, Screen.width, Screen.height);
+        }
+        
+        private class CensorRegion : ICensorRegion
+        {
+            public string Title { get; set; }
+            public Rect Rect { get; set; }
         }
     }
 }

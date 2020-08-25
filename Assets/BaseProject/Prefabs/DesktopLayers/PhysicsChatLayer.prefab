@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4790053505276710067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4790053505276710068}
+  - component: {fileID: 4790053505276710069}
+  m_Layer: 0
+  m_Name: PhysicsChatLayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4790053505276710068
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4790053505276710067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &4790053505276710069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4790053505276710067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1887141a81786924f9140adc5c7a9f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chatMessageDuration: 300
+  chatEmoteDuration: 60
+  physicsWidgetPrefab: {fileID: 5498034472176041316, guid: b23ee2375e78849429fdec9369231992, type: 3}
+  chatMessagePrefab: {fileID: 3962534998408260441, guid: ab2ff655f5d9db3418be0c8a7bd24aae, type: 3}
+  emoteMessagePrefab: {fileID: 3962534998408260441, guid: f19c0d569987efa4398094acfda8f92c, type: 3}
+  containerRoot: {fileID: 4790053505276710068}
+  maxMessagesPerUser: 5
+  emoteMessageEmoteThreshold: 24
+  maxTextMessageSize: {x: 400, y: 600}
+  maxEmoteMessageSize: {x: 409, y: 600}
+  spawnSidePadding: 300
+  spawnHeight: 1300
+  spawnFlashDuration: 1
+  spawnAngleRange: 0
