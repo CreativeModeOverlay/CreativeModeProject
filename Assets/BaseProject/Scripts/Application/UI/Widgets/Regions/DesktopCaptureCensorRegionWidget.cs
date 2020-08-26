@@ -3,23 +3,25 @@ using UnityEngine.UI;
 
 namespace CreativeMode
 {
-    public class CensorRegionWidget : MonoBehaviour
+    public class DesktopCaptureCensorRegionWidget : MonoBehaviour
     {
-        public Text titleText;
+        [SerializeField]
+        private Text titleText;
         
+        public DesktopCaptureWidget Widget { get; set; }
         public ICensorRegion Region { get; set; }
-
+        
         public void Remove()
         {
             Destroy(gameObject);
         }
         
-        private void Update()
+        protected void Update()
         {
             if(Region == null)
                 return;
             
-            titleText.text = Region.Title;
+            titleText.text = $"Censored ({Region.Title})";
             ((RectTransform) transform).SetRect(Region.Rect);
         }
     }

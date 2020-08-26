@@ -10,10 +10,10 @@ namespace CreativeMode
 
         public int monitorIndex;
         public FocusRegionWidget focusRegionWidget;
-        public CensorRegionWidget censorRegionWidgetPrefab;
+        public OverlayCensorRegionWidget overlayCensorRegionWidgetPrefab;
         
-        private Dictionary<ICensorRegion, CensorRegionWidget> spawnedWidgets 
-            = new Dictionary<ICensorRegion, CensorRegionWidget>();
+        private Dictionary<ICensorRegion, OverlayCensorRegionWidget> spawnedWidgets 
+            = new Dictionary<ICensorRegion, OverlayCensorRegionWidget>();
 
         private void Awake()
         {
@@ -29,21 +29,14 @@ namespace CreativeMode
                 })
                 .AddTo(this);
 
-            foreach (var region in CaptureManager.GetActiveCensorRegions())
-                SpawnCensorWidget(region);
-
-            CaptureManager.OnCensorRegionAdded
-                .Subscribe(SpawnCensorWidget)
-                .AddTo(this);
-            
-            CaptureManager.OnCensorRegionRemoved
-                .Subscribe(RemoveCensorWidget)
+            CaptureManager.CensorRegions
+                .SubscribeChanges(SpawnCensorWidget, RemoveCensorWidget)
                 .AddTo(this);
         }
         
         private void SpawnCensorWidget(ICensorRegion region)
         {
-            var instance = Instantiate(censorRegionWidgetPrefab, transform);
+            var instance = Instantiate(overlayCensorRegionWidgetPrefab, transform);
             spawnedWidgets[region] = instance;
             
             instance.gameObject.SetActive(true);

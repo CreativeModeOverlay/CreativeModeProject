@@ -73,8 +73,7 @@ namespace CreativeMode
             if (currentScene == idleScene)
                 return;
 
-            transitionCrossfade.duration = 2f;
-            OverlayManager.Show(idleScene, transitionCrossfade);
+            OverlayManager.Show(idleScene);
             currentScene = idleScene;
         }
 

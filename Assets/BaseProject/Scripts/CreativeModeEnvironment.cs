@@ -53,7 +53,7 @@ namespace CreativeMode
             
             Instance<IDesktopCaptureManager>.Bind().UnityObject<DesktopCaptureManager>();
             
-            Instance<IOverlayManager>.Bind().UnityObject<OverlayManager>();
+            Instance<IOverlayManager>.Bind().UnityObject<OverlaySceneManager>();
             Instance<IInputManager>.Bind().Instance(new InputManager());
 
             Instance<ImageLoader>.Bind().Instance(new ImageLoader { MaxThreadCount = 4 });

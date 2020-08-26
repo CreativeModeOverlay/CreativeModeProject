@@ -15,24 +15,18 @@ namespace CreativeMode.Impl
 
         public IObservable<WindowInfo> ActiveWindow { get; private set; }
         public IObservable<FocusInfo> FocusPoint { get; private set; }
-        
+        public IObservable<ICensorRegion[]> CensorRegions => censorRegionsSubject;
+
         public bool IsZoomActive { get; set; }
         public float ZoomAmount { get; set; }
-
-        public IObservable<ICensorRegion> OnCensorRegionAdded => onCensorRegionAddedSubject;
-        public IObservable<ICensorRegion> OnCensorRegionRemoved => onCensorRegionRemovedSubject;
 
         private readonly ReplaySubject<Unit> everyInit = new ReplaySubject<Unit>(1);
         private readonly List<int> activeMonitors = new List<int>();
         private readonly Dictionary<int, IObservable<MonitorInfo>> monitorObservables 
             = new Dictionary<int, IObservable<MonitorInfo>>();
 
-        private Subject<ICensorRegion> onCensorRegionAddedSubject = new Subject<ICensorRegion>();
-        private Subject<ICensorRegion> onCensorRegionRemovedSubject = new Subject<ICensorRegion>();
-        private List<ICensorRegion> activeCensorRegions = new List<ICensorRegion>();
-
-        private CensorRegion windowCensorRegion = new CensorRegion();
-        private bool isWindowCensoringActive;
+        private BehaviorSubject<ICensorRegion[]> censorRegionsSubject = 
+            new BehaviorSubject<ICensorRegion[]>(new ICensorRegion[0]);
 
         private void Awake()
         {
@@ -77,9 +71,6 @@ namespace CreativeMode.Impl
 
                 return default;
             }).Share();
-            
-            onCensorRegionAddedSubject.Subscribe(r => activeCensorRegions.Add(r));
-            onCensorRegionRemovedSubject.Subscribe(r => activeCensorRegions.Remove(r));
         }
 
         private void OnEnable()
@@ -139,11 +130,6 @@ namespace CreativeMode.Impl
             });
         }
 
-        public ICensorRegion[] GetActiveCensorRegions()
-        {
-            return activeCensorRegions.ToArray();
-        }
-
         private void OnInitialize()
         {
             everyInit.OnNext(Unit.Default);
@@ -152,9 +138,7 @@ namespace CreativeMode.Impl
         private void Capture()
         {
             for (var i = 0; i < activeMonitors.Count; i++)
-            {
                 Manager.GetMonitor(activeMonitors[i]).Render();
-            }
         }
 
         private int GetMonitorIndex(Vector2 point)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
@@ -7,7 +6,7 @@ using UnityEngine;
 namespace CreativeMode
 {
     [DefaultExecutionOrder(-100)]
-    public class OverlayManager : MonoBehaviour, IOverlayManager
+    public class OverlaySceneManager : MonoBehaviour, IOverlayManager
     {
         public IOverlayTransition DefaultTransition { get; set; }
         public IOverlayLayerManager GlobalLayers => globalContainer;
