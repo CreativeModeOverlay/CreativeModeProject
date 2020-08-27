@@ -1,4 +1,4 @@
-﻿﻿namespace CreativeMode
+﻿namespace CreativeMode
 {
     public interface IOverlayManager
     {
@@ -9,11 +9,5 @@
         
         void Show(IOverlayElement scene);
         void Show(IOverlayElement scene, IOverlayTransition transition);
-    }
-
-    public interface IOverlayLayerManager
-    {
-        void AddLayer(IOverlayLayer layer);
-        void RemoveLayer(IOverlayLayer layer);
     }
 }

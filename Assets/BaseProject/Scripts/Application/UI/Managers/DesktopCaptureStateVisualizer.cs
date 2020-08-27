@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace CreativeMode
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class DesktopCaptureStateVisualizer : MonoBehaviour
     {
         private IDesktopCaptureManager CaptureManager => Instance<IDesktopCaptureManager>.Get();

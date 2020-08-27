@@ -1,6 +1,4 @@
-﻿﻿using System.Collections.Generic;
-
-namespace CreativeMode
+﻿namespace CreativeMode
 {
     public interface IOverlayElement : IOverlayRenderer
     {

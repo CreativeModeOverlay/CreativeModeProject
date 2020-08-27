@@ -11,7 +11,6 @@ namespace CreativeMode
 
         public SpannedText message;
         
-        public bool hasMention;
         public bool isBroadcaster;
         public bool isModerator;
 

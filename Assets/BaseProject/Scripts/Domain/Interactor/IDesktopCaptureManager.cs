@@ -14,19 +14,6 @@ namespace CreativeMode
 
         IObservable<MonitorInfo> CaptureMonitor(int index);
         IObservable<Rect> GetMonitorSize(int index);
-    }
-
-    public interface ICensorRegion
-    {
-        string Title { get; }
-        Rect Rect { get; }
-    }
-
-    public interface IDesktopCensorRegion
-    {
-        string Title { get; set; }
-        Rect Rect { get; set; }
-        
-        void Remove();
+        ICensorRegionController CreateCensorRegion();
     }
 }

@@ -50,7 +50,6 @@ public class ChatInteractor : IChatInteractor
             author = m.author,
             authorColor = m.authorColor,
             message = ParseChatMessageSpans(m.message, m.authorId, m.messageEmotes),
-            hasMention = m.hasMention,
             isBroadcaster = m.isBroadcaster,
             isModerator = m.isModerator,
 

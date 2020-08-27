@@ -1,5 +1,4 @@
-﻿﻿using UnityEngine;
-using UnityEngine.Rendering;
+﻿using UnityEngine;
  
 namespace CreativeMode
 {
@@ -20,16 +19,6 @@ namespace CreativeMode
         {
             targetCamera.targetTexture = target;
             targetCamera.Render();
-        }
-
-        public virtual void OnElementActive()
-        {
-            
-        }
-
-        public virtual void OnElementInactive()
-        {
-            
         }
 
         public virtual void OnElementEnabled()

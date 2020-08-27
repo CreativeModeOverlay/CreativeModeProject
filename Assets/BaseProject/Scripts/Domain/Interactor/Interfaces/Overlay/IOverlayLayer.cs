@@ -1,4 +1,4 @@
-﻿﻿namespace CreativeMode
+﻿namespace CreativeMode
 {
     public interface IOverlayLayer : IOverlayElement
     {

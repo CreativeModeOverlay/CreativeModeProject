@@ -27,6 +27,8 @@ namespace CreativeMode.Impl
 
         private BehaviorSubject<ICensorRegion[]> censorRegionsSubject = 
             new BehaviorSubject<ICensorRegion[]>(new ICensorRegion[0]);
+        
+        private List<ICensorRegion> currentCensorRegions = new List<ICensorRegion>();
 
         private void Awake()
         {
@@ -130,6 +132,20 @@ namespace CreativeMode.Impl
             });
         }
 
+        public ICensorRegionController CreateCensorRegion()
+        {
+            var region = new CensorRegion(this);
+            currentCensorRegions.Add(region);
+            censorRegionsSubject.OnNext(currentCensorRegions.ToArray());
+            return region;
+        }
+
+        private void RemoveCensorRegion(ICensorRegion controller)
+        {
+            currentCensorRegions.Remove(controller);
+            censorRegionsSubject.OnNext(currentCensorRegions.ToArray());
+        }
+
         private void OnInitialize()
         {
             everyInit.OnNext(Unit.Default);
@@ -165,11 +181,23 @@ namespace CreativeMode.Impl
         {
             return new Rect(0, 0, Screen.width, Screen.height);
         }
-        
-        private class CensorRegion : ICensorRegion
+
+        private class CensorRegion : ICensorRegion, ICensorRegionController
         {
             public string Title { get; set; }
             public Rect Rect { get; set; }
+
+            private DesktopCaptureManager manager;
+            
+            public CensorRegion(DesktopCaptureManager manager)
+            {
+                this.manager = manager;
+            }
+            
+            public void Remove()
+            {
+                manager.RemoveCensorRegion(this);
+            }
         }
     }
 }

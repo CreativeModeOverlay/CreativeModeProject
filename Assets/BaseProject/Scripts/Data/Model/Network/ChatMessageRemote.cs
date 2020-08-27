@@ -11,8 +11,7 @@ namespace CreativeMode
         
         public string message;
         public Emote[] messageEmotes;
-        
-        public bool hasMention;
+
         public bool isBroadcaster;
         public bool isModerator;
         

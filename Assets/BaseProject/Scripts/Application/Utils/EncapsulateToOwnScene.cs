@@ -2,37 +2,40 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class EncapsulateToOwnScene : MonoBehaviour
+namespace CreativeMode
 {
-    private Scene scene;
-    
-    private void Awake()
+    public class EncapsulateToOwnScene : MonoBehaviour
     {
-        var prefix = "";
-        
-        if (transform.parent)
+        private Scene scene;
+    
+        private void Awake()
         {
-            prefix = "[" + transform.parent.name + "] ";
-            transform.parent = null;
+            var prefix = "";
+        
+            if (transform.parent)
+            {
+                prefix = "[" + transform.parent.name + "] ";
+                transform.parent = null;
+            }
+
+            scene = SceneManager.CreateScene(prefix + name, new CreateSceneParameters
+            {
+                localPhysicsMode = LocalPhysicsMode.Physics3D | 
+                                   LocalPhysicsMode.Physics2D
+            });
+
+            SceneManager.MoveGameObjectToScene(gameObject, scene);
+
+            foreach (var cam in FindObjectsOfType<Camera>())
+                cam.scene = scene;
         }
 
-        scene = SceneManager.CreateScene(prefix + name, new CreateSceneParameters
+        private void FixedUpdate()
         {
-            localPhysicsMode = LocalPhysicsMode.Physics3D | 
-                               LocalPhysicsMode.Physics2D
-        });
-
-        SceneManager.MoveGameObjectToScene(gameObject, scene);
-
-        foreach (var cam in FindObjectsOfType<Camera>())
-            cam.scene = scene;
-    }
-
-    private void FixedUpdate()
-    {
-        scene.GetPhysicsScene2D()
-            .Simulate(Time.fixedDeltaTime);
-        scene.GetPhysicsScene()
-            .Simulate(Time.fixedDeltaTime);
+            scene.GetPhysicsScene2D()
+                .Simulate(Time.fixedDeltaTime);
+            scene.GetPhysicsScene()
+                .Simulate(Time.fixedDeltaTime);
+        }
     }
 }
