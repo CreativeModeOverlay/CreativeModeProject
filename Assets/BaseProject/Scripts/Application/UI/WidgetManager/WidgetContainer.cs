@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CreativeMode
 {
-    public class WidgetContainer : MonoBehaviour, WidgetPanel.IWidgetContainer
+    public class WidgetContainer : MonoBehaviour
     {
         public RectTransform widgetRoot;
         public RectTransform sizeTransform;
@@ -11,20 +11,6 @@ namespace CreativeMode
         public RectTransform.Axis containerAxis;
 
         private GameObject currentWidget;
-
-        public int Size
-        {
-            get
-            {
-                return (int) (containerAxis == RectTransform.Axis.Horizontal
-                    ? sizeTransform.rect.width
-                    : sizeTransform.rect.height);
-            }
-            set
-            {
-                sizeTransform.SetSizeWithCurrentAnchors(containerAxis, value);
-            }
-        }
 
         public bool IsEmpty => !currentWidget;
 

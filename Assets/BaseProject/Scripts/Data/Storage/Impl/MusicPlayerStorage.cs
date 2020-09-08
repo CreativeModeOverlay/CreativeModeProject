@@ -134,6 +134,15 @@ namespace CreativeMode.Impl
             connection.InsertAll(items.Select(i => new QueueEntry {Url = i}));
         }
 
+        public List<string> GetQueue(int offset = 0, int size = 25)
+        {
+            return connection.Table<QueueEntry>()
+                .Skip(offset)
+                .Take(size)
+                .Select(q => q.Url)
+                .ToList();
+        }
+
         public string PopQueue()
         {
             try

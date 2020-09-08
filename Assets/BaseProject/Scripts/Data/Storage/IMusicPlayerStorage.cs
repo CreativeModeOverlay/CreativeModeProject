@@ -22,6 +22,7 @@ public interface IMusicPlayerStorage
 
     void ClearQueue();
     void AddToQueue(ICollection<string> items);
+    List<string> GetQueue(int offset = 0, int size = 25);
     string PopQueue();
     bool IsQueueEmpty { get; }
 }

@@ -29,10 +29,10 @@ public class ChatInteractor : IChatInteractor
         {
             ChatStorage.SaveChatMessage(new ChatMessageDB
             {
-                AuthorId = m.authorId,
-                AuthorName = m.author,
-                Message = m.message,
-                Date = DateTime.Now
+                authorId = m.authorId,
+                authorName = m.author,
+                message = m.message,
+                date = DateTime.Now
             });
         });
     }

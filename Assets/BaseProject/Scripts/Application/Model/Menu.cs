@@ -20,8 +20,48 @@ namespace CreativeMode
         {
             this.entries = entries;
         }
-        
-        public class Entry
+
+        public static Menu Merge(params Menu[] menuArray)
+        {
+            var entries = new List<Entry>();
+            var groupOffset = 0;
+            
+            foreach (var menu in menuArray)
+            {
+                var lastGroup = 0;
+                
+                for (var e = 0; e < menu.Size; e++)
+                {
+                    var entry = menu[e];
+                    lastGroup = entry.group;
+
+                    switch (entry)
+                    {
+                        case Button b: entries.Add(new Button(
+                                b.title, b.icon, b.isVisible, b.isEnabled, b.group + groupOffset,
+                                b.onClick, b.closeOnClick));
+                            break;
+                        
+                        case Toggle t: entries.Add(new Toggle(
+                                t.title, t.icon, t.isVisible, t.isEnabled, t.group + groupOffset,
+                                t.isChecked, t.onCheckedChanged, t.closeOnChange));
+                            break;
+                        
+                        case SubMenu s: entries.Add(new SubMenu(
+                                s.title, s.icon, s.isVisible, s.isEnabled, s.group + groupOffset,
+                                s.subMenu, s.closeParentOnSelect));
+                            break;
+                    }
+                    
+                }
+
+                groupOffset += lastGroup + 1;
+            }
+            
+            return new Menu(entries.ToArray());
+        }
+
+        public abstract class Entry
         {
             public readonly string title;
             public readonly Sprite icon;

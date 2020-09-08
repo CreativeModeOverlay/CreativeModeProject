@@ -31,7 +31,9 @@ public static class RxUtils
             .SelectMany(l => l);
     }
 
-    public static IDisposable SubscribeChanges<T>(this IObservable<ICollection<T>> o, Action<T> onAdded, Action<T> onRemoved)
+    public static IDisposable SubscribeChanges<T>(this IObservable<ICollection<T>> o, 
+        OnAddedDelegate<T> onAdded, 
+        OnRemovedDelegate<T> onRemoved)
     {
         var addedItems = new HashSet<T>();
         
@@ -55,5 +57,8 @@ public static class RxUtils
             foreach (var item in itemsToRemove)
                 onRemoved(item);
         });
-    } 
+    }
+
+    public delegate void OnAddedDelegate<T>(T item);
+    public delegate void OnRemovedDelegate<T>(T item);
 }

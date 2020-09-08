@@ -5,6 +5,22 @@ using UnityEngine;
 
 public static class CollectionUtils
 {
+    public static bool RemoveWhere<T>(this List<T> list, Predicate<T> item)
+    {
+        var hasDeletions = false;
+        
+        for (var i = list.Count - 1; i >= 0; i--)
+        {
+            if (item(list[i]))
+            {
+                list.RemoveAt(i);
+                hasDeletions = true;
+            }
+        }
+
+        return hasDeletions;
+    }
+    
     public static ICollection<T> Shuffle<T>(this ICollection<T> collection)
     {
         return Shuffle(collection.ToArray());

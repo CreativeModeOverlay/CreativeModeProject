@@ -1,4 +1,5 @@
-﻿namespace CreativeMode
+﻿
+namespace CreativeMode
 {
     public class NoteDB
     {

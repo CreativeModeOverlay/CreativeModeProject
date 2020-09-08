@@ -40,12 +40,12 @@ namespace CreativeMode
         private void SetupInstances()
         {
             var musicPlayerDb = OpenDb("MusicPlayer");
-            var notesDb = OpenDb("Notes");
             var chatDb = OpenDb("Chat");
+            var widgets = OpenDb("Widgets");
 
             Instance<IMusicPlayerStorage>.Bind().Instance(new MusicPlayerStorage(musicPlayerDb));
-            Instance<INoteStorage>.Bind().Instance(new NoteStorage(notesDb));
             Instance<IChatStorage>.Bind().Instance(new ChatStorage(chatDb));
+            Instance<IWidgetStorage>.Bind().Instance(new WidgetStorage(widgets));
             
             Instance<IMusicVisualizationProvider>.Bind().UnityObject<MusicVisualizationProvider>();
             Instance<IMusicPlaylistProvider>.Bind().UnityObject<MusicPlaylistProvider>();
@@ -55,12 +55,12 @@ namespace CreativeMode
             
             Instance<IOverlayManager>.Bind().UnityObject<OverlaySceneManager>();
             Instance<IInputManager>.Bind().Instance(new InputManager());
+            Instance<IWidgetManager>.Bind().Instance(new WidgetManager());
 
             Instance<ImageLoader>.Bind().Instance(new ImageLoader { MaxThreadCount = 4 });
             Instance<AudioLoader>.Bind().Instance(new AudioLoader { MaxThreadCount = 2 });
 
             Instance<IChatClient>.Bind().Instance(new TwitchClient(twitchOauth, twitchUsername, twitchChannelToJoin));
-
             Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
         }
 

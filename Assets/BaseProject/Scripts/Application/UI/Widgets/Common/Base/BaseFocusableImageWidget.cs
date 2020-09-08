@@ -17,6 +17,19 @@ namespace CreativeMode
         public Rect SafeVisibleRegion { get; private set; }
         public Rect FullVisibleRegion { get; private set; }
         public bool FullImageVisible { get; private set; }
+
+        public RectOffset Padding
+        {
+            get => padding;
+            set
+            {
+                if (padding == value)
+                    return;
+                
+                padding = value;
+                RecalculateTargetPosition();
+            }
+        }
         
         protected virtual FocusParams Focus
         {
@@ -35,10 +48,14 @@ namespace CreativeMode
 
         [SerializeField]
         private FocusParams focusParams;
+        
+        [SerializeField]
+        private RectOffset padding;
+        
         private DisplayParams currentDisplayParams;
         private DisplayParams targetDisplayParams;
         private Rect screenContainerRect;
-
+        
         private int imageWidth;
         private int imageHeight;
 
@@ -95,8 +112,8 @@ namespace CreativeMode
         {
             var containerRect = screenContainer.rect;
 
-            var screenRect = Rect.MinMaxRect(s.padding.left, s.padding.bottom,
-                containerRect.width - s.padding.right, containerRect.height - s.padding.top);
+            var screenRect = Rect.MinMaxRect(padding.left, padding.bottom,
+                containerRect.width - padding.right, containerRect.height - padding.top);
 
             var monitorRect = Rect.MinMaxRect(s.crop.left, s.crop.bottom,
                 width - s.crop.right, height - s.crop.top);
@@ -119,7 +136,7 @@ namespace CreativeMode
                 monitorRect.width * targetScale,
                 monitorRect.height * targetScale);
 
-            var paddingOffset = new Vector2(s.padding.left, s.padding.bottom);
+            var paddingOffset = new Vector2(padding.left, padding.bottom);
 
             var positionOffset = new Vector2(
                 (screenRect.width - scaledMonitorRect.width) / 2f,
@@ -191,10 +208,10 @@ namespace CreativeMode
                     Mathf.Min(screenRect.height, scaledMonitorRect.height) / targetScale),
 
                 fullRegionRect = Rect.MinMaxRect(
-                    Mathf.Clamp(SafeVisibleRegion.xMin - s.padding.left, monitorRect.xMin, monitorRect.xMax),
-                    Mathf.Clamp(SafeVisibleRegion.yMin - s.padding.bottom, monitorRect.yMin, monitorRect.yMax),
-                    Mathf.Clamp(SafeVisibleRegion.xMax + s.padding.right, monitorRect.xMin, monitorRect.xMax),
-                    Mathf.Clamp(SafeVisibleRegion.yMax + s.padding.top, monitorRect.yMin, monitorRect.yMax)),
+                    Mathf.Clamp(SafeVisibleRegion.xMin - padding.left, monitorRect.xMin, monitorRect.xMax),
+                    Mathf.Clamp(SafeVisibleRegion.yMin - padding.bottom, monitorRect.yMin, monitorRect.yMax),
+                    Mathf.Clamp(SafeVisibleRegion.xMax + padding.right, monitorRect.xMin, monitorRect.xMax),
+                    Mathf.Clamp(SafeVisibleRegion.yMax + padding.top, monitorRect.yMin, monitorRect.yMax)),
 
                 fullyVisible = fullyVisible
             };
