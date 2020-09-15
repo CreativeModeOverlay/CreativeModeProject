@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -29,10 +29,10 @@ public class ChatInteractor : IChatInteractor
         {
             ChatStorage.SaveChatMessage(new ChatMessageDB
             {
-                authorId = m.authorId,
-                authorName = m.author,
-                message = m.message,
-                date = DateTime.Now
+                AuthorId = m.authorId,
+                AuthorName = m.author,
+                Message = m.message,
+                Date = DateTime.Now
             });
         });
     }

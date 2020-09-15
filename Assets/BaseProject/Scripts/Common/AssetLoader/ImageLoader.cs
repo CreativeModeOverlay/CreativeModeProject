@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,9 +9,16 @@ using UnityEngine;
  
 public class ImageLoader : AssetLoader<ImageAsset>
 {
-    protected override IObservable<SharedAsset<ImageAsset>.IReferenceProvider> CreateAssetProvider(Stream stream, string url)
+    protected override IObservable<SharedAsset<ImageAsset>.IReferenceProvider> CreateAssetProvider(string url)
     {
-        return Observable.Start(() => GetImageBytes(stream), Scheduler.ThreadPool)
+        return GetAssetStream(url)
+            .Select(s =>
+            {
+                using (s)
+                {
+                    return GetImageBytes(s);
+                }
+            })
             .ObserveOnMainThread()
             .SelectMany(b => IsGifImage(b)
                 ? LoadAnimatedImage(b)
@@ -171,12 +178,12 @@ public class ImageLoader : AssetLoader<ImageAsset>
 
     private Texture2D CreateTexture(int width, int height, bool mipMaps)
     {
-        var texture = new Texture2D(width, height, TextureFormat.RGBA32, mipMaps);
-        texture.anisoLevel = 4;
-        texture.filterMode = FilterMode.Trilinear;
-        texture.wrapMode = TextureWrapMode.Clamp;
-        
-        return texture;
+        return new Texture2D(width, height, TextureFormat.RGBA32, mipMaps)
+        {
+            anisoLevel = 16, 
+            filterMode = FilterMode.Trilinear,
+            wrapMode = TextureWrapMode.Clamp
+        };
     }
 
     private bool IsGifImage(byte[] bytes)

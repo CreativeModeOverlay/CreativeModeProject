@@ -7,6 +7,34 @@ namespace CreativeMode
 {
     public static class UiUtils
     {
+        private static readonly float[] horizontalAnchor01Table =
+        {
+            0.0f, 0.5f, 1.0f,
+            0.0f, 0.5f, 1.0f,
+            0.0f, 0.5f, 1.0f
+        };
+        
+        private static readonly float[] verticalAnchor01Table =
+        {
+            1.0f, 1.0f, 1.0f,
+            0.5f, 0.5f, 0.5f,
+            0.0f, 0.0f, 0.0f
+        };
+        
+        private static readonly float[] horizontalAnchorSignedTable =
+        {
+            -1.0f, 0.0f, +1.0f,
+            -1.0f, 0.0f, +1.0f,
+            -1.0f, 0.0f, +1.0f
+        };
+        
+        private static readonly float[] verticalAnchorSignedTable =
+        {
+            1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f,
+            -1.0f, -1.0f, -1.0f
+        };
+
         public static Sequence ChangeText(this Text t, string text, float duration = 1f, Action onTextChanged = null)
         {
             if (t.text != text)
@@ -25,5 +53,17 @@ namespace CreativeMode
 
             return null;
         }
+        
+        public static float GetHorizontalSignedScale(this TextAnchor t) => horizontalAnchorSignedTable[(int) t];
+        public static float GetVerticalSignedScale(this TextAnchor t) => verticalAnchorSignedTable[(int) t];
+        public static Vector2 GetSignedScale(this TextAnchor t) => new Vector2(
+            horizontalAnchorSignedTable[(int) t], 
+            verticalAnchorSignedTable[(int) t]);
+        
+        public static float GetHorizontal01Scale(this TextAnchor t) => horizontalAnchor01Table[(int) t];
+        public static float GetVertical01Scale(this TextAnchor t) => verticalAnchor01Table[(int) t];
+        public static Vector2 Get01Scale(this TextAnchor t) => new Vector2(
+            horizontalAnchor01Table[(int) t], 
+            verticalAnchor01Table[(int) t]);
     }
 }

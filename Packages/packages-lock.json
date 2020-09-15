@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "com.elringus.unity.rawinput": {
-      "version": "https://github.com/CreativeModeOverlay/CM-UnityRawInput-UPM.git#51569cdd605390dd5b1b63f73ee7b1c5d8710a63",
+      "version": "https://github.com/CreativeModeOverlay/CM-UnityRawInput-UPM.git#9f28df1e3357759ffd834fb40d92442857c3f623",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "51569cdd605390dd5b1b63f73ee7b1c5d8710a63"
+      "hash": "9f28df1e3357759ffd834fb40d92442857c3f623"
     },
     "com.hecomi.udesktopduplication": {
       "version": "https://github.com/CreativeModeOverlay/CM-uDesktopDuplication-UPM.git#b06e431ac785d7a542e217c1039f2e48112628e3",

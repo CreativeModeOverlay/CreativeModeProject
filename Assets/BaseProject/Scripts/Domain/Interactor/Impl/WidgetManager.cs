@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
 using UniRx;
 
 namespace CreativeMode.Impl
@@ -21,123 +19,108 @@ namespace CreativeMode.Impl
 
         public WidgetManager()
         {
-            widgets = Storage.GetAllWidgets().Select(w => new WidgetData
-            {
-                id = w.id,
-                data = DeserializeData(w.data)
-            }).ToList();
-            
             widgetsSubject = new BehaviorSubject<List<WidgetData>>(widgets);
             widgetUpdatedSubject = new Subject<WidgetData>();
         }
         
-        public IObservable<IReadOnlyList<WidgetData>> GetWidgetsForPanel(string panelId)
+        public IObservable<IReadOnlyList<WidgetPanel.Widget>> WidgetsForPanel(string panelId)
         {
             return panelWidgets.EveryUpdate(panelId)
-                .SelectMany(_ =>
-                {
-                    var panel = GetPanel(panelId);
-                    var set = new HashSet<int>(panel.widgetIds);
-                    return Widgets.Select(l => l.Where(w => set.Contains(w.id)));
-                }).Select(w => w.ToList());
+                .Select(_ => GetPanel(panelId).widgets);
         }
 
         public void UpdatePanel(WidgetPanel panel)
         {
-            Storage.UpdatePanel(new WidgetPanelDB
-            {
-                id = panel.id,
-                data = SerializeWidgetIds(panel.widgetIds)
-            });
+            Storage.PanelData.InsertOrUpdate(panel.id, ToDB(panel));
             panelWidgets.NotifyUpdate(panel.id);
         }
 
         public WidgetPanel GetPanel(string panelId)
         {
-            var panel = Storage.GetPanel(panelId);
-            return new WidgetPanel
-            {
-                id = panel.id,
-                widgetIds = DeserializeWidgetIds(panel.data)
-            };
+            return FromDB(Storage.PanelData.Get(panelId), panelId);
         }
 
-        public WidgetData CreateWidget(object data)
+        public WidgetData CreateWidget(BaseWidget data)
         {
-            var widget = Storage.CreateWidget(SerializeData(data));
-            var widgetData = new WidgetData
+            if(data == null)
+                throw new ArgumentException("Cannot add null widget");
+            
+            return new WidgetData
             {
-                id = widget.id,
+                id = Storage.WidgetData.Create(ToDB(data)),
+                type = data.GetType(),
                 data = data
             };
-            
-            widgets.Add(widgetData);
-            widgetsSubject.OnNext(widgets);
-
-            return widgetData;
         }
 
         public WidgetData GetWidget(int id)
         {
-            var dbWidget = Storage.GetWidget(id);
-            return new WidgetData
-            {
-                id = dbWidget.id,
-                data = DeserializeData(dbWidget.data)
-            };
+            var widgetData = Storage.WidgetData.Get(id);
+
+            if (widgetData.data == null)
+                return null;
+
+            return FromDB(widgetData, id);
         }
 
         public void UpdateWidget(WidgetData data)
         {
-            var widgetData = new WidgetDataDB
-            {
-                id = data.id,
-                data = SerializeData(data.data)
-            };
-
-            widgetUpdatedSubject.OnNext(data);
-            Storage.UpdateWidget(widgetData);
+            Storage.WidgetData.InsertOrUpdate(data.id, ToDB(data.data));
         }
 
         public void RemoveWidget(int id)
         {
             if (widgets.RemoveWhere(w => w.id == id))
+            {
                 widgetsSubject.OnNext(widgets);
-
-            Storage.RemoveWidget(id);
-        }
-
-        private byte[] SerializeData(object data)
-        {
-            return Encoding.Default.GetBytes(
-                JsonConvert.SerializeObject(data, typeof(object), jsonSettings));
-        }
-
-        private object DeserializeData(byte[] serializedData)
-        {
-            return JsonConvert.DeserializeObject(
-                Encoding.Default.GetString(serializedData), typeof(object), jsonSettings);
-        }
-        
-        private byte[] SerializeWidgetIds(List<int> widgetIds)
-        {
-            var ids = widgetIds.ToArray();
-            var data = new byte[ids.Length * sizeof(int)];
-            Buffer.BlockCopy(ids, 0, data, 0, data.Length);
+            }
             
-            return data;
-        }
-
-        private List<int> DeserializeWidgetIds(byte[] data)
-        {
-            var ids = new int[data.Length / sizeof(int)];
-            Buffer.BlockCopy(data, 0, ids, 0, ids.Length);
-            return new List<int>(ids);
+            Storage.WidgetData.Delete(id);
         }
         
-        private static JsonSerializerSettings jsonSettings = new JsonSerializerSettings
+        private WidgetDataDB ToDB(BaseWidget data)
         {
-            TypeNameHandling = TypeNameHandling.Auto
-        };
+            return new WidgetDataDB { data = data };
+        }
+
+        private WidgetPanelDB ToDB(WidgetPanel panel)
+        {
+            return new WidgetPanelDB
+            {
+                widgets = panel.widgets.Select(w => new PanelWidgetDB
+                {
+                    widgetId = w.widgetId,
+                    width = w.layout.width,
+                    height = w.layout.height
+                }).ToList()
+            };
+        }
+
+        private WidgetData FromDB(WidgetDataDB data, int id)
+        {
+            return new WidgetData
+            {
+                id = id,
+                type = data.data.GetType(),
+                data = (BaseWidget) data.data
+            };
+        }
+
+        private WidgetPanel FromDB(WidgetPanelDB data, string id)
+        {
+            return new WidgetPanel
+            {
+                id = id,
+                widgets = data.widgets?.Select(w => new WidgetPanel.Widget()
+                {
+                    widgetId = w.widgetId,
+                    layout = new WidgetLayoutParams
+                    {
+                        width = w.width,
+                        height = w.height
+                    }
+                }).ToList() ?? new List<WidgetPanel.Widget>()
+            };
+        }
     }
 }

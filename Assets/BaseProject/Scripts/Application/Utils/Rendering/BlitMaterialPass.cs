@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -29,7 +30,5 @@ public class BlitMaterialPass : ScriptableRenderPass
         
         context.ExecuteCommandBuffer(buffer);
         CommandBufferPool.Release(buffer);
-        
-        context.Submit();
     }
 }

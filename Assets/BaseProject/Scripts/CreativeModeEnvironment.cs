@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using CreativeMode.Impl;
 using SQLite;
 using UniRx;
@@ -50,7 +51,7 @@ namespace CreativeMode
             Instance<IMusicVisualizationProvider>.Bind().UnityObject<MusicVisualizationProvider>();
             Instance<IMusicPlaylistProvider>.Bind().UnityObject<MusicPlaylistProvider>();
             Instance<IMusicPlayer>.Bind().UnityObject<MusicPlayer>();
-            
+            Instance<IWidgetUIFactory>.Bind().UnityObject<WidgetUIFactory>();
             Instance<IDesktopCaptureManager>.Bind().UnityObject<DesktopCaptureManager>();
             
             Instance<IOverlayManager>.Bind().UnityObject<OverlaySceneManager>();
@@ -62,6 +63,26 @@ namespace CreativeMode
 
             Instance<IChatClient>.Bind().Instance(new TwitchClient(twitchOauth, twitchUsername, twitchChannelToJoin));
             Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
+        }
+
+        private void Update()
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                var widgetManager = Instance<IWidgetManager>.Get();
+                var player = widgetManager.CreateWidget(new MusicPlayerWidget());
+                var lyrics = widgetManager.CreateWidget(new SongLyricsWidget());
+                var spectrum = widgetManager.CreateWidget(new MusicSpectrumWidget());
+                var waveform = widgetManager.CreateWidget(new MusicWaveformWidget());
+                
+                var topPanel = widgetManager.GetPanel("top");
+                topPanel.widgets.Clear();
+                topPanel.AddWidget(player);
+                topPanel.AddWidget(lyrics);
+                topPanel.AddWidget(spectrum, new WidgetLayoutParams { width = 400 });
+                topPanel.AddWidget(waveform, new WidgetLayoutParams { width = 300 });
+                widgetManager.UpdatePanel(topPanel);
+            }
         }
 
         private SQLiteConnection OpenDb(string name)

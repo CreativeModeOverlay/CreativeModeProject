@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using UniRx;
 using UnityEngine;
 using UnityRawInput;
@@ -24,10 +24,10 @@ public class InputManager : IInputManager
                 return true;
             }
 
-            RawKeyInput.OnKeyDown += KeyDownEvent;
+            RawKeyInput.AddKeyDownListener(KeyDownEvent);
             return Disposable.Create(() =>
             {
-                RawKeyInput.OnKeyDown -= KeyDownEvent;
+                RawKeyInput.RemoveKeyDownListener(KeyDownEvent);
             });
         });
     }
@@ -54,12 +54,12 @@ public class InputManager : IInputManager
             bool KeyDownEvent(RawKey k) => KeyUpdatedEvent();
             bool KeyUpEvent(RawKey k) => KeyUpdatedEvent();
 
-            RawKeyInput.OnKeyDown += KeyDownEvent;
-            RawKeyInput.OnKeyUp += KeyUpEvent;
+            RawKeyInput.AddKeyDownListener(KeyDownEvent);
+            RawKeyInput.AddKeyUpListener(KeyUpEvent);
             return Disposable.Create(() =>
             {
-                RawKeyInput.OnKeyDown -= KeyDownEvent;
-                RawKeyInput.OnKeyUp -= KeyUpEvent;
+                RawKeyInput.RemoveKeyDownListener(KeyDownEvent);
+                RawKeyInput.RemoveKeyUpListener(KeyUpEvent);
             });
         }).StartWith(false).DistinctUntilChanged();
     }

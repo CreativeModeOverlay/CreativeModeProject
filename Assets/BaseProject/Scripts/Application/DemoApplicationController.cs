@@ -33,7 +33,7 @@ namespace CreativeMode
 
         private void Start()
         {
-            OnShowIdleScreen();
+            OnShowMainScreen();
         }
 
         private void SubscribeHotkeys()
@@ -83,7 +83,7 @@ namespace CreativeMode
                 return;
 
             OverlayManager.Show(mainScene, transitionCrossfade);
-            SetMusicPlaylist(@"D:\Path\To\Your\Normal\Music");
+            SetMusicPlaylist(@"D:\Music\Stream\BRB");
             mainMixerSnapshot.TransitionTo(2f);
             
             currentScene = mainScene;

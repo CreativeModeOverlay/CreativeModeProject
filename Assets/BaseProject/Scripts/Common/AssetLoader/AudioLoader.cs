@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using NAudio.Wave;
+using TagLib.Riff;
 using UniRx;
 using UnityEngine;
 using Color = UnityEngine.Color;
@@ -12,74 +13,74 @@ namespace CreativeMode
 {
     public class AudioLoader : AssetLoader<AudioAsset>
     {
-        public static readonly string[] SupportedExtensions = 
+        protected override IObservable<SharedAsset<AudioAsset>.IReferenceProvider> CreateAssetProvider(string url)
         {
-            "mp3"
-        };
-        
-        protected override IObservable<SharedAsset<AudioAsset>.IReferenceProvider> CreateAssetProvider(Stream stream, string url)
-        {
-            var beginning = stream.Position;
-
-            return Observable.Start(() =>
+            return GetAssetStream(url)
+                .SelectMany(s =>
                 {
-                    // TODO: detect file format
-                    
-                    stream.Position = beginning;
-                    var tags = TagLib.File.Create(new TagLibStream("audio.mp3", stream));
-                    stream.Position = beginning;
+                    var position = s.Position;
 
-                    var waveStream = new Mp3FileReader(stream);
-                    var sampleProvider = waveStream.ToSampleProvider();
-                    var bytesPerSample = waveStream.WaveFormat.BitsPerSample / 8 * waveStream.WaveFormat.Channels;
-                    var lengthSamples = (int) (waveStream.Length / bytesPerSample);
-                    var tag = tags.Tag;
+                    return LoadMetadata(url, s)
+                        .Select(meta => {
+                            s.Position = position;
+                            var waveStream = new Mp3FileReader(s);
+                            var sampleProvider = waveStream.ToSampleProvider();
+                            var bytesPerSample = waveStream.WaveFormat.BitsPerSample / 8 *
+                                                 waveStream.WaveFormat.Channels;
+                            var lengthSamples = (int) (waveStream.Length / bytesPerSample);
 
-                    return new LoadedAudioData
-                    {
-                        waveStream = waveStream,
-                        sampleProvider = sampleProvider,
-                        lengthSamples = lengthSamples,
-                        audioData = new AudioMetadata
-                        {
-                            url = url,
-                            coverUrl = url,
-                            album = tag.Album,
-                            artist = string.IsNullOrWhiteSpace(tag.JoinedAlbumArtists) 
-                                ? tag.JoinedPerformers 
-                                : tag.JoinedAlbumArtists,
-                            title = tag.Title,
-                            year = tag.Year.ToString(),
-                        }
-                    };
+                            return new LoadedAudioData
+                            {
+                                waveStream = waveStream,
+                                sampleProvider = sampleProvider,
+                                lengthSamples = lengthSamples,
+                                audioData = meta
+                            };
+                        });
                 })
-                .SelectMany(d => GetFileLyrics(url)
-                    .Catch<LyricLine[], Exception>(e => Observable.Return(new LyricLine[0]))
-                    .Select(l => 
-                    { 
-                        d.audioData.lyrics = l; 
-                        return d;
-                    }))
                 .SubscribeOn(Scheduler.ThreadPool)
                 .ObserveOnMainThread()
                 .Select(data =>
                 {
                     var asset = new AudioAsset(
-                        LoadAudioClip(data.waveStream, data.sampleProvider, data.lengthSamples),
+                        CreateAudioClip(url, data.waveStream, data.sampleProvider, data.lengthSamples),
                         data.audioData);
 
                     return SharedAsset<AudioAsset>.Create(asset, a => !a.Clip,
                         a => {
                             data.waveStream.Dispose();
-                            stream.Dispose();
                             UnityEngine.Object.Destroy(a.Clip);
                         });
                 });
         }
-        
-        private static AudioClip LoadAudioClip(WaveStream waveStream, ISampleProvider sampleProvider, int lengthSamples)
+
+        private IObservable<AudioMetadata> LoadMetadata(string url, Stream stream)
         {
-            var clip = AudioClip.Create("SampledAudio", lengthSamples, sampleProvider.WaveFormat.Channels,
+            return LoadLyricsForUri(url)
+                .Select(lyrics =>
+                {
+                    var tag = TagLib.File.Create(new TagLibStream(url, stream)).Tag;
+
+                    return new AudioMetadata
+                    {
+                        url = url,
+                        coverUrl = url,
+                        album = tag.Album,
+                        artist = string.IsNullOrWhiteSpace(tag.JoinedAlbumArtists)
+                            ? tag.JoinedPerformers
+                            : tag.JoinedAlbumArtists,
+                        title = tag.Title,
+                        year = tag.Year.ToString(),
+                        lyrics = lyrics
+                    };
+                });
+
+        }
+        
+        private static AudioClip CreateAudioClip(string uri, WaveStream waveStream, ISampleProvider sampleProvider, int lengthSamples)
+        {
+            var clip = AudioClip.Create(uri, lengthSamples, 
+                sampleProvider.WaveFormat.Channels, 
                 sampleProvider.WaveFormat.SampleRate, true,
                 data =>
                 {
@@ -90,20 +91,46 @@ namespace CreativeMode
             return clip;
         }
 
-        private string GetLyricsUrl(string fileUrl)
+        private List<LyricsUrl> GetLyricsUrl(string fileUrl)
         {
-            foreach (var ext in SupportedExtensions)
-            {
-                if (fileUrl.EndsWith(ext))
-                    return fileUrl.Substring(0, fileUrl.Length - ext.Length) + "lrc";
-            }
+            var uri = new Uri(fileUrl);
+            var isFile = uri.IsFile;
+            var result = new List<LyricsUrl>();
 
-            return fileUrl + ".lrc";
+            if (isFile)
+            {
+                var filePath = Uri.UnescapeDataString(uri.AbsolutePath);
+                var directory = Directory.GetParent(filePath);
+                var fileName = Path.GetFileNameWithoutExtension(filePath);
+                var lrcFiles = directory.GetFiles($"{fileName}*.lrc");
+
+                foreach (var file in lrcFiles)
+                {
+                    var lrcFileName = Path.GetFileNameWithoutExtension(file.FullName);
+                    var lrcName = lrcFileName.Substring(fileName.Length).Trim('_');
+                    
+                    result.Add(new LyricsUrl
+                    {
+                        url = file.FullName,
+                        voice = lrcName
+                    });
+                }
+            }
+            
+            return result;
+        }
+
+        private IObservable<SongLyrics[]> LoadLyricsForUri(string uri)
+        {
+            return Observable.Start(() => GetLyricsUrl(uri), Scheduler.ThreadPool)
+                .SelectMany(l => l)
+                .SelectMany(l => LoadLyrics(l.url, l.voice))
+                .ToArray();
         }
         
-        private IObservable<LyricLine[]> GetFileLyrics(string originalFileUri)
+        private IObservable<SongLyrics> LoadLyrics(string lyricsUri, string lyricName)
         {
-            return GetAssetStream(GetLyricsUrl(originalFileUri))
+            return GetAssetStream(lyricsUri, false)
                 .Select(s =>
                 {
                     using (s)
@@ -128,7 +155,7 @@ namespace CreativeMode
                                 && float.TryParse(tagContents[0], NumberStyles.Float, CultureInfo.InvariantCulture, out var minutes)
                                 && float.TryParse(tagContents[1], NumberStyles.Float, CultureInfo.InvariantCulture, out var seconds))
                             {
-                                var text = GetTextData(line.Substring(closeBracket + 1).Trim());
+                                var text = ParseLyricLine(line.Substring(closeBracket + 1).Trim());
 
                                 result.Add(new LyricLine
                                 {
@@ -138,7 +165,6 @@ namespace CreativeMode
                                     font = text.font,
                                     color = text.color,
                                     position = text.position,
-                                    voice = text.voice
                                 });
                             }
                         }
@@ -157,12 +183,16 @@ namespace CreativeMode
                             }
                         }
 
-                        return result.ToArray();
+                        return new SongLyrics
+                        {
+                            voice = lyricName,
+                            lines = result.ToArray()
+                        };
                     }
                 });
         }
 
-        private TextData GetTextData(string text)
+        private TextData ParseLyricLine(string text)
         {
             var result = new TextData
             {
@@ -210,16 +240,18 @@ namespace CreativeMode
                             case "right": result.position = LyricLine.Position.Right; break;
                         }
                         break;
-                    
-                    case 'v':
-                        result.voice = data;
-                        break;
                 }
             }
 
             result.text = text.Substring(closeBracket + 1).Trim();
 
             return result;
+        }
+        
+        private struct LyricsUrl
+        {
+            public string url;
+            public string voice;
         }
 
         private struct TextData
@@ -228,11 +260,11 @@ namespace CreativeMode
             public string font;
             public LyricLine.Position? position;
             public Color? color;
-            public string voice;
         }
 
         private class LoadedAudioData
         {
+            public Stream stream;
             public WaveStream waveStream;
             public ISampleProvider sampleProvider;
             public AudioMetadata audioData;

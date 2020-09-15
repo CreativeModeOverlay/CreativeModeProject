@@ -12,7 +12,6 @@ namespace CreativeMode
         public Color? color;
         public Position? position;
         public string font;
-        public string voice;
         
         public enum Position
         {

@@ -58,4 +58,41 @@ public static class CollectionUtils
         
         return maxValue;
     }
+
+    public static void ResampleTo(this float[] array, float[] target, bool useAverage = false)
+    {
+        var pointsPerSample = (float) array.Length / target.Length;
+        var pointsPerSampleInt = Mathf.CeilToInt(pointsPerSample);
+        var sampleIndex = 0f;
+
+        for (var i = 0; i < target.Length; i++)
+        {
+            float sample;
+            
+            if (useAverage)
+            {
+                sample = 0f;
+                
+                for (var s = 0; s < pointsPerSample; s++)
+                {
+                    sample += array[Mathf.FloorToInt(sampleIndex)];
+                    sampleIndex += 1;
+                }
+
+                sample /= pointsPerSampleInt;
+            }
+            else
+            {
+                sample = -float.MaxValue;
+                
+                for (var s = 0; s < pointsPerSample; s++)
+                {
+                    sample = Mathf.Max(array[Mathf.FloorToInt(sampleIndex)], sample);
+                    sampleIndex += 1;
+                }
+            }
+            
+            target[i] = sample;
+        }
+    }
 }

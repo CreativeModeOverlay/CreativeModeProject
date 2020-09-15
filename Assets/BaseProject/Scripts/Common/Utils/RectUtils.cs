@@ -22,18 +22,18 @@ namespace CreativeMode
                 Mathf.Clamp(from.yMax, bounds.yMin, bounds.yMax));
         }
 
-        public static Rect Margin(this Rect rect, float margin)
+        public static Rect Padding(this Rect rect, float margin)
         {
             var sizeMargin = margin * 2;
             return new Rect(rect.x + margin, rect.y + margin, 
                 rect.width - sizeMargin, rect.height - sizeMargin);
         }
 
-        public static Rect Margin(this Rect rect, RectOffset offset)
+        public static Rect Padding(this Rect rect, RectOffset offset)
         {
-            return new Rect(rect.x + offset.left, rect.y + offset.top,
-                rect.width - (offset.left + offset.right), 
-                rect.height - (offset.top + offset.bottom));
+            return new Rect(rect.x + offset.left, rect.y + offset.bottom,
+                rect.width - offset.horizontal, 
+                rect.height - offset.vertical);
         }
     }
 }

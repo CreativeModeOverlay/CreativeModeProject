@@ -8,38 +8,38 @@ namespace CreativeMode.Impl
     public class MusicPlayerStorage : IMusicPlayerStorage
     {
         private readonly SQLiteConnection connection;
-        private StorageState state;
+        private StorageStateDB stateDB;
         
         // ReSharper disable once UseMethodAny.2
-        public bool IsQueueEmpty => connection.Table<QueueEntry>().Count() == 0;
-        public int HistorySize => connection.Table<HistoryEntry>().Count();
+        public bool IsQueueEmpty => connection.Table<QueueEntryDB>().Count() == 0;
+        public int HistorySize => connection.Table<HistoryEntryDB>().Count();
 
         public int HistoryPosition
         {
-            get => state.HistoryPosition;
+            get => stateDB.HistoryPosition;
             set
             {
-                state.HistoryPosition = value;
+                stateDB.HistoryPosition = value;
                 SaveState();
             }
         }
 
         public bool Shuffle
         {
-            get => state.Shuffle;
+            get => stateDB.Shuffle;
             set
             {
-                state.Shuffle = value;
+                stateDB.Shuffle = value;
                 SaveState();
             }
         }
 
         public bool SkipRepeats
         {
-            get => state.SkipRepeats;
+            get => stateDB.SkipRepeats;
             set
             {
-                state.SkipRepeats = value;
+                stateDB.SkipRepeats = value;
                 SaveState();
             }
         }
@@ -47,13 +47,13 @@ namespace CreativeMode.Impl
         public MusicPlayerStorage(SQLiteConnection c)
         {
             connection = c;
-            connection.CreateTable<HistoryEntry>();
-            connection.CreateTable<PlaylistEntry>();
-            connection.CreateTable<QueueEntry>();
-            connection.CreateTable<StorageState>();
-            connection.CreateTable<PlayedMusicEntry>();
+            connection.CreateTable<HistoryEntryDB>();
+            connection.CreateTable<PlaylistEntryDB>();
+            connection.CreateTable<QueueEntryDB>();
+            connection.CreateTable<StorageStateDB>();
+            connection.CreateTable<PlayedMusicEntryDB>();
 
-            state = connection.Table<StorageState>().FirstOrDefault() ?? new StorageState
+            stateDB = connection.Table<StorageStateDB>().FirstOrDefault() ?? new StorageStateDB
             {
                 HistoryPosition = -1,
                 Shuffle = false,
@@ -63,17 +63,17 @@ namespace CreativeMode.Impl
 
         private void SaveState()
         {
-            connection.InsertOrReplace(state);
+            connection.InsertOrReplace(stateDB);
         }
 
         public void AddHistory(string url)
         {
-            connection.Insert(new HistoryEntry { Url = url, Date = DateTime.Now});
+            connection.Insert(new HistoryEntryDB { Url = url, Date = DateTime.Now});
         }
 
         public List<string> GetHistory(int offset, int maxCount)
         {
-            return connection.Table<HistoryEntry>()
+            return connection.Table<HistoryEntryDB>()
                 .OrderByDescending(h => h.Id)
                 .Skip(offset).Take(maxCount)
                 .Select(i => i.Url).ToList();
@@ -81,20 +81,20 @@ namespace CreativeMode.Impl
 
         public string GetHistory(int offset)
         {
-            return connection.Table<HistoryEntry>()
+            return connection.Table<HistoryEntryDB>()
                 .Skip(offset).Take(1).FirstOrDefault()?.Url;
         }
 
         public void AddPlayedSong(string url)
         {
-            connection.InsertOrReplace(new PlayedMusicEntry { Url = url , Date = DateTime.Now });
+            connection.InsertOrReplace(new PlayedMusicEntryDB { Url = url , Date = DateTime.Now });
         }
 
         public List<string> GetPlayedSongs(TimeSpan duration)
         {
             var expirationDate = DateTime.Now - duration;
             
-            return connection.Table<PlayedMusicEntry>()
+            return connection.Table<PlayedMusicEntryDB>()
                 .Where(d => d.Date > expirationDate)
                 .Select(i => i.Url).ToList();
         }
@@ -102,41 +102,41 @@ namespace CreativeMode.Impl
         public void RemoveFromPlayedSongs(List<string> songs)
         {
             var songSet = new HashSet<string>(songs);
-            connection.Table<PlayedMusicEntry>()
+            connection.Table<PlayedMusicEntryDB>()
                 .Where(i => songSet.Contains(i.Url))
                 .Delete();
         }
 
         public void ClearPlaylist()
         {
-            connection.DeleteAll<PlaylistEntry>();
+            connection.DeleteAll<PlaylistEntryDB>();
         }
 
         public void AddToPlaylist(ICollection<string> items)
         {
-            connection.InsertAll(items.Select(url => new PlaylistEntry { Url = url }));
+            connection.InsertAll(items.Select(url => new PlaylistEntryDB { Url = url }));
         }
 
         public List<string> GetPlaylist()
         {
-            return connection.Table<PlaylistEntry>()
+            return connection.Table<PlaylistEntryDB>()
                 .Select(e => e.Url)
                 .ToList();
         }
 
         public void ClearQueue()
         {
-            connection.DeleteAll<QueueEntry>();
+            connection.DeleteAll<QueueEntryDB>();
         }
 
         public void AddToQueue(ICollection<string> items)
         {
-            connection.InsertAll(items.Select(i => new QueueEntry {Url = i}));
+            connection.InsertAll(items.Select(i => new QueueEntryDB {Url = i}));
         }
 
         public List<string> GetQueue(int offset = 0, int size = 25)
         {
-            return connection.Table<QueueEntry>()
+            return connection.Table<QueueEntryDB>()
                 .Skip(offset)
                 .Take(size)
                 .Select(q => q.Url)
@@ -150,7 +150,7 @@ namespace CreativeMode.Impl
                 connection.BeginTransaction();
                 
                 var result = connection
-                    .Table<QueueEntry>()
+                    .Table<QueueEntryDB>()
                     .Take(1).FirstOrDefault();
 
                 if (result == null) 
@@ -163,37 +163,6 @@ namespace CreativeMode.Impl
             {
                 connection.Commit();
             }
-        }
-
-        private class MusicEntry
-        {
-            [PrimaryKey, AutoIncrement]
-            public int Id { get; set; }
-            public string Url { get; set; }
-        }
-        
-        private class QueueEntry : MusicEntry { }
-        private class PlaylistEntry : MusicEntry { }
-        
-        private class PlayedMusicEntry
-        {
-            [PrimaryKey]
-            public string Url { get; set; }
-            public DateTime Date { get; set; }
-        }
-
-        private class HistoryEntry : MusicEntry
-        {
-            public DateTime Date { get; set; }
-        }
-        
-        private class StorageState
-        {
-            [PrimaryKey]
-            public int Id { get; set; } = 0;
-            public int HistoryPosition { get; set; }
-            public bool Shuffle { get; set; }
-            public bool SkipRepeats { get; set; }
         }
     }
 }

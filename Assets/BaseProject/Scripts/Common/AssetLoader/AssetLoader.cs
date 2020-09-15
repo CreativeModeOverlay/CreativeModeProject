@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using UniRx;
-using UnityEngine;
-using Object = System.Object;
 
 public abstract class AssetLoader<T>
 {
@@ -23,7 +21,7 @@ public abstract class AssetLoader<T>
 
     public int MaxThreadCount { get; set; } = 8;
     
-    protected abstract IObservable<SharedAsset<T>.IReferenceProvider> CreateAssetProvider(Stream stream, string url);
+    protected abstract IObservable<SharedAsset<T>.IReferenceProvider> CreateAssetProvider(string url);
 
     public void PreloadAsset(string url)
     {
@@ -78,8 +76,7 @@ public abstract class AssetLoader<T>
             }
         }
 
-        var loading = GetAssetStream(url)
-            .SelectMany(s => CreateAssetProvider(s, url))
+        var loading = CreateAssetProvider(url)
             .Select(asset =>
             {
                 createdProvider = asset;
@@ -96,19 +93,27 @@ public abstract class AssetLoader<T>
         return loading;
     }
 
-    protected IObservable<Stream> GetAssetStream(string url)
+    protected IObservable<Stream> GetAssetStream(string url, bool requireSeek = true)
     {
         return Observable.Start(() =>
         {
-            if (url.Contains(":"))
+            var stream = WebRequest.Create(url)
+                .GetResponse()
+                .GetResponseStream();
+
+            if (requireSeek && !stream.CanSeek)
             {
-                return WebRequest.Create(url)
-                    .GetResponse()
-                    .GetResponseStream();
+                using (stream)
+                {
+                    var memoryStream = new MemoryStream((int) stream.Length);
+                    stream.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+                    return memoryStream;
+                }
             }
 
-            return File.OpenRead(url);
-        });
+            return stream;
+        }, Scheduler.ThreadPool);
     }
 
     private IObservable<SharedAsset<T>.IReferenceProvider> ScheduleLoading(string url)

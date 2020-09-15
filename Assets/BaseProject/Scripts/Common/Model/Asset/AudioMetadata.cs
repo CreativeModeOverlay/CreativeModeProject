@@ -6,11 +6,13 @@ namespace CreativeMode
     {
         public string url;
         public string coverUrl;
+        
         public string artist;
         public string album;
         public string title;
         public string year;
-        public LyricLine[] lyrics;
+        
+        public SongLyrics[] lyrics;
 
         public string DottedInfoLine => string
             .Join(" • ", new[] {album, artist, year}

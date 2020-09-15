@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.elringus.unity.rawinput": "https://github.com/CreativeModeOverlay/CM-UnityRawInput-UPM.git#51569cdd605390dd5b1b63f73ee7b1c5d8710a63",
+    "com.elringus.unity.rawinput": "https://github.com/CreativeModeOverlay/CM-UnityRawInput-UPM.git#9f28df1e3357759ffd834fb40d92442857c3f623",
     "com.hecomi.udesktopduplication": "https://github.com/CreativeModeOverlay/CM-uDesktopDuplication-UPM.git#b06e431ac785d7a542e217c1039f2e48112628e3",
     "com.mono.taglib": "https://github.com/CreativeModeOverlay/CM-TagLib-UPM.git#1de018e0e850dfe2449b1f7abbdb57a916b8aea7",
     "com.naudio.upm": "https://github.com/CreativeModeOverlay/CM-NAudio-UPM.git#c4a002f3eb5182cf44103f11d8f5001d0fdf83c6",
