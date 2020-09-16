@@ -31,7 +31,7 @@ namespace CreativeMode.Impl
 
         public void UpdatePanel(WidgetPanel panel)
         {
-            Storage.PanelData.InsertOrUpdate(panel.id, ToDB(panel));
+            Storage.PanelData.Put(panel.id, ToDB(panel));
             panelWidgets.NotifyUpdate(panel.id);
         }
 
@@ -47,7 +47,7 @@ namespace CreativeMode.Impl
             
             return new WidgetData
             {
-                id = Storage.WidgetData.Create(ToDB(data)),
+                id = Storage.WidgetData.Insert(ToDB(data)),
                 type = data.GetType(),
                 data = data
             };
@@ -65,7 +65,7 @@ namespace CreativeMode.Impl
 
         public void UpdateWidget(WidgetData data)
         {
-            Storage.WidgetData.InsertOrUpdate(data.id, ToDB(data.data));
+            Storage.WidgetData.Put(data.id, ToDB(data.data));
         }
 
         public void RemoveWidget(int id)

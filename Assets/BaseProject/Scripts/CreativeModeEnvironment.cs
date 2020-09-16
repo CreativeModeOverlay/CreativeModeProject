@@ -108,8 +108,12 @@ namespace CreativeMode
 
                 usedDbPath = editorDbPath;
             }
-
-            return new SQLiteConnection(usedDbPath).AddTo(this);
+            
+            var connection = new SQLiteConnection(usedDbPath);
+            connection.ExecuteScalar<string> ("PRAGMA journal_mode=MEMORY"); // TODO: disable once async access to db is implemented
+            connection.AddTo(this);
+            
+            return connection;
         }
     }
 }

@@ -1,58 +1,72 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CreativeMode.Generic;
 using SQLite;
-using UnityEngine.Profiling;
 
 namespace CreativeMode
 {
-    public class EntityStorage<D, K, V> : IEntityStorage<K, V> 
-        where D : EntityDb<K, V>, new()
+    public class EntityStorage<T, K, V> : IEntityStorage<K, V> 
+        where T : EntityTableDb<K>, new()
     {
         protected readonly SQLiteConnection connection;
         private readonly IEntitySerializer<V> serializer;
+        private bool supportsInsert;
 
         public EntityStorage(SQLiteConnection connection, IEntitySerializer<V> serializer)
         {
             this.serializer = serializer;
             this.connection = connection;
 
-            connection.CreateTable<D>();
+            supportsInsert = typeof(K) == typeof(int) || typeof(K) == typeof(long);
+            connection.CreateTable<T>(supportsInsert ? CreateFlags.AutoIncPK : CreateFlags.None);
+        }
+
+        public bool SupportsInsert => supportsInsert;
+        
+        public K Insert(V value)
+        {
+            if(!supportsInsert)
+                throw new ArgumentException("Storage does not support insertion");
+            
+            var entry = new T { Data = Serialize(value) };
+            connection.Insert(entry);
+            return entry.Id;
         }
         
         public bool Contains(K key)
         {
-            return connection.Table<D>()
+            return connection.Table<T>()
                 .FirstOrDefault() != null;
         }
 
         public V Get(K key)
         {
-            var entity = connection.Table<D>()
+            var entity = connection.Table<T>()
                 .FirstOrDefault(o => o.Id.Equals(key));
 
             return entity == null ? default : Deserialize(entity.Data);
         }
 
-        public void InsertOrUpdate(K key, V value)
+        public void Put(K key, V value)
         {
 
-            connection.InsertOrReplace(new D {Id = key, Data = Serialize(value)});
+            connection.InsertOrReplace(new T { Id = key, Data = Serialize(value) });
         }
 
         public void Delete(K key)
         {
-            connection.Delete<D>(key);
+            connection.Delete<T>(key);
         }
 
         public void DeleteAll()
         {
-            connection.DeleteAll<D>();
+            connection.DeleteAll<T>();
         }
 
         public IEnumerable<KeyValuePair<K, V>> GetAll()
         {
-            return connection.Table<D>()
+            return connection.Table<T>()
                 .Select(e => new KeyValuePair<K, V>(e.Id, Deserialize(e.Data)));
         }
 

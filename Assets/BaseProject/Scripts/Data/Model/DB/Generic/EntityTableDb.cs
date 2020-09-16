@@ -2,10 +2,10 @@
 
 namespace CreativeMode
 {
-    public abstract class EntityDb<K, V>
+    public abstract class EntityTableDb<K>
     {
         [PrimaryKey]
-        public virtual K Id { get; set; }
+        public K Id { get; set; }
         public byte[] Data { get; set; }
     }
 }
