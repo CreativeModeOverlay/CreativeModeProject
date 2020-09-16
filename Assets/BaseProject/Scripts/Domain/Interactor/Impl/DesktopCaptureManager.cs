@@ -115,7 +115,7 @@ namespace CreativeMode.Impl
             }).Finally(() => {
                 activeMonitors.Remove(monitorIndex);
                 monitorObservables.Remove(monitorIndex);
-            }).Share();
+            }).Replay(1).RefCount();
 
             activeMonitors.Add(monitorIndex);
             monitorObservables[monitorIndex] = subscription;

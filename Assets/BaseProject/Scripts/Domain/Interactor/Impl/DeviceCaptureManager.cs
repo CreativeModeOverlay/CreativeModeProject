@@ -121,7 +121,7 @@ namespace CreativeMode
                 
                 Destroy(capture.mipMapTexture);
             }
-            
+
             var textureCapture = captureDeviceWatcher.EveryUpdate()
                 .Select(_ => GetCaptureParams(deviceName))
                 .Select(StartOrUpdateCapture)
@@ -135,7 +135,7 @@ namespace CreativeMode
                     StopCapture();
                     activeCaptures.Remove(capture);
                 })
-                .Share();
+                .Replay(1).RefCount();
             
             activeCaptureTextures[deviceName] = textureCapture;
 
