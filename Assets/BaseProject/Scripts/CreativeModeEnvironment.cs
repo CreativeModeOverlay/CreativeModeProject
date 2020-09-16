@@ -43,16 +43,19 @@ namespace CreativeMode
             var musicPlayerDb = OpenDb("MusicPlayer");
             var chatDb = OpenDb("Chat");
             var widgets = OpenDb("Widgets");
+            var devices = OpenDb("Devices");
 
             Instance<IMusicPlayerStorage>.Bind().Instance(new MusicPlayerStorage(musicPlayerDb));
             Instance<IChatStorage>.Bind().Instance(new ChatStorage(chatDb));
             Instance<IWidgetStorage>.Bind().Instance(new WidgetStorage(widgets));
+            Instance<IDeviceCaptureStorage>.Bind().Instance(new DeviceCaptureStorage(devices));
             
             Instance<IMusicVisualizationProvider>.Bind().UnityObject<MusicVisualizationProvider>();
             Instance<IMusicPlaylistProvider>.Bind().UnityObject<MusicPlaylistProvider>();
             Instance<IMusicPlayer>.Bind().UnityObject<MusicPlayer>();
             Instance<IWidgetUIFactory>.Bind().UnityObject<WidgetUIFactory>();
             Instance<IDesktopCaptureManager>.Bind().UnityObject<DesktopCaptureManager>();
+            Instance<IDeviceCaptureManager>.Bind().UnityObject<DeviceCaptureManager>();
             
             Instance<IOverlayManager>.Bind().UnityObject<OverlaySceneManager>();
             Instance<IInputManager>.Bind().Instance(new InputManager());
@@ -64,27 +67,7 @@ namespace CreativeMode
             Instance<IChatClient>.Bind().Instance(new TwitchClient(twitchOauth, twitchUsername, twitchChannelToJoin));
             Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
         }
-
-        private void Update()
-        {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                var widgetManager = Instance<IWidgetManager>.Get();
-                var player = widgetManager.CreateWidget(new MusicPlayerWidget());
-                var lyrics = widgetManager.CreateWidget(new SongLyricsWidget());
-                var spectrum = widgetManager.CreateWidget(new MusicSpectrumWidget());
-                var waveform = widgetManager.CreateWidget(new MusicWaveformWidget());
-                
-                var topPanel = widgetManager.GetPanel("top");
-                topPanel.widgets.Clear();
-                topPanel.AddWidget(player);
-                topPanel.AddWidget(lyrics);
-                topPanel.AddWidget(spectrum, new WidgetLayoutParams { width = 400 });
-                topPanel.AddWidget(waveform, new WidgetLayoutParams { width = 300 });
-                widgetManager.UpdatePanel(topPanel);
-            }
-        }
-
+        
         private SQLiteConnection OpenDb(string name)
         {
             var originalDbName = name + ".sqlite";

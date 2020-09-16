@@ -3,15 +3,14 @@ using CreativeMode;
 using UnityEngine;
 using UniRx;
 
-public class DesktopCaptureWidget : BaseFocusableImageWidget
+public class DesktopCaptureWidgetUI : BaseWidgetUI<DesktopCaptureWidget>
 {
     [SerializeField] 
     public int monitorIndex;
     public FocusParams defaultFocus;
+    public FocusableImageWidget focusableImage;
 
     public DesktopCaptureCensorRegionWidget overlayCensorRegionWidgetPrefab;
-
-    public override bool FlipY => true;
 
     private CompositeDisposable disposables;
     private IDesktopCaptureManager DesktopCapture => Instance<IDesktopCaptureManager>.Get();
@@ -31,7 +30,7 @@ public class DesktopCaptureWidget : BaseFocusableImageWidget
         DesktopCapture.FocusPoint
             .Subscribe(f =>
             {
-                Focus = f.isFocused && f.focusMonitorIndex == monitorIndex 
+                focusableImage.Focus = f.isFocused && f.focusMonitorIndex == monitorIndex 
                     ? f.focusParams : defaultFocus;
             })
             .AddTo(disposables);
@@ -48,12 +47,13 @@ public class DesktopCaptureWidget : BaseFocusableImageWidget
 
     private void SetMonitor(MonitorInfo m)
     {
-        SetTexture(m.texture, m.width, m.height);
+        focusableImage.SetTexture(m.texture, m.width, m.height);
     }
 
     private void SpawnCensorWidget(ICensorRegion region)
     {
-        var instance = Instantiate(overlayCensorRegionWidgetPrefab, targetImage.transform);
+        var instance = Instantiate(overlayCensorRegionWidgetPrefab, 
+            focusableImage.targetImage.transform);
         spawnedWidgets[region] = instance;
             
         instance.gameObject.SetActive(true);

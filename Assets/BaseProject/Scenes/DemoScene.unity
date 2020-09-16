@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 435569238}
   - component: {fileID: 435569240}
   - component: {fileID: 435569239}
+  - component: {fileID: 435569241}
   m_Layer: 0
   m_Name: Capture
   m_TagString: Untagged
@@ -346,6 +347,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugMode: 0
   retryReinitializationDuration: 1
+--- !u!114 &435569241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435569237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4da26fa6c0f6426f80122925eef33b68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultWidth: 1920
+  defaultHeight: 1080
+  defaultRefreshRate: 60
+  pauseInactive: 0
+  useMipMaps: 1
+  mipMapBias: -1
 --- !u!1 &462228747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,6 +1435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1246893485}
   - component: {fileID: 1246893486}
+  - component: {fileID: 1246893487}
   m_Layer: 0
   m_Name: Desktop
   m_TagString: Untagged
@@ -1456,9 +1476,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a68822f553464ba5be97397d1fb645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size:
+    defaultWidth: 0
+    defaultHeight: 0
+    minWidth: 0
+    minHeight: 0
+    maxWidth: 2147483647
+    maxHeight: 2147483647
+  monitorIndex: 0
+  defaultFocus:
+    focusCenter: {x: 0, y: 0}
+    zoom: 0
+    zoomUseContainerSize: 0
+    crop:
+      m_Left: 0
+      m_Right: 0
+      m_Top: 0
+      m_Bottom: 40
+  focusableImage: {fileID: 1246893487}
+  overlayCensorRegionWidgetPrefab: {fileID: 780665348}
+--- !u!114 &1246893487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246893484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14768ac27b8a4ffd8b24c497164f6840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   targetImage: {fileID: 964715407}
   screenContainer: {fileID: 1246893485}
   minZoomType: 0
+  yFlip: 1
   focusLerpSpeed: 5
   focusParams:
     focusCenter: {x: 0, y: 0}
@@ -1474,17 +1526,6 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  monitorIndex: 0
-  defaultFocus:
-    focusCenter: {x: 0, y: 0}
-    zoom: 0
-    zoomUseContainerSize: 0
-    crop:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 40
-  overlayCensorRegionWidgetPrefab: {fileID: 780665348}
 --- !u!1001 &1287149671
 PrefabInstance:
   m_ObjectHideFlags: 0

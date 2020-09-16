@@ -8,7 +8,7 @@ namespace CreativeMode
         [SerializeField]
         private Text titleText;
         
-        public DesktopCaptureWidget Widget { get; set; }
+        public DesktopCaptureWidgetUI Widget { get; set; }
         public ICensorRegion Region { get; set; }
         
         public void Remove()

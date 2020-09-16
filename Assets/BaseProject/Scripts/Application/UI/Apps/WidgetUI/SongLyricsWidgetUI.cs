@@ -23,7 +23,8 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
     public LyricFont[] fonts;
 
     public string displayVoice;
-    
+
+    private AudioMetadata currentMetadata;
     private CompositeDisposable compositeDisposable;
     private SongLyrics currentLyrics;
     private LyricLine currentLine;
@@ -55,6 +56,14 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
         lineObjects.Clear();
     }
 
+    protected override void SetData(SongLyricsWidget data)
+    {
+        base.SetData(data);
+        
+        displayVoice = data.voice ?? "";
+        UpdateLyrics();
+    }
+
     private void OnDestroy()
     {
         compositeDisposable?.Dispose();
@@ -64,9 +73,15 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
     private void OnNewMusic(AudioMetadata m)
     {
         ClearLyrics();
-        
-        currentLyrics = m.lyrics?.FirstOrDefault(w => w.voice == displayVoice);
+
+        currentMetadata = m;
         currentLine = null;
+        UpdateLyrics();
+    }
+
+    private void UpdateLyrics()
+    {
+        currentLyrics = currentMetadata.lyrics?.FirstOrDefault(w => w.voice == displayVoice);
     }
 
     private void Update()

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace CreativeMode
 {
-    public static class UiUtils
+    public static class UIUtils
     {
         private static readonly float[] horizontalAnchor01Table =
         {

@@ -3,11 +3,12 @@ using UnityEngine.UI;
 
 namespace CreativeMode
 {
-    public class BaseFocusableImageWidget : MonoBehaviour
+    public class FocusableImageWidget : MonoBehaviour
     {
         public RawImage targetImage;
         public RectTransform screenContainer;
         public ZoomType minZoomType;
+        public bool yFlip;
         
         public float focusLerpSpeed;
 
@@ -31,7 +32,7 @@ namespace CreativeMode
             }
         }
         
-        protected virtual FocusParams Focus
+        public virtual FocusParams Focus
         {
             get => focusParams;
             set
@@ -43,8 +44,6 @@ namespace CreativeMode
                 RecalculateTargetPosition();
             }
         }
-
-        public virtual bool FlipY => false;
 
         [SerializeField]
         private FocusParams focusParams;
@@ -79,7 +78,7 @@ namespace CreativeMode
             }
         }
 
-        protected void SetTexture(Texture texture, int width, int height)
+        public void SetTexture(Texture texture, int width, int height)
         {
             targetImage.texture = texture;
             imageWidth = width;
@@ -110,6 +109,9 @@ namespace CreativeMode
 
         private DisplayParams CalculateDisplayParams(int width, int height, FocusParams s)
         {
+            if (width == 0 || height == 0)
+                return new DisplayParams();
+            
             var containerRect = screenContainer.rect;
 
             var screenRect = Rect.MinMaxRect(padding.left, padding.bottom,
@@ -171,7 +173,7 @@ namespace CreativeMode
 
             Rect uvRect;
 
-            if (FlipY)
+            if (yFlip)
             {
                 uvRect = Rect.MinMaxRect(s.crop.left, s.crop.top,
                     width - s.crop.right, height - s.crop.bottom);
