@@ -3,5 +3,5 @@
 namespace CreativeMode
 {
     [Serializable]
-    public class MusicPlayerWidget : BaseWidget { }
+    public class MusicPlayerWidget : Widget { }
 }

@@ -3,7 +3,7 @@
 namespace CreativeMode
 {
     [Serializable]
-    public class CaptureDesktopWidget : BaseWidget
+    public class CaptureDesktopWidget : Widget
     {
         public int monitorId;
     }

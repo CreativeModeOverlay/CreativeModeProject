@@ -10,8 +10,13 @@ namespace CreativeMode
             t.anchorMin = Vector2.zero;
             t.anchorMax = Vector2.zero;
         }
+
+        public static Rect GetPositonRect(this RectTransform t)
+        {
+            return new Rect(t.localPosition, t.sizeDelta);
+        }
         
-        public static void SetRect(this RectTransform t, Rect rect)
+        public static void SetPositionRect(this RectTransform t, Rect rect)
         {
             t.ResetAnchors();
             t.localPosition = rect.position;

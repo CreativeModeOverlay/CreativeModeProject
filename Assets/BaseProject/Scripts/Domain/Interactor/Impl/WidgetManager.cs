@@ -40,7 +40,7 @@ namespace CreativeMode.Impl
             return FromDB(Storage.PanelData.Get(panelId), panelId);
         }
 
-        public WidgetData CreateWidget(BaseWidget data)
+        public WidgetData CreateWidget(Widget data)
         {
             if(data == null)
                 throw new ArgumentException("Cannot add null widget");
@@ -78,7 +78,7 @@ namespace CreativeMode.Impl
             Storage.WidgetData.Delete(id);
         }
         
-        private WidgetDataDB ToDB(BaseWidget data)
+        private WidgetDataDB ToDB(Widget data)
         {
             return new WidgetDataDB { data = data };
         }
@@ -102,7 +102,7 @@ namespace CreativeMode.Impl
             {
                 id = id,
                 type = data.data.GetType(),
-                data = (BaseWidget) data.data
+                data = (Widget) data.data
             };
         }
 

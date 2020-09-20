@@ -107,7 +107,7 @@ namespace CreativeMode
   
         public interface IWidget
         {
-             WidgetUISize Size { get; }
+             UIContentSize Size { get; }
              WidgetLayoutParams Layout { get; }
         }
     }

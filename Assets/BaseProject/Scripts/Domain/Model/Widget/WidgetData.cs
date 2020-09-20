@@ -6,6 +6,6 @@ namespace CreativeMode
     {
         public int id;
         public Type type;
-        public BaseWidget data;
+        public Widget data;
     }
 }

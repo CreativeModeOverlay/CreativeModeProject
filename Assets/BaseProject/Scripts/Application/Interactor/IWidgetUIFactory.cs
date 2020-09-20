@@ -4,7 +4,9 @@ namespace CreativeMode
 {
     public interface IWidgetUIFactory
     {
-        bool CanCreateUI(Type dataType);
+        bool SupportsUI(Type dataType);
+        
+        UIContentSize GetSizeInfo(Type widgetType);
         IWidgetUI CreateWidgetUI(Type widgetType);
     }
 }

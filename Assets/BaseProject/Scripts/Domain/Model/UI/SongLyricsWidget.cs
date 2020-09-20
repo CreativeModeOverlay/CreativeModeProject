@@ -3,7 +3,7 @@
 namespace CreativeMode
 {
     [Serializable]
-    public class SongLyricsWidget : BaseWidget
+    public class SongLyricsWidget : Widget
     {
         public string voice;
     }

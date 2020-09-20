@@ -11,9 +11,15 @@ namespace CreativeMode.Impl
         private readonly Dictionary<Type, GameObject> prefabCache 
             = new Dictionary<Type, GameObject>();
 
-        public bool CanCreateUI(Type widgetType)
+        public bool SupportsUI(Type widgetType)
         {
             return GetWidgetPrefab(widgetType) != null;
+        }
+
+        public UIContentSize GetSizeInfo(Type widgetType)
+        {
+            return GetWidgetPrefab(widgetType)
+                .GetComponent<IWidgetUI>().Size;
         }
 
         public IWidgetUI CreateWidgetUI(Type widgetType)
