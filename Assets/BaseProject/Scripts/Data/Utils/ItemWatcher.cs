@@ -9,22 +9,13 @@ namespace CreativeMode.Impl
         private readonly Subject<T> itemDeleted = new Subject<T>();
 
         public void NotifyUpdate(T id) => itemUpdated.OnNext(id);
-        public void NotifyDelete(T id) => itemDeleted.OnNext(id);
+        public void NotifyStop(T id) => itemDeleted.OnNext(id);
+        public void NotifyStopAll() => itemDeleted.OnNext(default);
 
-        public IObservable<Unit> EveryUpdate() => Observable.ReturnUnit()
-            .Merge(
-                itemUpdated.Select(_ => Unit.Default), 
-                itemDeleted.Select(_ => Unit.Default));
-        
-        public IObservable<Unit> EveryUpdate(T id) => Observable.ReturnUnit()
-            .Merge(
-                itemUpdated
-                    .Where(i => i.Equals(id))
-                    .Select(i => Unit.Default),
-                
-                itemDeleted
-                    .Where(i => i.Equals(id))
-                    .Select<T, Unit>(t => throw new Exception("Item is deleted")) // TODO: Specific exception
-            );
+        public IObservable<Unit> EveryUpdate(T id) => itemUpdated
+            .Where(i => i.Equals(id))
+            .Select(i => Unit.Default)
+            .TakeUntil(itemDeleted.Where(i => i == null || i.Equals(id)))
+            .StartWith(Unit.Default);
     }
 }

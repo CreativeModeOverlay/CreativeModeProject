@@ -18,7 +18,7 @@ namespace CreativeMode
         public Rect[] LayoutWidgets<T>(Rect layoutRect, List<T> widgets) 
             where T : IWidget
         {
-            var paddedRect = layoutRect.Padding(padding);
+            var paddedRect = layoutRect.ApplyOffset(padding);
             var containerPositions = new Rect[widgets.Count];
             var position = paddedRect.position;
             var totalSize = new Vector2(-spacing, -spacing);

@@ -67,7 +67,26 @@ namespace CreativeMode
             Instance<IChatClient>.Bind().Instance(new TwitchClient(twitchOauth, twitchUsername, twitchChannelToJoin));
             Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
         }
-        
+
+        private ICensorRegionController ctrl;
+
+        private void Update()
+        {
+            if(!Input.GetButtonDown("Fire1"))
+                return;
+            
+            if (ctrl != null)
+            {
+                ctrl.Remove();
+                ctrl = null;
+            }
+            else
+            {
+                ctrl = Instance<IDesktopCaptureManager>.Get().CreateCensorRegion();
+                ctrl.Rect = new Rect(256, 256, 512, 512);
+            }
+        }
+
         private SQLiteConnection OpenDb(string name)
         {
             var originalDbName = name + ".sqlite";

@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 
 namespace CreativeMode
 {
@@ -13,5 +13,8 @@ namespace CreativeMode
         
         void AddVisualizer(IMusicVisualizerElement visualizer);
         void RemoveVisualizer(IMusicVisualizerElement visualizer);
+
+        IObservable<LyricLine> GetLyrics(string voiceId = "");
+        IObservable<LyricLine> GetAllLyrics();
     }
 }

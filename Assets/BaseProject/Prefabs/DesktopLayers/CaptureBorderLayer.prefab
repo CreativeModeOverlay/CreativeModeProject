@@ -89,7 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b118ac88bd3486bb0c6b1d63368319e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  titleText: {fileID: 1335912770}
+  regionName: {fileID: 0}
+  appearFlashGraphic: {fileID: 0}
+  widgetGroup: {fileID: 0}
 --- !u!1 &1335912767
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4123582372827041468}
   - component: {fileID: 4123582372827041469}
+  - component: {fileID: 3198997894425051011}
   m_Layer: 0
   m_Name: CaptureBorderLayer
   m_TagString: Untagged
@@ -237,7 +240,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monitorIndex: 0
   focusRegionWidget: {fileID: 289942662}
-  censorRegionWidgetPrefab: {fileID: 878266466}
+--- !u!114 &3198997894425051011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4123582372827041459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a12e859d6b444da86388aeffbe4a8f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contentRect: {fileID: 4123582372827041468}
+  prefab: {fileID: 878266466}
 --- !u!1 &4123582373208543250
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ namespace CreativeMode
         public ScrollRect entryScrollRect;
 
         public event Action<bool> OnCloseListener;
-        public Rect Rect => ((RectTransform) transform).rect;
+        public Rect Rect => transform.AsRectTransform().rect;
 
         private Menu currentMenu;
         private ISubMenuHandler subMenuHandler;

@@ -184,6 +184,7 @@ namespace CreativeMode.Impl
 
         private class CensorRegion : ICensorRegion, ICensorRegionController
         {
+            public int Monitor { get; set; }
             public string Title { get; set; }
             public Rect Rect { get; set; }
 

@@ -57,10 +57,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247723a0ad9a9c4883053e5d1ac2c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 2739ecde8c4dd7b478cea6375df8463a, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   size:
     defaultWidth: 300
     defaultHeight: 76
@@ -107,3 +103,4 @@ MonoBehaviour:
     m_Bottom: 2
   bandSpacing: 2
   bandWidth: 2
+  spectrumRenderMaterial: {fileID: 2100000, guid: 2739ecde8c4dd7b478cea6375df8463a, type: 2}

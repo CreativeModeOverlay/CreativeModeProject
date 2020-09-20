@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
@@ -11,6 +11,9 @@ namespace CreativeMode.Impl
         public int waveformBufferSize = 16384;
         public int spectrumBufferSize = 8192;
         public FFTWindow spectrumWindow = FFTWindow.BlackmanHarris;
+
+        public LyricFont[] lyricsFonts;
+        public LyricVoice[] lyricsVoices;
         
         public AudioSource outputAudioSource;
         public MusicPlayer musicPlayer;
@@ -27,7 +30,12 @@ namespace CreativeMode.Impl
 
         public bool IsMusicChangeAnimationActive => visualizerElements.Any(e => 
             e.IsMusicChangeAnimationActive);
-        
+
+        private ReplaySubject<LyricLine> allLyricsSubject = new ReplaySubject<LyricLine>(1);
+        private Dictionary<string, ReplaySubject<LyricLine>> lyricsSubjects 
+            = new Dictionary<string, ReplaySubject<LyricLine>>();
+
+        private List<LyricsManager> lyricsManagers = new List<LyricsManager>();
         private List<IMusicVisualizerElement> visualizerElements = new List<IMusicVisualizerElement>();
         private ImageLoader ImageLoader => Instance<ImageLoader>.Get();
 
@@ -54,9 +62,13 @@ namespace CreativeMode.Impl
                 {
                     return Observable.CreateSafe<Palette>(subscriber =>
                     {
-                        PaletteGenerator.FromTexture(a.Asset.StaticImage.texture, subscriber.OnNext);
+                        PaletteGenerator.FromTexture(a.Asset.StaticImage.texture, p =>
+                        {
+                            subscriber.OnNext(p);
+                            subscriber.OnCompleted();
+                        });
                         return null;
-                    }).First();
+                    });
                 })
                 .Replay(1).RefCount();
         }
@@ -95,6 +107,26 @@ namespace CreativeMode.Impl
             visualizerElements.Remove(visualizer);
         }
 
+        public IObservable<LyricLine> GetLyrics(string voiceId)
+        {
+            return GetLyricsSubject(voiceId);
+        }
+
+        public IObservable<LyricLine> GetAllLyrics()
+        {
+            return allLyricsSubject;
+        }
+
+        private ReplaySubject<LyricLine> GetLyricsSubject(string voiceId)
+        {
+            if (lyricsSubjects.TryGetValue(voiceId, out var subject))
+                return subject;
+            
+            subject = new ReplaySubject<LyricLine>(1);
+            lyricsSubjects[voiceId] = subject;
+            return subject;
+        }
+  
         private Func<float[]> CreateBufferGetter(int size, Action<float[]> value)
         {
             var buffer = new float[size];
@@ -126,6 +158,28 @@ namespace CreativeMode.Impl
                     buffer[i] = (l[i] + r[i]) / 2f;
                 }
             });
+        }
+        
+        [Serializable]
+        public class LyricFont
+        {
+            public string name;
+            public Font font;
+            public float scale = 1f;
+            public bool alignByGeometry;
+        }
+    
+        [Serializable]
+        public class LyricVoice
+        {
+            public string voiceName;
+            public string displayName;
+        }
+        
+        public struct LyricsManager
+        {
+            public ReplaySubject<LyricLine> lyricLine;
+            public LyricsSampler lyricsSampler;
         }
     }
 }

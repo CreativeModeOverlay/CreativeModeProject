@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using NAudio.Wave;
-using TagLib.Riff;
 using UniRx;
 using UnityEngine;
 using Color = UnityEngine.Color;
@@ -13,6 +12,8 @@ namespace CreativeMode
 {
     public class AudioLoader : AssetLoader<AudioAsset>
     {
+        public const string DefaultVoiceName = "";
+        
         protected override IObservable<SharedAsset<AudioAsset>.IReferenceProvider> CreateAssetProvider(string url)
         {
             return GetAssetStream(url)
@@ -107,12 +108,12 @@ namespace CreativeMode
                 foreach (var file in lrcFiles)
                 {
                     var lrcFileName = Path.GetFileNameWithoutExtension(file.FullName);
-                    var lrcName = lrcFileName.Substring(fileName.Length).Trim('_');
+                    var lrcName = lrcFileName.Substring(fileName.Length).Trim().Trim('#');
                     
                     result.Add(new LyricsUrl
                     {
                         url = file.FullName,
-                        voice = lrcName
+                        voice = string.IsNullOrWhiteSpace(lrcName) ? DefaultVoiceName : lrcName
                     });
                 }
             }
@@ -135,7 +136,7 @@ namespace CreativeMode
                 {
                     using (s)
                     {
-                        var result = new List<LyricLine>();
+                        var result = new List<SongLyrics.Line>();
                         var reader = new StreamReader(s);
 
                         while (!reader.EndOfStream)
@@ -157,7 +158,7 @@ namespace CreativeMode
                             {
                                 var text = ParseLyricLine(line.Substring(closeBracket + 1).Trim());
 
-                                result.Add(new LyricLine
+                                result.Add(new SongLyrics.Line()
                                 {
                                     text = text.text,
                                     startTime = minutes * 60 + seconds,
@@ -235,9 +236,9 @@ namespace CreativeMode
                     case 'p':
                         switch (data)
                         {
-                            case "left": result.position = LyricLine.Position.Left; break;
-                            case "center": result.position = LyricLine.Position.Center; break;
-                            case "right": result.position = LyricLine.Position.Right; break;
+                            case "left": result.position = SongLyrics.Line.Position.Left; break;
+                            case "center": result.position = SongLyrics.Line.Position.Center; break;
+                            case "right": result.position = SongLyrics.Line.Position.Right; break;
                         }
                         break;
                 }
@@ -258,7 +259,7 @@ namespace CreativeMode
         {
             public string text;
             public string font;
-            public LyricLine.Position? position;
+            public SongLyrics.Line.Position? position;
             public Color? color;
         }
 

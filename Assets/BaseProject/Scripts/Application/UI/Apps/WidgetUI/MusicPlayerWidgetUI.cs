@@ -32,7 +32,7 @@ public class MusicPlayerWidgetUI : BaseWidgetUI<MusicPlayerWidget>
 
     private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
 
-    private void Start()
+    private void Awake()
     {
         MusicPlayer.CurrentMusic
             .Subscribe(AnimateSongChange)

@@ -12,7 +12,7 @@ namespace CreativeMode
         {
             get
             {
-                var rect = ((RectTransform) transform).rect;
+                var rect = transform.AsRectTransform().rect;
                 return new Vector2(rect.xMax, rect.yMax); // top right
             }
         }

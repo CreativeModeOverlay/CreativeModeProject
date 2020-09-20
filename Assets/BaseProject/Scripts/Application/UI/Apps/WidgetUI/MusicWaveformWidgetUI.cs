@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MusicWaveformWidgetUI : BaseGraphicWidgetUI<MusicWaveformWidget>
+public class MusicWaveformWidgetUI : BaseWidgetUI<MusicWaveformWidget>
 {
     [Header("Waveform")]
     public AudioChannel channel = AudioChannel.Center;
@@ -13,20 +13,23 @@ public class MusicWaveformWidgetUI : BaseGraphicWidgetUI<MusicWaveformWidget>
     
     [Header("Display")]
     public RectOffset padding;
+    public Material waveformRenderMaterial;
 
-    public override Texture mainTexture => waveformTexture;
-    
     private float[] accumulatedSamples;
     private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
     private Texture2D waveformTexture;
     private float adaptiveScalePosition = 1f;
     private float adaptiveScaleOffset = 1f;
+    private WaveformGraphic graphic;
 
-    protected override void OnDestroy()
+    private void Awake()
     {
-        if(!Application.isPlaying)
-            return;
+        graphic = UIUtils.CreateInnerGraphic<WaveformGraphic>(this);
+        graphic.widget = this;
+    }
 
+    private void OnDestroy()
+    {
         Destroy(waveformTexture);
     }
     
@@ -50,7 +53,7 @@ public class MusicWaveformWidgetUI : BaseGraphicWidgetUI<MusicWaveformWidget>
             {
                 wrapMode = TextureWrapMode.Clamp
             };
-            SetAllDirty();
+            graphic.SetAllDirty();
         }
     }
 
@@ -88,20 +91,28 @@ public class MusicWaveformWidgetUI : BaseGraphicWidgetUI<MusicWaveformWidget>
         waveformTexture.Apply();
     }
 
-    protected override void OnPopulateMesh(VertexHelper vh)
+    private class WaveformGraphic : Graphic
     {
-        var r = GetPixelAdjustedRect();
-        var v = new Vector4(r.x + padding.left, r.y + padding.bottom, 
-            r.x + r.width - padding.right, r.y + r.height - padding.top);
+        public MusicWaveformWidgetUI widget;
+        
+        public override Texture mainTexture => widget.waveformTexture;
+        public override Material materialForRendering => widget.waveformRenderMaterial;
 
-        Color32 color32 = color;
-        vh.Clear();
-        vh.AddVert(new Vector3(v.x, v.y), color32, new Vector2(0f, -1f));
-        vh.AddVert(new Vector3(v.x, v.w), color32, new Vector2(0f, 1f));
-        vh.AddVert(new Vector3(v.z, v.w), color32, new Vector2(1f, 1f));
-        vh.AddVert(new Vector3(v.z, v.y), color32, new Vector2(1f, -1f));
+        protected override void OnPopulateMesh(VertexHelper vh)
+        {
+            var r = GetPixelAdjustedRect();
+            var v = new Vector4(r.x + widget.padding.left, r.y + widget.padding.bottom, 
+                r.x + r.width - widget.padding.right, r.y + r.height - widget.padding.top);
 
-        vh.AddTriangle(0, 1, 2);
-        vh.AddTriangle(2, 3, 0);
+            Color32 color32 = color;
+            vh.Clear();
+            vh.AddVert(new Vector3(v.x, v.y), color32, new Vector2(0f, -1f));
+            vh.AddVert(new Vector3(v.x, v.w), color32, new Vector2(0f, 1f));
+            vh.AddVert(new Vector3(v.z, v.w), color32, new Vector2(1f, 1f));
+            vh.AddVert(new Vector3(v.z, v.y), color32, new Vector2(1f, -1f));
+
+            vh.AddTriangle(0, 1, 2);
+            vh.AddTriangle(2, 3, 0);
+        }
     }
 }

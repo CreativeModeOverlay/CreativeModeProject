@@ -2,6 +2,7 @@
 
 namespace CreativeMode
 {
+    [Serializable]
     public class TimerWidget : BaseWidget
     {
         public DateTime startTime;

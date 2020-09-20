@@ -57,11 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fec7551b73d30044daa38ae5d982ce1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 6d4cdea622eaf1e40be07c4d1b3ddf33, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  info:
+  size:
     defaultWidth: 300
     defaultHeight: 76
     minWidth: 32
@@ -78,3 +74,4 @@ MonoBehaviour:
     m_Right: 2
     m_Top: 2
     m_Bottom: 2
+  waveformRenderMaterial: {fileID: 2100000, guid: 6d4cdea622eaf1e40be07c4d1b3ddf33, type: 2}

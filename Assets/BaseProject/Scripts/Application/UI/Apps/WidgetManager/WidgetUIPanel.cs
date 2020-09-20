@@ -156,7 +156,7 @@ namespace CreativeMode
 
         private Rect[] CalculateContainerPositions(List<ContainerInfo> allContainers)
         {
-            return layout.LayoutWidgets(((RectTransform) transform).rect, allContainers);
+            return layout.LayoutWidgets(transform.AsRectTransform().rect, allContainers);
         }
 
         private bool IsLayoutDifferent(List<ContainerInfo> currentContainers, 
@@ -190,6 +190,7 @@ namespace CreativeMode
             if (Factory.CanCreateUI(widgetData.type))
             {
                 var ui = Factory.CreateWidgetUI(widgetData.type);
+                ui.SetData(widgetData.data);
                 container.PutWidget(ui);
             }
 
@@ -237,7 +238,7 @@ namespace CreativeMode
         private Vector2 GetAppearOffset()
         {
             var appearScale = appearDirection.GetSignedScale();
-            var containerSize = ((RectTransform) transform).rect.size;
+            var containerSize = transform.AsRectTransform().rect.size;
             return Vector2.Scale(appearScale, containerSize);
         }
 

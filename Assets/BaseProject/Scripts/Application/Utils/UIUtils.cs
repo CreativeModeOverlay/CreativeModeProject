@@ -35,6 +35,8 @@ namespace CreativeMode
             -1.0f, -1.0f, -1.0f
         };
 
+        public static RectTransform AsRectTransform(this Transform t) => (RectTransform) t;
+        
         public static Sequence ChangeText(this Text t, string text, float duration = 1f, Action onTextChanged = null)
         {
             if (t.text != text)
@@ -65,5 +67,22 @@ namespace CreativeMode
         public static Vector2 Get01Scale(this TextAnchor t) => new Vector2(
             horizontalAnchor01Table[(int) t], 
             verticalAnchor01Table[(int) t]);
+        
+        public static T CreateInnerGraphic<T>(Component c) 
+            where T : Component
+        {
+            var graphicObject = new GameObject("Graphic");
+            graphicObject.transform.parent = c.gameObject.transform;
+            graphicObject.AddComponent<CanvasRenderer>();
+            var result = graphicObject.AddComponent<T>();
+
+            var graphicTransform = (RectTransform) graphicObject.transform;
+            graphicTransform.anchorMin = Vector2.zero;
+            graphicTransform.anchorMax = Vector2.one;
+            graphicTransform.pivot = Vector2.zero;
+            graphicTransform.sizeDelta = Vector2.zero;
+
+            return result;
+        }
     }
 }

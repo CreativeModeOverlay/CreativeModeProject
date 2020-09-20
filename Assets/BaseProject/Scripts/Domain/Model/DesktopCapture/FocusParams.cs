@@ -7,12 +7,17 @@ namespace CreativeMode
     public struct FocusParams
     {
         public Vector2 focusCenter;
+        public bool normalizedFocusCenter;
+        
         public float zoom;
         public bool zoomUseContainerSize;
+        public ZoomType zoomType;
 
         public RectOffset crop;
 
         public static bool operator ==(FocusParams c1, FocusParams c2) => c1.Equals(c2);
         public static bool operator !=(FocusParams c1, FocusParams c2) => !c1.Equals(c2);
+        
+        public enum ZoomType { Fit, Crop, }
     }
 }

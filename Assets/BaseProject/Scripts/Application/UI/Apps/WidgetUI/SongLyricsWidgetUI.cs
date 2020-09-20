@@ -11,23 +11,28 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
 {
     private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
     private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
-    private ImageLoader ImageLoader => Instance<ImageLoader>.Get();
 
     public Text textLinePrefab;
     public RectTransform textRoot;
+    
+    [Header("Animation")]
     public float animationDuration;
     public Vector3[] lyricsPositions;
     public Vector3 lyricOffscreenOffset;
     public Gradient lyricsColors;
     public float displayOffset;
+    
+    [Header("Visuals")]
+    public Text voiceText;
+    public CanvasGroup voiceTextGroup;
+    // TODO: put in manager
     public LyricFont[] fonts;
-
-    public string displayVoice;
+    public LyricVoice[] voices;
 
     private AudioMetadata currentMetadata;
     private CompositeDisposable compositeDisposable;
     private SongLyrics currentLyrics;
-    private LyricLine currentLine;
+    private SongLyrics.Line currentLine;
 
     private Text currentLineObject;
     private List<Text> lineObjects = new List<Text>();
@@ -60,8 +65,7 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
     {
         base.SetData(data);
         
-        displayVoice = data.voice ?? "";
-        UpdateLyrics();
+        UpdateData();
     }
 
     private void OnDestroy()
@@ -76,12 +80,14 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
 
         currentMetadata = m;
         currentLine = null;
-        UpdateLyrics();
+        UpdateData();
     }
 
-    private void UpdateLyrics()
+    private void UpdateData()
     {
-        currentLyrics = currentMetadata.lyrics?.FirstOrDefault(w => w.voice == displayVoice);
+        var voiceName = Data.voice ?? "";
+        currentLyrics = currentMetadata.lyrics?.FirstOrDefault(w => w.voice == voiceName);
+        voiceText.text = voices.FirstOrDefault(v => v.voiceName == voiceName)?.displayName;
     }
 
     private void Update()
@@ -102,7 +108,7 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
             OnLineChanged(previousLine, currentLine);
     }
 
-    private void OnLineChanged(LyricLine oldLine, LyricLine newLine)
+    private void OnLineChanged(SongLyrics.Line oldLine, SongLyrics.Line newLine)
     {
         if (newLine == null || string.IsNullOrWhiteSpace(newLine.text))
         {
@@ -115,7 +121,7 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
         }
     }
 
-    private void AddNewLyricLine(LyricLine line)
+    private void AddNewLyricLine(SongLyrics.Line line)
     {
         var from = lyricsPositions[0];
         var to = lyricsPositions[1];
@@ -137,21 +143,27 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
 
         switch (line.position)
         {
-            case LyricLine.Position.Left: instance.alignment = TextAnchor.UpperLeft; break;
-            case LyricLine.Position.Center: instance.alignment = TextAnchor.UpperCenter; break;
-            case LyricLine.Position.Right: instance.alignment = TextAnchor.UpperRight; break;
+            case SongLyrics.Line.Position.Left: instance.alignment = TextAnchor.UpperLeft; break;
+            case SongLyrics.Line.Position.Center: instance.alignment = TextAnchor.UpperCenter; break;
+            case SongLyrics.Line.Position.Right: instance.alignment = TextAnchor.UpperRight; break;
         }
-
+        
         instance.transform.DOLocalMove(to, animationDuration)
             .SetId(this)
             .SetEase(Ease.InOutSine);
+
+        if (voiceTextGroup)
+        {
+            DOTween.Kill(voiceTextGroup);
+            voiceTextGroup.DOFade(0f, 0.25f);
+        }
         
         currentLineObject = instance;
         UpdateCurrentLineColor(line);
         lineObjects.Insert(0, currentLineObject);
     }
 
-    private void UpdateCurrentLineColor(LyricLine line)
+    private void UpdateCurrentLineColor(SongLyrics.Line line)
     {
         if(!currentLineObject)
             return;
@@ -193,12 +205,14 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
     private void ClearLyrics()
     {
         currentLineObject = null;
+
+        float delay = 0f;
         
         for (var i = 0; i < lineObjects.Count; i++)
         {
             var text = lineObjects[i];
             var targetPosition = lyricsPositions[i + 1] + lyricOffscreenOffset;
-            var delay = ((lineObjects.Count - 1) - i) * 0.1f;
+            delay = ((lineObjects.Count - 1) - i) * 0.1f;
 
             text.transform.DOLocalMove(targetPosition, animationDuration)
                 .SetId(this)
@@ -211,11 +225,18 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
                 .SetEase(Ease.InOutSine)
                 .SetDelay(delay);
         }
-        
+
+        if (voiceTextGroup)
+        {
+            DOTween.Kill(voiceTextGroup);
+            voiceTextGroup.DOFade(1f, 1f)
+                .SetDelay(delay + 0.25f);
+        }
+
         lineObjects.Clear();
     }
     
-    private LyricLine FindLineForPosition(float time)
+    private SongLyrics.Line FindLineForPosition(float time)
     {
         for (var i = 0; i < currentLyrics.lines.Length; i++)
         {
@@ -228,7 +249,7 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
         return null;
     }
 
-    private bool IsLineActive(LyricLine line, float time)
+    private bool IsLineActive(SongLyrics.Line line, float time)
     {
         return line.startTime <= time 
                && line.endTime > time;
@@ -241,5 +262,12 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
         public Font font;
         public float scale = 1f;
         public bool alignByGeometry;
+    }
+    
+    [Serializable]
+    public class LyricVoice
+    {
+        public string voiceName;
+        public string displayName;
     }
 }

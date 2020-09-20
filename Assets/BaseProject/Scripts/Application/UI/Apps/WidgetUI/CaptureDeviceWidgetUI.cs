@@ -1,38 +1,58 @@
 ﻿using System;
 using CreativeMode;
 using UniRx;
+using UnityEngine.UI;
 
 public class CaptureDeviceWidgetUI : BaseWidgetUI<CaptureDeviceWidget>
 {
-    public string deviceName;
-    public FocusableImageWidget focusableImage;
+    public RawImage deviceImage;
+    public FocusableContainerWidget focusableContainer;
 
     private string currentDeviceName;
     private IDisposable currentCapture;
     private IDeviceCaptureManager Manager => Instance<IDeviceCaptureManager>.Get();
 
-    private void Awake()
-    {
-        if (!string.IsNullOrWhiteSpace(deviceName))
-            CaptureDevice(deviceName);
-    }
-
     protected override void SetData(CaptureDeviceWidget data)
     {
         base.SetData(data);
 
+        focusableContainer.Focus = data.focus;
+        
+        if(!isActiveAndEnabled)
+            return;
+        
         CaptureDevice(data.deviceName);
-        focusableImage.Focus = data.focus;
+    }
+    
+    private void OnEnable()
+    {
+        CaptureDevice(Data.deviceName);
+    }
+
+    private void OnDisable()
+    {
+        StopCapture();
     }
 
     private void CaptureDevice(string name)
     {
-        if (name != currentDeviceName)
-        {
-            currentDeviceName = name;
-            currentCapture?.Dispose();
-            currentCapture = Manager.CaptureDevice(name)
-                .Subscribe(c => focusableImage.SetTexture(c.texture, c.width, c.height));
-        }
+        if (string.IsNullOrWhiteSpace(name) 
+            || name == currentDeviceName 
+            || !isActiveAndEnabled) 
+            return;
+
+        StopCapture();
+        currentCapture = Manager.CaptureDevice(name)
+            .Subscribe(c =>
+            {
+                deviceImage.texture = c.texture;
+                focusableContainer.SetContentSize(c.width, c.height);
+            });
+    }
+
+    private void StopCapture()
+    {
+        currentCapture?.Dispose();
+        currentDeviceName = null;
     }
 }
