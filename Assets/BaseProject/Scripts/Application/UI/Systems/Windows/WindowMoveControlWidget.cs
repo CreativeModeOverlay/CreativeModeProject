@@ -3,6 +3,8 @@ using CreativeMode;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 public class WindowMoveControlWidget : MonoBehaviour
 {
@@ -32,7 +34,6 @@ public class WindowMoveControlWidget : MonoBehaviour
     public float maxSquish = 2;
     public float minStretch = 0.5f;
     
-    private bool lockCursor;
     private bool isDragActive;
     private Rect dragStartRect;
     private Vector2 dragDelta;
@@ -59,6 +60,7 @@ public class WindowMoveControlWidget : MonoBehaviour
         var watcher = obj.AddComponent<MoveWatcher>();
         watcher.Owner = this;
         watcher.Side = side;
+        watcher.UseDragThreshold = side == Side.All;
 
         switch (side)
         {
@@ -101,8 +103,6 @@ public class WindowMoveControlWidget : MonoBehaviour
         isDragActive = false;
         
         AnimateWindowToPosition(dragStartRect.Resize(delta, side, windowSize));
-
-        lockCursor = false;
         OnClearCursor();
     }
 
@@ -113,8 +113,8 @@ public class WindowMoveControlWidget : MonoBehaviour
         var ease = boundsRect == rect ? Ease.OutElastic : Ease.OutBack;
 
         windowRect.DOKill();
-        windowRect.DOLocalMove(boundsRect.position, 0.5f).SetEase(ease);
-        windowRect.DOSizeDelta(boundsRect.size, 0.5f).SetEase(ease);
+        windowRect.DOLocalMove(boundsRect.position.Round(), 0.5f).SetEase(ease);
+        windowRect.DOSizeDelta(boundsRect.size.Round(), 0.5f).SetEase(ease);
         windowRect.DOScale(Vector3.one, 0.5f).SetEase(ease);
     }
 
@@ -182,6 +182,9 @@ public class WindowMoveControlWidget : MonoBehaviour
             resultRect = clampedResize;
         }
 
+        resultRect.position = resultRect.position.Round();
+        resultRect.size = resultRect.size.Round();
+
         windowRect.DOKill();
         windowRect.SetPositionRect(resultRect);
         windowRect.localScale = new Vector3(xScale, yScale, 1f);
@@ -225,11 +228,13 @@ public class WindowMoveControlWidget : MonoBehaviour
         IBeginDragHandler, 
         IEndDragHandler, 
         IPointerEnterHandler, 
-        IPointerExitHandler
+        IPointerExitHandler,
+        IInitializePotentialDragHandler
     {
         public Side Side { get; set; }
         public WindowMoveControlWidget Owner { get; set; }
         public CursorTexture CursorTexture { get; set; }
+        public bool UseDragThreshold { get; set; }
 
         private Vector2 lastDragDelta;
 
@@ -261,6 +266,11 @@ public class WindowMoveControlWidget : MonoBehaviour
         public void OnPointerExit(PointerEventData eventData)
         {
             Owner.OnClearCursor();
+        }
+
+        public void OnInitializePotentialDrag(PointerEventData eventData)
+        {
+            eventData.useDragThreshold = UseDragThreshold;
         }
     }
 }
