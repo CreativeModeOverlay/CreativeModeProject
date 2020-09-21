@@ -47,7 +47,7 @@ namespace CreativeMode.Impl
             
             return new WidgetData
             {
-                id = Storage.WidgetData.Insert(ToDB(data)),
+                id = Storage.WidgetData.Insert(ToDB(new WidgetData { data = data })),
                 type = data.GetType(),
                 data = data
             };
@@ -65,7 +65,7 @@ namespace CreativeMode.Impl
 
         public void UpdateWidget(WidgetData data)
         {
-            Storage.WidgetData.Put(data.id, ToDB(data.data));
+            Storage.WidgetData.Put(data.id, ToDB(data));
         }
 
         public void RemoveWidget(int id)
@@ -78,9 +78,13 @@ namespace CreativeMode.Impl
             Storage.WidgetData.Delete(id);
         }
         
-        private WidgetDataDB ToDB(Widget data)
+        private WidgetDataDB ToDB(WidgetData data)
         {
-            return new WidgetDataDB { data = data };
+            return new WidgetDataDB
+            {
+                name = data.name,
+                data = data
+            };
         }
 
         private WidgetPanelDB ToDB(WidgetPanel panel)
@@ -101,6 +105,7 @@ namespace CreativeMode.Impl
             return new WidgetData
             {
                 id = id,
+                name = data.name,
                 type = data.data.GetType(),
                 data = (Widget) data.data
             };

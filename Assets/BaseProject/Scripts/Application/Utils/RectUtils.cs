@@ -89,5 +89,110 @@ namespace CreativeMode
 
             return rect;
         }
+
+        public static Rect MoveInBounds(this Rect rect, Rect container)
+        {
+            if (rect.x < container.x)
+                rect.x = container.x;
+
+            if (rect.y < container.y)
+                rect.y = container.y;
+
+            if (rect.xMax > container.xMax)
+                rect.x = container.xMax - rect.width;
+        
+            if (rect.yMax > container.yMax)
+                rect.y = container.yMax - rect.height;
+
+            return rect;
+        }
+
+        public static Rect Resize(this Rect rect, Vector2 delta, Side side)
+        {
+            var horizontalMove = delta.x;
+            var verticalMove = delta.y;
+
+            if ((side & Side.Horizontal) == Side.Horizontal)
+            {
+                rect.x += horizontalMove;
+            }
+            else
+            {
+                if ((side & Side.Left) == Side.Left)
+                {
+                    rect.xMin += horizontalMove;
+                }
+                else if ((side & Side.Right) == Side.Right)
+                {
+                    rect.xMax += horizontalMove;
+                }
+            }
+        
+            if ((side & Side.Vertical) == Side.Vertical)
+            {
+                rect.y += verticalMove;
+            }
+            else
+            {
+                if ((side & Side.Bottom) == Side.Bottom)
+                {
+                    rect.yMin += verticalMove;
+                }
+                else if ((side & Side.Top) == Side.Top)
+                {
+                    rect.yMax += verticalMove;
+                }
+            }
+
+            return rect;
+        }
+        
+        public static Rect Resize(this Rect rect, Vector2 delta, Side side, UIContentSize sizeLimits)
+        {
+            var horizontalMove = delta.x;
+            var verticalMove = delta.y;
+
+            if ((side & Side.Horizontal) == Side.Horizontal)
+            {
+                rect.x += horizontalMove;
+            }
+            else
+            {
+                if ((side & Side.Left) == Side.Left)
+                {
+                    rect.xMin = Mathf.Clamp(rect.xMin + horizontalMove,
+                        rect.xMax - sizeLimits.maxWidth,
+                        rect.xMax - sizeLimits.minWidth);
+                }
+                else if ((side & Side.Right) == Side.Right)
+                {
+                    rect.xMax = Mathf.Clamp(rect.xMax + horizontalMove,
+                        rect.xMin + sizeLimits.minWidth,
+                        rect.xMin + sizeLimits.maxWidth);
+                }
+            }
+        
+            if ((side & Side.Vertical) == Side.Vertical)
+            {
+                rect.y += verticalMove;
+            }
+            else
+            {
+                if ((side & Side.Bottom) == Side.Bottom)
+                {
+                    rect.yMin = Mathf.Clamp(rect.yMin + verticalMove,
+                            rect.yMax - sizeLimits.maxHeight,
+                            rect.yMax - sizeLimits.minHeight);
+                }
+                else if ((side & Side.Top) == Side.Top)
+                {
+                    rect.yMax = Mathf.Clamp(rect.yMax + verticalMove,
+                            rect.yMin + sizeLimits.minHeight,
+                            rect.yMin + sizeLimits.maxHeight);
+                }
+            }
+
+            return rect;
+        }
     }
 }
