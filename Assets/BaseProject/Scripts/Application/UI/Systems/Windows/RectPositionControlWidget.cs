@@ -1,16 +1,13 @@
-﻿using System;
-using CreativeMode;
+﻿using CreativeMode;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 
-public class WindowMoveControlWidget : MonoBehaviour
+public class RectPositionControlWidget : MonoBehaviour
 {
-    public RectTransform windowRect;
-    public UIContentSize windowSize;
-
+    [Header("References")]
+    public RectTransform targetRect;
     public GameObject resizeTopLeftControl;
     public GameObject resizeTopControl;
     public GameObject resizeTopRightControl;
@@ -20,6 +17,10 @@ public class WindowMoveControlWidget : MonoBehaviour
     public GameObject resizeBottomControl;
     public GameObject resizebottomRightControl;
     public GameObject dragControl;
+    
+    [Header("Settings")]
+    [SerializeField] private UIContentSize contentSize = UIContentSize.GetDefault();
+    [SerializeField] private float resizeHandleSize = 8;
 
     [Header("Cursors")]
     public CursorTexture horizontalResizeCursor;
@@ -33,6 +34,25 @@ public class WindowMoveControlWidget : MonoBehaviour
     public AnimationCurve stretchCurve;
     public float maxSquish = 2;
     public float minStretch = 0.5f;
+
+    public UIContentSize ContentSize
+    {
+        get => contentSize;
+        set
+        {
+            contentSize = value;
+            UpdateHandleActive();
+        }
+    }
+
+    public float ResizeHandleSize
+    {
+        get => resizeHandleSize;
+        set
+        {
+            resizeHandleSize = value;
+        }
+    }
     
     private bool isDragActive;
     private Rect dragStartRect;
@@ -41,18 +61,55 @@ public class WindowMoveControlWidget : MonoBehaviour
 
     private void Awake()
     {
-        AddMoveHandler(resizeTopLeftControl, Side.Top | Side.Left);
-        AddMoveHandler(resizeTopControl, Side.Top);
-        AddMoveHandler(resizeTopRightControl, Side.Top | Side.Right);
-        AddMoveHandler(resizeLeftControl, Side.Left);
-        AddMoveHandler(resizeRightControl, Side.Right);
-        AddMoveHandler(resizeBottomLeftControl, Side.Bottom | Side.Left);
-        AddMoveHandler(resizeBottomControl, Side.Bottom);
-        AddMoveHandler(resizebottomRightControl, Side.Bottom | Side.Right);
-        AddMoveHandler(dragControl, Side.Top | Side.Bottom | Side.Left | Side.Right);
+        AddMoveHandle(resizeTopLeftControl, Side.Top | Side.Left);
+        AddMoveHandle(resizeTopControl, Side.Top);
+        AddMoveHandle(resizeTopRightControl, Side.Top | Side.Right);
+        AddMoveHandle(resizeLeftControl, Side.Left);
+        AddMoveHandle(resizeRightControl, Side.Right);
+        AddMoveHandle(resizeBottomLeftControl, Side.Bottom | Side.Left);
+        AddMoveHandle(resizeBottomControl, Side.Bottom);
+        AddMoveHandle(resizebottomRightControl, Side.Bottom | Side.Right);
+        AddMoveHandle(dragControl, Side.Top | Side.Bottom | Side.Left | Side.Right);
+
+        UpdateHandleActive();
+        UpdateHandleSize();
     }
 
-    private void AddMoveHandler(GameObject obj, Side side)
+    private void UpdateHandleActive()
+    {
+        var canResizeInAllDirections = contentSize.CanResizeWidth && contentSize.CanResizeHeight;
+        
+        resizeBottomLeftControl.SetActive(canResizeInAllDirections);
+        resizebottomRightControl.SetActive(canResizeInAllDirections);
+        resizeTopLeftControl.SetActive(canResizeInAllDirections);
+        resizeTopRightControl.SetActive(canResizeInAllDirections);
+        
+        resizeLeftControl.SetActive(contentSize.CanResizeWidth);
+        resizeRightControl.SetActive(contentSize.CanResizeWidth);
+        
+        resizeBottomControl.SetActive(contentSize.CanResizeHeight);
+        resizeTopControl.SetActive(contentSize.CanResizeHeight);
+    }
+
+    private void UpdateHandleSize()
+    {
+        var diagonalScale = Vector3.one * resizeHandleSize;
+        var horizontalScale = new Vector3(resizeHandleSize, 1, 1);
+        var verticalScale = new Vector3(1, resizeHandleSize, 1);
+
+        resizeBottomLeftControl.transform.localScale = diagonalScale;
+        resizebottomRightControl.transform.localScale = diagonalScale;
+        resizeTopLeftControl.transform.localScale = diagonalScale;
+        resizeTopRightControl.transform.localScale = diagonalScale;
+
+        resizeLeftControl.transform.localScale = horizontalScale;
+        resizeRightControl.transform.localScale = horizontalScale;
+        
+        resizeBottomControl.transform.localScale = verticalScale;
+        resizeTopControl.transform.localScale = verticalScale;
+    }
+
+    private void AddMoveHandle(GameObject obj, Side side)
     {
         if (!obj)
             return;
@@ -88,7 +145,7 @@ public class WindowMoveControlWidget : MonoBehaviour
 
     private void OnDragStarted()
     {
-        dragStartRect = windowRect.GetPositonRect();
+        dragStartRect = targetRect.GetPositonRect();
         isDragActive = true;
     }
     
@@ -102,7 +159,7 @@ public class WindowMoveControlWidget : MonoBehaviour
     {
         isDragActive = false;
         
-        AnimateWindowToPosition(dragStartRect.Resize(delta, side, windowSize));
+        AnimateWindowToPosition(dragStartRect.Resize(delta, side, contentSize));
         OnClearCursor();
     }
 
@@ -112,10 +169,10 @@ public class WindowMoveControlWidget : MonoBehaviour
 
         var ease = boundsRect == rect ? Ease.OutElastic : Ease.OutBack;
 
-        windowRect.DOKill();
-        windowRect.DOLocalMove(boundsRect.position.Round(), 0.5f).SetEase(ease);
-        windowRect.DOSizeDelta(boundsRect.size.Round(), 0.5f).SetEase(ease);
-        windowRect.DOScale(Vector3.one, 0.5f).SetEase(ease);
+        targetRect.DOKill();
+        targetRect.DOLocalMove(boundsRect.position.Round(), 0.5f).SetEase(ease);
+        targetRect.DOSizeDelta(boundsRect.size.Round(), 0.5f).SetEase(ease);
+        targetRect.DOScale(Vector3.one, 0.5f).SetEase(ease);
     }
 
     private void Update()
@@ -129,7 +186,7 @@ public class WindowMoveControlWidget : MonoBehaviour
             return;
         
         var rect = dragStartRect;
-        var clampedResize = rect.Resize(dragDelta, dragSide, windowSize);
+        var clampedResize = rect.Resize(dragDelta, dragSide, contentSize);
         Rect resultRect;
         float xScale = 1;
         float yScale = 1;
@@ -185,9 +242,9 @@ public class WindowMoveControlWidget : MonoBehaviour
         resultRect.position = resultRect.position.Round();
         resultRect.size = resultRect.size.Round();
 
-        windowRect.DOKill();
-        windowRect.SetPositionRect(resultRect);
-        windowRect.localScale = new Vector3(xScale, yScale, 1f);
+        targetRect.DOKill();
+        targetRect.SetPositionRect(resultRect);
+        targetRect.localScale = new Vector3(xScale, yScale, 1f);
         
         if (animateShake)
         {
@@ -198,17 +255,17 @@ public class WindowMoveControlWidget : MonoBehaviour
 
             if (!Mathf.Approximately(shake, 0))
             {
-                shakeVector.x = shake * UnityEngine.Random.value * 10;
-                shakeVector.y = shake * UnityEngine.Random.value * 10;
+                shakeVector.x = shake * Random.value * 10;
+                shakeVector.y = shake * Random.value * 10;
             }
             
-            windowRect.localPosition += shakeVector;
+            targetRect.localPosition += shakeVector;
         }
     }
 
     private Rect GetContainerRect()
     {
-        return windowRect.parent.AsRectTransform().rect;
+        return targetRect.parent.AsRectTransform().rect;
     }
 
     private void OnSetNewCursor(CursorTexture cursor)
@@ -232,7 +289,7 @@ public class WindowMoveControlWidget : MonoBehaviour
         IInitializePotentialDragHandler
     {
         public Side Side { get; set; }
-        public WindowMoveControlWidget Owner { get; set; }
+        public RectPositionControlWidget Owner { get; set; }
         public CursorTexture CursorTexture { get; set; }
         public bool UseDragThreshold { get; set; }
 

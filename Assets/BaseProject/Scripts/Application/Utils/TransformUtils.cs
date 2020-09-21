@@ -18,9 +18,9 @@ namespace CreativeMode
         
         public static void SetPositionRect(this RectTransform t, Rect rect)
         {
-            t.ResetAnchors();
             t.localPosition = rect.position;
-            t.sizeDelta = rect.size;
+            t.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, rect.width);
+            t.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, rect.height);
         }
     }
 }

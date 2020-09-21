@@ -14,7 +14,7 @@ namespace CreativeMode
         protected T Data => widgetData;
         
         [FormerlySerializedAs("info")]
-        public UIContentSize size;
+        public UIContentSize size = UIContentSize.GetDefault();
 
         [SerializeField]
         private T widgetData;

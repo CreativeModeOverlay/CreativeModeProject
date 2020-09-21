@@ -3,17 +3,26 @@
 namespace CreativeMode
 {
     [Serializable]
-    public class UIContentSize
+    public struct UIContentSize
     {
         public int defaultWidth;
         public int defaultHeight;
         
         public int minWidth;
         public int minHeight;
-        public int maxWidth = Int32.MaxValue;
-        public int maxHeight = Int32.MaxValue;
+        public int maxWidth;
+        public int maxHeight;
 
-        public bool CanResizeWidth => minWidth >= maxWidth;
-        public bool CanResizeHeight => minHeight >= maxHeight;
+        public bool CanResizeWidth => minWidth < maxWidth;
+        public bool CanResizeHeight => minHeight < maxHeight;
+
+        public static UIContentSize GetDefault()
+        {
+            return new UIContentSize
+            {
+                maxWidth = Int32.MaxValue,
+                maxHeight = Int32.MaxValue
+            };
+        }
     }
 }
