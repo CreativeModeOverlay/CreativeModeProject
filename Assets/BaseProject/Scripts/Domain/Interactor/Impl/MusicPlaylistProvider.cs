@@ -9,6 +9,9 @@ using UnityEngine;
 
 public class MusicPlaylistProvider : MonoBehaviour, IMusicPlaylistProvider
 {
+    private IMusicPlayerStorage Storage => Instance<IMusicPlayerStorage>.Get();
+    private IMusicPlayer Player => Instance<IMusicPlayer>.Get();
+    
     public bool Shuffle
     {
         get => Storage.Shuffle;
@@ -20,10 +23,7 @@ public class MusicPlaylistProvider : MonoBehaviour, IMusicPlaylistProvider
         get => Storage.SkipRepeats;
         set => Storage.SkipRepeats = value;
     }
-    
-    private IMusicPlayerStorage Storage => Instance<IMusicPlayerStorage>.Get();
-    private IMusicPlayer Player => Instance<IMusicPlayer>.Get();
-    
+
     private AudioMetadata currentMusicInfo;
     private String lastMarkedMusicUrl;
 

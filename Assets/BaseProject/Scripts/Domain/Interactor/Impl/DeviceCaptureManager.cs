@@ -8,6 +8,8 @@ namespace CreativeMode
 {
     public class DeviceCaptureManager : MonoBehaviour, IDeviceCaptureManager
     {
+        private IDeviceCaptureStorage Storage => Instance<IDeviceCaptureStorage>.Get();
+        
         public int defaultWidth;
         public int defaultHeight;
         public int defaultRefreshRate;
@@ -15,9 +17,7 @@ namespace CreativeMode
         
         public bool useMipMaps;
         public float mipMapBias = -1f;
-        
-        private IDeviceCaptureStorage Storage => Instance<IDeviceCaptureStorage>.Get();
-        
+
         private ItemWatcher<string> captureDeviceWatcher = new ItemWatcher<string>();
         private List<CaptureInfo> activeCaptures = new List<CaptureInfo>();
         private Dictionary<string, IObservable<DeviceCapture>> activeCaptureTextures 

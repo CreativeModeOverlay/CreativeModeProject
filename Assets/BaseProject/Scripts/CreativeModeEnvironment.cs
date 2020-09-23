@@ -53,13 +53,13 @@ namespace CreativeMode
             Instance<IMusicVisualizationProvider>.Bind().UnityObject<MusicVisualizationProvider>();
             Instance<IMusicPlaylistProvider>.Bind().UnityObject<MusicPlaylistProvider>();
             Instance<IMusicPlayer>.Bind().UnityObject<MusicPlayer>();
-            Instance<IWidgetUIFactory>.Bind().UnityObject<WidgetUIFactory>();
             Instance<IDesktopCaptureManager>.Bind().UnityObject<DesktopCaptureManager>();
             Instance<IDeviceCaptureManager>.Bind().UnityObject<DeviceCaptureManager>();
             
             Instance<IOverlayManager>.Bind().UnityObject<OverlaySceneManager>();
             Instance<IInputManager>.Bind().Instance(new InputManager());
             Instance<IWidgetManager>.Bind().Instance(new WidgetManager());
+            Instance<IWidgetUIFactory>.Bind().UnityObject<WidgetUIFactory>();
 
             Instance<ImageLoader>.Bind().Instance(new ImageLoader { MaxThreadCount = 4 });
             Instance<AudioLoader>.Bind().Instance(new AudioLoader { MaxThreadCount = 2 });

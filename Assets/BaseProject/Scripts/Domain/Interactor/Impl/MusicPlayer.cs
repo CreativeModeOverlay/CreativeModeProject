@@ -10,6 +10,7 @@ namespace CreativeMode.Impl
     public class MusicPlayer : MonoBehaviour, IMusicPlayer
     {
         private IMusicPlaylistProvider Playlist => Instance<IMusicPlaylistProvider>.Get();
+        private AudioLoader AudioLoader => Instance<AudioLoader>.Get();
         
         [FormerlySerializedAs("visualizer")]
         public MusicVisualizationProvider visualizationProvider;
@@ -54,7 +55,6 @@ namespace CreativeMode.Impl
         private AudioSourceState sourceState;
         private MediaPlayerState playerState;
         private IDisposable musicLoadDisposable;
-        private AudioLoader AudioLoader => Instance<AudioLoader>.Get();
 
         private void Update()
         {

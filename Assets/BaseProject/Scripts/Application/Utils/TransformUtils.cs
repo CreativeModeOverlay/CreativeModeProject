@@ -22,5 +22,22 @@ namespace CreativeMode
             t.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, rect.width);
             t.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, rect.height);
         }
+
+        public static void FillRectParent(GameObject obj, RectTransform parent)
+        {
+            var rectTransform = (RectTransform) obj.transform;
+            rectTransform.SetParent(parent, false);
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.sizeDelta = Vector2.zero;
+            rectTransform.pivot = Vector2.zero;
+            rectTransform.anchoredPosition = Vector2.zero;
+        }
+
+        public static void ClearRectParent(GameObject obj)
+        {
+            var rectTransform = (RectTransform) obj.transform;
+            rectTransform.SetParent(null, false);
+        }
     }
 }

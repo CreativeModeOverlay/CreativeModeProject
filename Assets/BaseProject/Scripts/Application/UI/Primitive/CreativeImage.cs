@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CreativeImage : Image
 {
-    private static ImageLoader ImageLoader => Instance<ImageLoader>.Get();
+    private ImageLoader ImageLoader => Instance<ImageLoader>.Get();
 
     private SharedAsset<ImageAsset> currentImage;
     

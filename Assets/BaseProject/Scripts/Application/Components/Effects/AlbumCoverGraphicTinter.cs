@@ -7,6 +7,8 @@ namespace CreativeMode
 {
     public class AlbumCoverGraphicTinter : MonoBehaviour
     {
+        private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
+
         public Graphic[] tintBackground;
         public Graphic[] tintVibrant;
         public float animationDuration;
@@ -31,8 +33,6 @@ namespace CreativeMode
         private bool lastPaletteApplied;
         private Palette currentPalette;
         
-        private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
-
         private void OnNewPalette(Palette p)
         {
             currentPalette = p;

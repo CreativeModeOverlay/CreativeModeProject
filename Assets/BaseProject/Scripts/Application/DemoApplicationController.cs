@@ -9,14 +9,6 @@ namespace CreativeMode
 {
     public class DemoApplicationController : MonoBehaviour
     {
-        public CameraOverlayScene idleScene;
-        public CameraOverlayScene mainScene;
-        public CameraOverlayScene musicScene;
-        public AudioMixerSnapshot mainMixerSnapshot;
-        public AudioMixerSnapshot musicBrbMixerSnapshot;
-
-        public ShaderBlendTransition transitionCrossfade;
-        
         private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
         private IMusicPlaylistProvider MusicPlaylist => Instance<IMusicPlaylistProvider>.Get();
         private IInputManager InputManager => Instance<IInputManager>.Get();
@@ -24,6 +16,14 @@ namespace CreativeMode
         private IChatInteractor ChatInteractor => Instance<IChatInteractor>.Get();
         private IDesktopCaptureManager CaptureManager => Instance<IDesktopCaptureManager>.Get();
         
+        public CameraOverlayScene idleScene;
+        public CameraOverlayScene mainScene;
+        public CameraOverlayScene musicScene;
+        public AudioMixerSnapshot mainMixerSnapshot;
+        public AudioMixerSnapshot musicBrbMixerSnapshot;
+
+        public ShaderBlendTransition transitionCrossfade;
+
         private IOverlayElement currentScene;
 
         private void Awake()

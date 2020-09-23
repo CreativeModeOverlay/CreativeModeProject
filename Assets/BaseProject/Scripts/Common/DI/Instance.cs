@@ -2,28 +2,31 @@
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
+/// <summary>
+/// Service locator-like instance provider
+/// </summary>
 public static class Instance<T>
 {
     private static Func<T> factory;
     private static readonly Dictionary<object, Func<T>> taggedFactory = new Dictionary<object, Func<T>>();
 
-    public static T Get(object tag = null)
+    public static T Get()
     {
-        if (tag != null)
-        {
-            if (taggedFactory.TryGetValue(tag, out var tFactory))
-                return tFactory();
-            
-            throw new ArgumentException($"Dependency for type \"{typeof(T).Name}\" with tag {tag} is not bound");
-        }
-
         if (factory != null)
             return factory();
 
         throw new ArgumentException($"Dependency for type \"{typeof(T).Name}\" is not bound");
     }
     
-    public static Binder Bind(bool isLazy = true, object tag = null) => new Binder(isLazy, tag);
+    public static T Get(string instanceTag)
+    {
+        if (taggedFactory.TryGetValue(instanceTag, out var tFactory))
+            return tFactory();
+            
+        throw new ArgumentException($"Dependency for type \"{typeof(T).Name}\" with tag {instanceTag} is not bound");
+    }
+
+    public static Binder Bind(bool cacheInstance = true, object tag = null) => new Binder(cacheInstance, tag);
     
     public class Binder
     {

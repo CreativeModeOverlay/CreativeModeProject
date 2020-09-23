@@ -7,10 +7,11 @@ namespace CreativeMode.Impl
 {
     public class WidgetManager : IWidgetManager
     {
+        private IWidgetStorage Storage => Instance<IWidgetStorage>.Get();
+        
         public IObservable<IReadOnlyList<WidgetData>> Widgets => widgetsSubject;
         public IObservable<WidgetData> WidgetUpdated => widgetUpdatedSubject;
-
-        private IWidgetStorage Storage => Instance<IWidgetStorage>.Get();
+        
         private readonly ItemWatcher<string> panelWidgets = new ItemWatcher<string>();
         
         private readonly List<WidgetData> widgets;

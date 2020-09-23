@@ -72,7 +72,7 @@ namespace CreativeMode
             where T : Component
         {
             var graphicObject = new GameObject("Graphic");
-            graphicObject.transform.parent = c.gameObject.transform;
+            graphicObject.transform.SetParent(c.gameObject.transform, false);
             graphicObject.AddComponent<CanvasRenderer>();
             var result = graphicObject.AddComponent<T>();
 

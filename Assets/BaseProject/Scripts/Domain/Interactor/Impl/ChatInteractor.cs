@@ -10,7 +10,7 @@ public class ChatInteractor : IChatInteractor
 {
     private IChatClient ChatClient => Instance<IChatClient>.Get();
     private IChatStorage ChatStorage => Instance<IChatStorage>.Get();
-
+    
     private EmoteSize emoteSize;
 
     private Subject<Unit> onClearChatMessagesBehaviour = new Subject<Unit>();

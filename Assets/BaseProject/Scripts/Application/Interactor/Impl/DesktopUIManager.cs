@@ -7,11 +7,6 @@ namespace CreativeMode.Impl
     {
         public ContextMenuManager contextMenuManager;
 
-        public T OpenWindow<T>(GameObject prefab)
-        {
-            return default;
-        }
-
         public IDisposable ShowContextMenu(Vector2 position, Menu menu) => 
             contextMenuManager.ShowContextMenu(position, menu);
 

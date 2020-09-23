@@ -8,6 +8,8 @@ namespace CreativeMode.Impl
 {
     public class MusicVisualizationProvider : MonoBehaviour, IMusicVisualizationProvider
     {
+        private ImageLoader ImageLoader => Instance<ImageLoader>.Get();
+        
         public int waveformBufferSize = 16384;
         public int spectrumBufferSize = 8192;
         public FFTWindow spectrumWindow = FFTWindow.BlackmanHarris;
@@ -37,7 +39,6 @@ namespace CreativeMode.Impl
 
         private List<LyricsManager> lyricsManagers = new List<LyricsManager>();
         private List<IMusicVisualizerElement> visualizerElements = new List<IMusicVisualizerElement>();
-        private ImageLoader ImageLoader => Instance<ImageLoader>.Get();
 
         private void Awake()
         {
