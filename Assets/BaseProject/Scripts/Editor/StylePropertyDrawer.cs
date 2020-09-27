@@ -11,13 +11,12 @@ namespace CreativeMode
             SerializedProperty boolProperty = property.FindPropertyRelative("shouldOverride");
             SerializedProperty valueProperty = property.FindPropertyRelative("value");
 
-            var overridePosition = new Rect(position.x, position.y, 96, position.height);
-            var valuePosition = new Rect(position.x + 96, position.y, position.width - 96, position.height);
-
+            var overridePosition = new Rect(position.x, position.y, 128, position.height);
+            var valuePosition = new Rect(position.x + 24, position.y, position.width - 24, position.height);
+            var oldEnabled = GUI.enabled;
+            
             boolProperty.boolValue = EditorGUI.ToggleLeft(overridePosition, "", boolProperty.boolValue);
             
-            var oldEnabled = GUI.enabled;
-
             if (!boolProperty.boolValue)
                 GUI.enabled = false;
             

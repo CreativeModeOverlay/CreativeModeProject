@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
-using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -10,83 +10,65 @@ namespace CreativeMode
 {
     public static class StyleUtils
     {
-        public static void ApplyButtonStyle(StyleResolver<ButtonStyleData> resolver, params Button[] buttons)
+        public static List<ResolvedProperty> ApplyButtonStyle(StyleResolver<ButtonStyleData> resolver, params Button[] buttons)
         {
-            foreach (var button in buttons)
+            return ResolveObjects(resolver, buttons, (r, b) =>
             {
-                if(!button)
-                    continue;
-                
-                resolver.NewObject(button);
-                
-                ApplySelectableStyle(button, resolver);
-            }
+                ApplySelectableStyle(r.ForType<SelectableStyleData>(), b);
+            });
         }
 
-        public static void ApplyImageStyle(StyleResolver<ImageStyleData> resolver, params Image[] images)
+        public static List<ResolvedProperty> ApplyImageStyle(StyleResolver<ImageStyleData> resolver, params Image[] images)
         {
-            foreach (var image in images)
+            return ResolveObjects(resolver, images, (r, i) =>
             {
-                if(!image)
-                    continue;
-                
-                resolver.NewObject(image);
-                
-                ApplyGraphicStyle(resolver, image);
+                ApplyGraphicStyle(r.ForType<GraphicStyleData>(), i);
 
-                image.sprite = resolver.Resolve(d => d.sprite);
-            }
+                i.sprite = r.Resolve(d => d.sprite);
+            });
         }
 
-        public static void ApplyTextStyle(StyleResolver<TextStyleData> resolver, params Text[] texts)
+        public static List<ResolvedProperty> ApplyTextStyle(StyleResolver<TextStyleData> resolver, params Text[] texts)
         {
-            foreach (var text in texts)
+            return ResolveObjects(resolver, texts, (r, t) =>
             {
-                if(!text)
-                    continue;
-                
-                resolver.NewObject(text);
-                
-                ApplyGraphicStyle(resolver, text);
+                ApplyGraphicStyle(r.ForType<GraphicStyleData>(), t);
 
-                var newFont = resolver.Resolve(p => p.font);
+                var newFont = r.Resolve(p => p.font);
 
                 if (newFont)
-                    text.font = newFont;
+                    t.font = newFont;
                 
-                text.fontStyle = resolver.Resolve(p => p.fontStyle);
-                text.fontSize = resolver.Resolve(p => p.fontSize);
-                text.lineSpacing = resolver.Resolve(p => p.lineSpacing);
-                text.supportRichText = resolver.Resolve(p => p.richText);
-                text.alignment = resolver.Resolve(p => p.alignment);
-                text.alignByGeometry = resolver.Resolve(p => p.alignByGeometry);
-                text.horizontalOverflow = resolver.Resolve(p => p.horizontalOverflow);
-                text.verticalOverflow = resolver.Resolve(p => p.verticalOverflow);
-                text.resizeTextForBestFit = resolver.Resolve(p => p.bestFit);
-                text.resizeTextMinSize = resolver.Resolve(p => p.bestFitMinSize);
-                text.resizeTextMaxSize = resolver.Resolve(p => p.bestFitMaxSize);
-            }
+                t.fontStyle = r.Resolve(p => p.fontStyle);
+                t.fontSize = r.Resolve(p => p.fontSize);
+                t.lineSpacing = r.Resolve(p => p.lineSpacing);
+                t.supportRichText = r.Resolve(p => p.richText);
+                t.alignment = r.Resolve(p => p.alignment);
+                t.alignByGeometry = r.Resolve(p => p.alignByGeometry);
+                t.horizontalOverflow = r.Resolve(p => p.horizontalOverflow);
+                t.verticalOverflow = r.Resolve(p => p.verticalOverflow);
+                t.resizeTextForBestFit = r.Resolve(p => p.bestFit);
+                t.resizeTextMinSize = r.Resolve(p => p.bestFitMinSize);
+                t.resizeTextMaxSize = r.Resolve(p => p.bestFitMaxSize);
+            });
         }
 
-        public static void ApplyGraphicStyle<T>(StyleResolver<T> resolver, params Graphic[] graphics)
-            where T : GraphicStyleData, new()
+        public static List<ResolvedProperty> ApplyGraphicStyle(StyleResolver<GraphicStyleData> resolver, params Graphic[] graphics)
         {
-            foreach (var graphic in graphics)
-            {
-                if(!graphic)
-                    continue;
+            return ResolveObjects(resolver, graphics, ApplyGraphicStyle);
+        }
+        
+        private static void ApplyGraphicStyle(LoggingResolver<GraphicStyleData> resolver, Graphic graphic)
+        {
+            resolver.SetTarget(graphic);
 
-                resolver.NewObject(graphic);
+            graphic.color = resolver.Resolve(d => d.color);
+            graphic.material = resolver.Resolve(d => d.material);
 
-                graphic.color = resolver.Resolve(d => d.color);
-                graphic.material = resolver.Resolve(d => d.material);
-
-                ApplyShadow(graphic, resolver);
-            }
+            ApplyShadow(resolver, graphic);
         }
 
-        private static void ApplySelectableStyle<T>(Selectable button, StyleResolver<T> resolver)
-            where T : SelectableStyleData, new()
+        private static void ApplySelectableStyle(LoggingResolver<SelectableStyleData> resolver, Selectable button)
         {
             var colorBlock = button.colors;
 
@@ -101,7 +83,7 @@ namespace CreativeMode
             button.colors = colorBlock;
         }
 
-        private static void ApplyShadow<T>(Graphic graphicObject, StyleResolver<T> resolver)
+        private static void ApplyShadow<T>(LoggingResolver<T> resolver, Graphic graphicObject)
             where T : GraphicStyleData, new()
         {
             var shadowType = resolver.Resolve(d => d.shadowType);
@@ -145,123 +127,137 @@ namespace CreativeMode
             shadow.effectDistance = resolver.Resolve(d => d.shadowDistance);
         }
 
-        public static StyleResolver<T> CreateResolver<S, T>(StringBuilder resolveLogger, BaseElementStyle<S, T> style) 
-            where S : BaseElementStyle<S, T> 
+        public static StyleResolver<T> CreateResolver<T>(ElementStyle<T> style)
             where T : new()
         {
-            return new StyleResolver<T>(resolveLogger, t => 
-                TraverseHierarchy(style.name, style.Overrides, style.Innherits, t));
+            return new StyleResolver<T>(t => 
+                TraverseHierarchy(style, style.Overrides, style.Inherits, t));
         }
 
-        public static StyleResolver<T2> CreateResolver<S1, T1, S2, T2>(StringBuilder resolveLogger, BaseElementStyle<S1, T1> style,
-            Func<T1, StyleReference<S2, T2>> styleGetter)
-            where S1 : BaseElementStyle<S1, T1>
-            where S2 : BaseElementStyle<S2, T2> 
+        public static StyleResolver<T2> CreateResolver<T1, T2>(ElementStyle<T1> style,
+            Func<T1, StyleReference<T2>> styleGetter)
             where T2 : new()
         {
-            return new StyleResolver<T2>(resolveLogger, t => 
-                TraverseHierarchy(style.name, style.Overrides, style.Innherits, (s, name) => 
-                { 
-                    var nestedStyle = styleGetter(s); 
-                    return TraverseHierarchy(name, nestedStyle.overrides, nestedStyle.innherits, t); 
+            return new StyleResolver<T2>(t => 
+                TraverseHierarchy(style, style.Overrides, style.Inherits, (asset, data) => 
+                {
+                    if (data is T1 castedData)
+                    {
+                        var nestedStyle = styleGetter(castedData); 
+                        return TraverseHierarchy(asset, nestedStyle.overrides, nestedStyle.inherits, t); 
+                    }
+
+                    return false;
                 }));
         }
 
-        private static bool TraverseHierarchy<S, T>(string name, T overrides, S[] inherits, 
-            Func<T, string, bool> propertyGetter)
-            where S : BaseElementStyle<S, T>
+        private static bool TraverseHierarchy<S>(ScriptableObject asset, object overrides, S[] inherits, 
+            Func<ScriptableObject, object, bool> propertyGetter)
+            where S : ElementStyle
         {
-            bool TraverseRecursive(string nestedName, T nestedInherits, S[] nestedOverrides)
+            HashSet<object> visitedData = new HashSet<object>();
+            
+            bool TraverseRecursive(ScriptableObject nestedObject, object nestedInherits, ElementStyle[] nestedOverrides)
             {
-                if (propertyGetter(nestedInherits, nestedName))
+                if (visitedData.Contains(nestedObject))
+                {
+                    Debug.LogError($"Circular dependency found in {asset.name}, " +
+                              $"{nestedObject.name} found multiple times in hierarchy");
+                    return false;
+                }
+
+                visitedData.Add(nestedObject);
+                
+                if (propertyGetter(nestedObject, nestedInherits))
                     return true;
 
-                for (var i = nestedOverrides.Length - 1; i >= 0; i--)
+                if (nestedOverrides != null)
                 {
-                    var o = nestedOverrides[i];
+                    for (var i = nestedOverrides.Length - 1; i >= 0; i--)
+                    {
+                        var o = nestedOverrides[i];
                     
-                    if(!o)
-                        continue;
+                        if(!o)
+                            continue;
 
-                    if (TraverseRecursive(o.name, o.Overrides, o.Innherits))
-                        return true;
+                        if (TraverseRecursive(o, o.Overrides, o.Inherits))
+                            return true;
+                    }
                 }
+                
+                visitedData.Remove(nestedObject);
 
                 return false;
             }
 
-            return TraverseRecursive(name, overrides, inherits);
+            return TraverseRecursive(asset, overrides, inherits);
         }
- 
-        public class StyleResolver<D> 
-            where D : new()
+
+        private static List<ResolvedProperty> ResolveObjects<D, T>(
+            StyleResolver<D> styleResolver, T[] objects, Action<LoggingResolver<D>, T> loggingResolverApplier)
+            where D : new() 
+            where T : UIBehaviour
         {
-            private static readonly D defaultData = new D();
-            private const string defaultAssetName = "default";
-            
-            private readonly Func<Func<D, string, bool>, bool> hierarchyTraverser;
-            private readonly StringBuilder resolverLog;
-            private Component lastComponent;
-            
-            public StyleResolver(StringBuilder resolveLogger, Func<Func<D, string, bool>, bool> traverser)
+            var resolver = new LoggingResolver<D>(styleResolver);
+
+            foreach (var obj in objects)
             {
-                hierarchyTraverser = traverser;
-                resolverLog = resolveLogger;
+                if (!obj)
+                    continue;
+
+                resolver.SetTarget(obj);
+                loggingResolverApplier(resolver, obj);
             }
 
-            public void NewObject(Component obj)
+            return resolver.GetResolvedProperties();
+        }
+        
+        public class LoggingResolver<D>
+            where D : new()
+        {
+            private readonly StyleResolver<D> resolver;
+            private List<ResolvedProperty> properties;
+            private UIBehaviour targetObject;
+            
+            public LoggingResolver(StyleResolver<D> resolver)
             {
-                if (obj != lastComponent && resolverLog != null)
-                {
-                    if (resolverLog.Length > 0)
-                        resolverLog.AppendLine();
+                this.resolver = resolver;
+                properties = new List<ResolvedProperty>();
+            }
 
-                    resolverLog.AppendLine($"{obj.gameObject.name}#{obj.GetType().Name}");
-                    lastComponent = obj;
-                }
+            public LoggingResolver<DNew> ForType<DNew>()
+                where DNew : new()
+            {
+                return new LoggingResolver<DNew>(resolver.ForType<DNew>())
+                {
+                    properties = properties,
+                    targetObject = targetObject
+                };
+            }
+
+            public void SetTarget(UIBehaviour target)
+            {
+                targetObject = target;
             }
 
             public P Resolve<P>(Expression<Func<D, StyleProperty<P>>> propertyGetterExpression)
             {
-                P value = default;
-                var assetName = defaultAssetName;
-                var propertyName = "unknown";
-
-                if (resolverLog != null)
+                var resolvedProperty = resolver.Resolve(propertyGetterExpression);
+                
+                properties.Add(new ResolvedProperty
                 {
-                    if (propertyGetterExpression.Body is MemberExpression memberExpression)
-                        propertyName = memberExpression.Member.Name;
-                }
-
-                var propertyGetter = propertyGetterExpression.Compile();
-
-                var isApplied = hierarchyTraverser((d, name) =>
-                {
-                    var prop = propertyGetter(d);
-
-                    if (prop.shouldOverride)
-                    {
-                        value = prop.value;
-                        assetName = name;
-                        return true;
-                    }
-
-                    return false;
+                    value = resolvedProperty.value,
+                    valueOrigin = resolvedProperty.origin,
+                    propertyName = resolvedProperty.propertyName,
+                    valueTarget = targetObject
                 });
                 
-                var resultValue = isApplied ? value : propertyGetter(defaultData).value;
+                return resolvedProperty.value;
+            }
 
-                if (resolverLog != null)
-                {
-                    var propertyPath = $"{assetName}.{propertyName}";
-
-                    if (assetName != defaultAssetName)
-                        propertyPath = $"<color=#88ff88><b>{propertyPath}</b></color>";
-                
-                    resolverLog.AppendLine($"- {propertyPath}: {resultValue}");
-                }
-                
-                return resultValue;
+            public List<ResolvedProperty> GetResolvedProperties()
+            {
+                return properties;
             }
         }
     }

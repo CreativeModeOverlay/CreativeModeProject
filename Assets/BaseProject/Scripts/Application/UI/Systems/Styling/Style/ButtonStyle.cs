@@ -2,6 +2,6 @@
 
 namespace CreativeMode
 {
-    [CreateAssetMenu(menuName = TextStyle.MenuCategory + "Button")]
-    public class ButtonStyle : BaseElementStyle<ButtonStyle, ButtonStyleData> { }
+    [CreateAssetMenu(menuName = ButtonStyle.MenuCategory + "Button")]
+    public class ButtonStyle : ElementStyle<ButtonStyleData> { }
 }

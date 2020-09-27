@@ -50,7 +50,7 @@ namespace CreativeMode
         public StyleProperty<bool> richText = defaultFontData.richText;
 
         [Header("Paragraph")] 
-        public StyleProperty<TextAnchor> alignment = defaultFontData.alignment;
+        public StyleProperty<TextAnchor> alignment = TextAnchor.MiddleCenter;
         public StyleProperty<bool> alignByGeometry = defaultFontData.alignByGeometry;
         public StyleProperty<HorizontalWrapMode> horizontalOverflow = defaultFontData.horizontalOverflow;
         public StyleProperty<VerticalWrapMode> verticalOverflow = defaultFontData.verticalOverflow;
@@ -69,10 +69,10 @@ namespace CreativeMode
     [Serializable]
     public class ButtonStyleData : SelectableStyleData
     {
-        [Header("Button")] 
-        public StyleReference<ImageStyle, ImageStyleData> backgroundStyle;
+        [Header("Button")]
+        public StyleReference<ImageStyleData> backgroundStyle;
         
-        public StyleReference<TextStyle, TextStyleData> innerText;
-        public StyleReference<GraphicStyle, GraphicStyleData> innerGraphic;
+        public StyleReference<TextStyleData> innerText;
+        public StyleReference<GraphicStyleData> innerGraphic;
     }
 }

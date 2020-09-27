@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine.UI;
 
 namespace CreativeMode
@@ -10,12 +10,19 @@ namespace CreativeMode
         public Text innerText;
         public Graphic[] innerGraphic;
 
-        protected override void ApplyStyle(StringBuilder logger)
+        protected override void ApplyStyle(List<ResolvedProperty> outProperties)
         {
-            StyleUtils.ApplyButtonStyle(StyleUtils.CreateResolver(logger, Style), button);
-            StyleUtils.ApplyImageStyle(StyleUtils.CreateResolver(logger, Style, r => r.backgroundStyle), background);
-            StyleUtils.ApplyTextStyle(StyleUtils.CreateResolver(logger, Style, r => r.innerText), innerText); 
-            StyleUtils.ApplyGraphicStyle(StyleUtils.CreateResolver(logger, Style, r => r.innerGraphic), innerGraphic);
+            outProperties.AddRange(StyleUtils.ApplyButtonStyle(
+                StyleUtils.CreateResolver(Style), button));
+            
+            outProperties.AddRange(StyleUtils.ApplyImageStyle(
+                StyleUtils.CreateResolver(Style, r => r.backgroundStyle), background));
+            
+            outProperties.AddRange(StyleUtils.ApplyTextStyle(
+                StyleUtils.CreateResolver(Style, r => r.innerText), innerText));
+            
+            outProperties.AddRange(StyleUtils.ApplyGraphicStyle(
+                StyleUtils.CreateResolver(Style, r => r.innerGraphic), innerGraphic));
         }
     }
 }

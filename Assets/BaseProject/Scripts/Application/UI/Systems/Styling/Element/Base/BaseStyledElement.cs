@@ -1,10 +1,10 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CreativeMode
 {
     [ExecuteInEditMode]
-    public abstract class BaseStyledElement<T> : MonoBehaviour, IResolveLogProvider
+    public abstract class BaseStyledElement<T> : MonoBehaviour, IStylePropertyProvider
         where T : ScriptableObject
     {
         [SerializeField] private T style;
@@ -19,31 +19,37 @@ namespace CreativeMode
             }
         }
 
-        public string ResolverLog { get; private set; }
+        public List<ResolvedProperty> Properties { get; private set; }
 
 #if UNITY_EDITOR
         protected void Update()
         {
-            ApplyStyle(true);
+            ApplyStyle();
         }
 #endif
 
-        private void ApplyStyle(bool log = false)
+        private void ApplyStyle()
         {
             if (Application.isPlaying || !Style)
                 return;
 
-            var builder = log ? new StringBuilder() : null;
-            ApplyStyle(builder);
-            ResolverLog = builder?.ToString(); 
+            if (Properties == null)
+            {
+                Properties = new List<ResolvedProperty>();
+            }
+            else
+            {
+                Properties.Clear();
+            }
+
+            ApplyStyle(Properties);
         }
 
-        protected abstract void ApplyStyle(StringBuilder logger);
-
+        protected abstract void ApplyStyle(List<ResolvedProperty> outProperties);
     }
 
-    public interface IResolveLogProvider
+    public interface IStylePropertyProvider
     {
-        string ResolverLog { get; }
+        List<ResolvedProperty> Properties { get; }
     }
 }

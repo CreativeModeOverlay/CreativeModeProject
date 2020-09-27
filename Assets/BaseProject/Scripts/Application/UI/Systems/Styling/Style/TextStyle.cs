@@ -3,5 +3,5 @@
 namespace CreativeMode
 {
     [CreateAssetMenu(menuName = TextStyle.MenuCategory + "Text")]
-    public class TextStyle : BaseElementStyle<TextStyle, TextStyleData> { }
+    public class TextStyle : ElementStyle<TextStyleData> { }
 }

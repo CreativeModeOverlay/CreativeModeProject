@@ -3,10 +3,9 @@
 namespace CreativeMode
 {
     [Serializable]
-    public struct StyleReference<S, T> 
-        where S : BaseElementStyle<S, T>
+    public struct StyleReference<O>
     {
-        public S[] innherits;
-        public T overrides;
+        public ElementStyle[] inherits;
+        public O overrides;
     }
 }
