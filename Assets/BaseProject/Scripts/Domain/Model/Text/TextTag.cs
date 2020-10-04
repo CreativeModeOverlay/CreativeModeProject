@@ -40,4 +40,9 @@ namespace CreativeMode
     {
         public static ItalicTag Instance = new ItalicTag();
     }
+
+    public class LineBreak
+    {
+        public static LineBreak Instance = new LineBreak();
+    }
 }

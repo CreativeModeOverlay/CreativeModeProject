@@ -145,6 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02778fefb26e4dbb8735be36efb5424f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 5039794d11de99a4198d54aa278ed243, type: 3}
+  widgetName: Lyrics
   size:
     defaultWidth: 500
     defaultHeight: 76
@@ -152,6 +154,8 @@ MonoBehaviour:
     minHeight: 76
     maxWidth: 2147483647
     maxHeight: 76
+  widgetData:
+    voice: 
   textLinePrefab: {fileID: 3883758462126203501}
   textRoot: {fileID: 3883758462769992191}
   animationDuration: 0.5
@@ -199,7 +203,6 @@ MonoBehaviour:
     displayName: Lyrics
   - voiceName: chorus
     displayName: Chorus
-  displayVoice: 
 --- !u!222 &6601139890518146410
 CanvasRenderer:
   m_ObjectHideFlags: 0

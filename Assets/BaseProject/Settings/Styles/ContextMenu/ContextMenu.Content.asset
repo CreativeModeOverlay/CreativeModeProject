@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6828eccb42f64071b046e7b3b4fc61be, type: 3}
+  m_Name: ContextMenu.Content
+  m_EditorClassIdentifier: 
+  inherits:
+    array: []
+  overrides:
+    minWidth:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    minHeight:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    preferredWidth:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    preferredHeight:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    flexibleWidth:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    flexibleHeight:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    horizontalFit:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    verticalFit:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    shadowType:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    shadowDistance:
+      applyType: 0
+      ownValue: {x: 1, y: -1}
+      resolvedValue: {x: 1, y: -1}
+      resolvedAsset: {fileID: 0}
+    shadowColor:
+      applyType: 0
+      ownValue: {r: 0, g: 0, b: 0, a: 0.5}
+      resolvedValue: {r: 0, g: 0, b: 0, a: 0.5}
+      resolvedAsset: {fileID: 0}
+    shadowUseGraphicAlpha:
+      applyType: 0
+      ownValue: 1
+      resolvedValue: 1
+      resolvedAsset: {fileID: 0}
+    color:
+      applyType: 1
+      ownValue: {r: 1, g: 1, b: 1, a: 1}
+      resolvedValue: {r: 1, g: 1, b: 1, a: 1}
+      resolvedAsset: {fileID: 11400000}
+    material:
+      applyType: 0
+      ownValue: {fileID: 0}
+      resolvedValue: {fileID: 0}
+      resolvedAsset: {fileID: 0}

@@ -32,7 +32,7 @@ public static class RxUtils
             .SelectMany(l => l);
     }
 
-    public static IDisposable SubscribeChanges<T>(this IObservable<ICollection<T>> o, 
+    public static IDisposable SubscribeChanges<T>(this IObservable<IEnumerable<T>> o, 
         OnAddedDelegate<T> onAdded, 
         OnRemovedDelegate<T> onRemoved)
     {

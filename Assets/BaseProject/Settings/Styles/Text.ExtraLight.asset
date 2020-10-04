@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2e2c93211ee4d79b1e347901323c242, type: 3}
+  m_Name: Text.ExtraLight
+  m_EditorClassIdentifier: 
+  inherits:
+    array: []
+  overrides:
+    minWidth:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    minHeight:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    preferredWidth:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    preferredHeight:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    flexibleWidth:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    flexibleHeight:
+      applyType: 0
+      ownValue: -1
+      resolvedValue: -1
+      resolvedAsset: {fileID: 0}
+    horizontalFit:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    verticalFit:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    shadowType:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    shadowDistance:
+      applyType: 0
+      ownValue: {x: 1, y: -1}
+      resolvedValue: {x: 1, y: -1}
+      resolvedAsset: {fileID: 0}
+    shadowColor:
+      applyType: 0
+      ownValue: {r: 0, g: 0, b: 0, a: 0.5}
+      resolvedValue: {r: 0, g: 0, b: 0, a: 0.5}
+      resolvedAsset: {fileID: 0}
+    shadowUseGraphicAlpha:
+      applyType: 0
+      ownValue: 1
+      resolvedValue: 1
+      resolvedAsset: {fileID: 0}
+    color:
+      applyType: 0
+      ownValue: {r: 1, g: 1, b: 1, a: 1}
+      resolvedValue: {r: 1, g: 1, b: 1, a: 1}
+      resolvedAsset: {fileID: 0}
+    material:
+      applyType: 0
+      ownValue: {fileID: 0}
+      resolvedValue: {fileID: 0}
+      resolvedAsset: {fileID: 0}
+    font:
+      applyType: 1
+      ownValue: {fileID: 12800000, guid: 78485f58244966a48a6bbcd6903caad3, type: 3}
+      resolvedValue: {fileID: 12800000, guid: 78485f58244966a48a6bbcd6903caad3, type: 3}
+      resolvedAsset: {fileID: 11400000}
+    fontStyle:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    fontSize:
+      applyType: 0
+      ownValue: 14
+      resolvedValue: 14
+      resolvedAsset: {fileID: 0}
+    lineSpacing:
+      applyType: 0
+      ownValue: 1
+      resolvedValue: 1
+      resolvedAsset: {fileID: 0}
+    richText:
+      applyType: 0
+      ownValue: 1
+      resolvedValue: 1
+      resolvedAsset: {fileID: 0}
+    alignment:
+      applyType: 0
+      ownValue: 4
+      resolvedValue: 4
+      resolvedAsset: {fileID: 0}
+    alignByGeometry:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    horizontalOverflow:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    verticalOverflow:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    bestFit:
+      applyType: 0
+      ownValue: 0
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
+    bestFitMinSize:
+      applyType: 0
+      ownValue: 10
+      resolvedValue: 10
+      resolvedAsset: {fileID: 0}
+    bestFitMaxSize:
+      applyType: 0
+      ownValue: 40
+      resolvedValue: 40
+      resolvedAsset: {fileID: 0}

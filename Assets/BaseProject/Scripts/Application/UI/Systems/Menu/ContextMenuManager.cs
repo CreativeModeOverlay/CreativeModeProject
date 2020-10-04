@@ -26,6 +26,21 @@ namespace CreativeMode
             });
         }
 
+        private void Update()
+        {
+            if (Input.GetButtonDown("Fire2"))
+            {
+                ShowContextMenu(Input.mousePosition, new Menu.Builder()
+                    .Button("Test 1", null)
+                    .Button("Test 2", null)
+                    .Toggle("Test 3", true, null)
+                    .SubMenu("SubMenu", new Menu.Builder()
+                        .Button("SubButton1", null)
+                        .Button("SubButton2", null))
+                    .Build());
+            }
+        }
+
         public IDisposable ShowContextMenu(Vector2 position, Menu menu)
         {
             topContextMenuDisposable?.Dispose();

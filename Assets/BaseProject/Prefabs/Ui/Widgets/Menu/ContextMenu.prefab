@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 8898309650661440918}
   - component: {fileID: 7798848191595027044}
   - component: {fileID: 2707445545529615212}
+  - component: {fileID: 2068652735383595761}
   m_Layer: 0
   m_Name: ContextMenu
   m_TagString: Untagged
@@ -150,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.7490196}
+  m_Color: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -199,7 +200,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 15
+  m_ScrollSensitivity: 1
   m_Viewport: {fileID: 8898309650661440925}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -265,3 +266,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2068652735383595761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8898309650661440924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19dddddc0eb7465fba830c89008214d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  style: {fileID: 11400000, guid: 14be063782acc364598cf580402fd411, type: 2}
+  scrollView:
+    value: {fileID: 8898309650661440915}
+    shadow: {fileID: 0}
+    layoutElement: {fileID: 0}
+    sizeFitter: {fileID: 0}
+  background:
+    value: {fileID: 8898309650661440912}
+    shadow: {fileID: 0}
+    layoutElement: {fileID: 0}
+    sizeFitter: {fileID: 0}
+  horizontalScrollbar: {fileID: 0}
+  verticalScrollbar: {fileID: 0}

@@ -477,8 +477,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 9d55374750f489c43987debd8a32c527, type: 3}
-    m_FontSize: 20
+    m_Font: {fileID: 12800000, guid: c4308bd41dcab514f82054df4a6c4d3c, type: 3}
+    m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2a4d01f6d914f359389b5fb28e60d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  style: {fileID: 11400000, guid: fcaf39c23f116ef44ac257c561e8344c, type: 2}
+  style: {fileID: 11400000, guid: 18d996542b2d28a4c847a5fc03db7eee, type: 2}
   button: {fileID: 1842585133}
   background: {fileID: 1842585134}
   innerText: {fileID: 622491366}
@@ -667,7 +667,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.62577534, g: 0, b: 1, a: 0.49019608}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}

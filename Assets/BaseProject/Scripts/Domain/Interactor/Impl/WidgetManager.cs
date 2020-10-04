@@ -8,6 +8,7 @@ namespace CreativeMode.Impl
     public class WidgetManager : IWidgetManager
     {
         private IWidgetStorage Storage => Instance<IWidgetStorage>.Get();
+        private IWidgetRegistry WidgetRegistry => Instance<IWidgetRegistry>.Get();
         
         public IObservable<IReadOnlyList<WidgetData>> Widgets => widgetsSubject;
         public IObservable<WidgetData> WidgetUpdated => widgetUpdatedSubject;
@@ -20,6 +21,10 @@ namespace CreativeMode.Impl
 
         public WidgetManager()
         {
+            widgets = Storage.WidgetData.GetAll()
+                .Select(d => FromDB(d.Value, d.Key))
+                .ToList();
+
             widgetsSubject = new BehaviorSubject<List<WidgetData>>(widgets);
             widgetUpdatedSubject = new Subject<WidgetData>();
         }
@@ -41,17 +46,36 @@ namespace CreativeMode.Impl
             return FromDB(Storage.PanelData.Get(panelId), panelId);
         }
 
+        public WidgetData CreateWidget(Type dataType)
+        {
+            return CreateWidget(WidgetRegistry
+                .GetWidgetInfo(dataType)
+                .widgetFactory());
+        }
+
         public WidgetData CreateWidget(Widget data)
         {
             if(data == null)
                 throw new ArgumentException("Cannot add null widget");
-            
-            return new WidgetData
+
+            var dataType = data.GetType();
+            var info = WidgetRegistry.GetWidgetInfo(dataType);
+            var existingWidgetCount = widgets.Count(w => w.type == dataType);
+            var postfix = existingWidgetCount >= 1 ? $" ({existingWidgetCount + 1})" : "";
+
+            var widgetData = new WidgetData
             {
-                id = Storage.WidgetData.Insert(ToDB(new WidgetData { data = data })),
                 type = data.GetType(),
+                name = info.name + postfix,
                 data = data
             };
+            
+            widgetData.id = Storage.WidgetData.Insert(ToDB(widgetData));
+
+            widgets.Add(widgetData);
+            widgetsSubject.OnNext(widgets);
+            
+            return widgetData;
         }
 
         public WidgetData GetWidget(int id)
@@ -66,7 +90,11 @@ namespace CreativeMode.Impl
 
         public void UpdateWidget(WidgetData data)
         {
+            if(data?.data == null)
+                throw new ArgumentException("Cannot update to null data");
+            
             Storage.WidgetData.Put(data.id, ToDB(data));
+            widgetUpdatedSubject.OnNext(data);
         }
 
         public void RemoveWidget(int id)
@@ -84,7 +112,7 @@ namespace CreativeMode.Impl
             return new WidgetDataDB
             {
                 name = data.name,
-                data = data
+                data = data.data
             };
         }
 

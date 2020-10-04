@@ -78,6 +78,7 @@ public class ChatInteractor : IChatInteractor
             {
                 case "b": return BoldTag.Instance;
                 case "i": return ItalicTag.Instance;
+                case "br": return LineBreak.Instance;
                 
                 case "s":
                 case "size": 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using CreativeMode.Impl;
 using SQLite;
 using UniRx;
@@ -56,35 +55,18 @@ namespace CreativeMode
             Instance<IDesktopCaptureManager>.Bind().UnityObject<DesktopCaptureManager>();
             Instance<IDeviceCaptureManager>.Bind().UnityObject<DeviceCaptureManager>();
             
+            Instance<IDesktopUIManager>.Bind().UnityObject<DesktopUIManager>();
             Instance<IOverlayManager>.Bind().UnityObject<OverlaySceneManager>();
             Instance<IInputManager>.Bind().Instance(new InputManager());
             Instance<IWidgetManager>.Bind().Instance(new WidgetManager());
             Instance<IWidgetUIFactory>.Bind().UnityObject<WidgetUIFactory>();
+            Instance<IWidgetRegistry>.Bind().UnityObject<WidgetRegistry>();
 
             Instance<ImageLoader>.Bind().Instance(new ImageLoader { MaxThreadCount = 4 });
             Instance<AudioLoader>.Bind().Instance(new AudioLoader { MaxThreadCount = 2 });
 
             Instance<IChatClient>.Bind().Instance(new TwitchClient(twitchOauth, twitchUsername, twitchChannelToJoin));
             Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
-        }
-
-        private ICensorRegionController ctrl;
-
-        private void Update()
-        {
-            if(!Input.GetButtonDown("Fire1"))
-                return;
-            
-            if (ctrl != null)
-            {
-                ctrl.Remove();
-                ctrl = null;
-            }
-            else
-            {
-                ctrl = Instance<IDesktopCaptureManager>.Get().CreateCensorRegion();
-                ctrl.Rect = new Rect(256, 256, 512, 512);
-            }
         }
 
         private SQLiteConnection OpenDb(string name)

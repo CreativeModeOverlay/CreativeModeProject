@@ -49,7 +49,7 @@ public static class Instance<T>
         }
 
         public Binder Instance(T instance) => Factory(() => instance);
-        public Binder UnityObject<O>() where O : Object, T => Factory(Object.FindObjectOfType<O>);
+        public Binder UnityObject<O>() where O : Object, T => Factory(() => Object.FindObjectOfType<O>(true));
 
         private void UpdateFactory()
         {

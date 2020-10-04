@@ -77,6 +77,7 @@ public class CreativeText : Text
                 case BoldTag _: builder.Append(isClosing ? "</b>" : "<b>"); return;
                 case ItalicTag _: builder.Append(isClosing ? "</i>" : "<i>"); return;
                 case SizeTag s: builder.Append(isClosing ? "</size>" : $"<size={s.size}>"); return;
+                case LineBreak _: builder.Append("\n"); return;
                 
                 case SizeScaleTag s:
                     if (isClosing)

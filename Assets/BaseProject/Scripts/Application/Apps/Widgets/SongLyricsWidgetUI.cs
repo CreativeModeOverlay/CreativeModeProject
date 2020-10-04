@@ -86,8 +86,16 @@ public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
     private void UpdateData()
     {
         var voiceName = Data.voice ?? "";
-        currentLyrics = currentMetadata.lyrics?.FirstOrDefault(w => w.voice == voiceName);
-        voiceText.text = voices.FirstOrDefault(v => v.voiceName == voiceName)?.displayName;
+        var newLyrics = currentMetadata.lyrics?.FirstOrDefault(w => w.voice == voiceName);
+
+        if (currentLyrics != newLyrics)
+        {
+            currentLyrics = newLyrics;
+            voiceText.text = voices.FirstOrDefault(v => v.voiceName == voiceName)?.displayName ?? voiceName;
+            
+            currentLine = null;
+            ClearLyrics();
+        }
     }
 
     private void Update()

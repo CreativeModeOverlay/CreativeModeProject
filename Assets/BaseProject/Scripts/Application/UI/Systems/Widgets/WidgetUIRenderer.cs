@@ -41,12 +41,16 @@ namespace CreativeMode
 
         private void RemoveWidget()
         {
+            if (WidgetUI == null) 
+                return;
+            
+            Destroy(WidgetUI.Root);
             WidgetUI = null;
         }
 
         private void UpdateWidget(Widget data)
         {
-            WidgetUI.SetData(data);
+            WidgetUI?.SetData(data);
         }
 
         private void CreateWidget(Type type)

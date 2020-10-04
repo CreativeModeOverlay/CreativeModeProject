@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1731270472847433150}
   - component: {fileID: 1731270472847433149}
   - component: {fileID: 1731270472847433136}
+  - component: {fileID: 5820934518758987150}
   m_Layer: 0
   m_Name: MenuButton
   m_TagString: Untagged
@@ -62,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -100,10 +101,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
-    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0.14901961}
-    m_PressedColor: {r: 1, g: 1, b: 1, a: 0.24705882}
-    m_SelectedColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 0.14901961}
-    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.4509804}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0.2}
+    m_PressedColor: {r: 0.504, g: 0.504, b: 0.504, a: 0.2}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 0.09803922}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -137,6 +138,34 @@ MonoBehaviour:
   iconWidget: {fileID: 1731270473495306443}
   titleWidget: {fileID: 1731270473032596295}
   buttonWidget: {fileID: 1731270472847433149}
+--- !u!114 &5820934518758987150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731270472847433147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2a4d01f6d914f359389b5fb28e60d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  style: {fileID: 11400000, guid: 9acd5047e3cac8f4891874e813070112, type: 2}
+  button:
+    value: {fileID: 1731270472847433149}
+    shadow: {fileID: 0}
+    layoutElement: {fileID: 0}
+    sizeFitter: {fileID: 0}
+  background:
+    value: {fileID: 1731270472847433150}
+    shadow: {fileID: 0}
+    layoutElement: {fileID: 0}
+    sizeFitter: {fileID: 0}
+  text:
+    value: {fileID: 1731270473032596295}
+    shadow: {fileID: 0}
+    layoutElement: {fileID: 0}
+    sizeFitter: {fileID: 0}
 --- !u!1 &1731270473032596293
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,11 +232,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 9d55374750f489c43987debd8a32c527, type: 3}
     m_FontSize: 16
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 1
+    m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -229,6 +258,7 @@ GameObject:
   - component: {fileID: 1731270473495306442}
   - component: {fileID: 1731270473495306444}
   - component: {fileID: 1731270473495306443}
+  - component: {fileID: 5262635984224086157}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -293,3 +323,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5262635984224086157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731270473495306441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c453eb15604018b722ec4b82c0b6b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  style: {fileID: 11400000, guid: b07eb8aa0e003ec4085e74a2ead7c210, type: 2}
+  image: {fileID: 1731270473495306443}

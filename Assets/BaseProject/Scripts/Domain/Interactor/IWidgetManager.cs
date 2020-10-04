@@ -12,6 +12,7 @@ namespace CreativeMode
         void UpdatePanel(WidgetPanel panel);
         WidgetPanel GetPanel(string panelId);
 
+        WidgetData CreateWidget(Type dataType);
         WidgetData CreateWidget(Widget data);
         WidgetData GetWidget(int id);
         void UpdateWidget(WidgetData data);
