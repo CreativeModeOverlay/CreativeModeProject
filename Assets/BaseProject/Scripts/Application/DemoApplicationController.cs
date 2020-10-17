@@ -33,7 +33,7 @@ namespace CreativeMode
 
         private void Start()
         {
-            //OnShowMainScreen();
+            OnShowMainScreen();
             SetMusicPlaylist(@"D:\Music\Stream\BRB");
         }
 

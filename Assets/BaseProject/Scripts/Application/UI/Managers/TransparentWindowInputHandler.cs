@@ -15,9 +15,13 @@ namespace CreativeMode
 
         private void Start()
         {
+            if(Application.isEditor)
+                return;
+            
             transparentWindow.AddFocusHandler(IsFocused);
             physics2d = gameObject.scene.GetPhysicsScene2D();
             physics3d = gameObject.scene.GetPhysicsScene();
+            targetCamera.backgroundColor = Color.clear;
         }
 
         private bool IsFocused(Vector2 cursorPosition)
@@ -39,6 +43,9 @@ namespace CreativeMode
 
         private void Update()
         {
+            if(Application.isEditor)
+                return;
+            
             if (!Input.GetMouseButton(0))
             {
                 if (colliderJoint)

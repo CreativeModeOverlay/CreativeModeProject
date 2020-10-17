@@ -58,9 +58,9 @@ namespace CreativeMode
             Instance<IDesktopUIManager>.Bind().UnityObject<DesktopUIManager>();
             Instance<IOverlayManager>.Bind().UnityObject<OverlaySceneManager>();
             Instance<IInputManager>.Bind().Instance(new InputManager());
-            Instance<IWidgetManager>.Bind().Instance(new WidgetManager());
-            Instance<IWidgetUIFactory>.Bind().UnityObject<WidgetUIFactory>();
-            Instance<IWidgetRegistry>.Bind().UnityObject<WidgetRegistry>();
+            Instance<IAppWidgetManager>.Bind().Instance(new AppWidgetManager());
+            Instance<IAppWidgetRegistry>.Bind().UnityObject<AppWidgetRegistry>();
+            Instance<IAppWidgetUIFactory>.Bind().UnityObject<AppWidgetUIFactory>();
 
             Instance<ImageLoader>.Bind().Instance(new ImageLoader { MaxThreadCount = 4 });
             Instance<AudioLoader>.Bind().Instance(new AudioLoader { MaxThreadCount = 2 });

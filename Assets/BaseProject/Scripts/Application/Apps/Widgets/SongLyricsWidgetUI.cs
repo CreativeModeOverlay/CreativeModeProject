@@ -7,7 +7,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SongLyricsWidgetUI : BaseWidgetUI<SongLyricsWidget>
+public class SongLyricsWidgetUI : BaseAppWidgetUI<SongLyricsWidget>
 {
     private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
     private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();

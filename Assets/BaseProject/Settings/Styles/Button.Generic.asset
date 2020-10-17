@@ -46,15 +46,15 @@ MonoBehaviour:
       resolvedValue: -1
       resolvedAsset: {fileID: 0}
     horizontalFit:
-      applyType: 1
+      applyType: 0
       ownValue: 2
-      resolvedValue: 2
-      resolvedAsset: {fileID: 11400000}
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
     verticalFit:
-      applyType: 1
+      applyType: 0
       ownValue: 2
-      resolvedValue: 2
-      resolvedAsset: {fileID: 11400000}
+      resolvedValue: 0
+      resolvedAsset: {fileID: 0}
     transition:
       applyType: 0
       ownValue: 1

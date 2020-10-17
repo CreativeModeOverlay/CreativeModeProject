@@ -56,8 +56,8 @@ MonoBehaviour:
       resolvedValue: 0
       resolvedAsset: {fileID: 0}
     shadowType:
-      applyType: 0
-      ownValue: 0
+      applyType: 2
+      ownValue: 1
       resolvedValue: 0
       resolvedAsset: {fileID: 0}
     shadowDistance:
@@ -67,7 +67,7 @@ MonoBehaviour:
       resolvedAsset: {fileID: 0}
     shadowColor:
       applyType: 0
-      ownValue: {r: 0, g: 0, b: 0, a: 0.5}
+      ownValue: {r: 1, g: 0, b: 0, a: 0.5}
       resolvedValue: {r: 0, g: 0, b: 0, a: 0.5}
       resolvedAsset: {fileID: 0}
     shadowUseGraphicAlpha:
@@ -77,8 +77,8 @@ MonoBehaviour:
       resolvedAsset: {fileID: 0}
     color:
       applyType: 1
-      ownValue: {r: 1, g: 1, b: 1, a: 1}
-      resolvedValue: {r: 1, g: 1, b: 1, a: 1}
+      ownValue: {r: 0.452952, g: 0.9528302, b: 0.40899786, a: 1}
+      resolvedValue: {r: 0.452952, g: 0.9528302, b: 0.40899786, a: 1}
       resolvedAsset: {fileID: 11400000}
     material:
       applyType: 0

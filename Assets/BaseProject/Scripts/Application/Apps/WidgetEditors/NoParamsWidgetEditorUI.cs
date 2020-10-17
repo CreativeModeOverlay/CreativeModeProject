@@ -1,15 +1,15 @@
 ﻿namespace CreativeMode
 {
-    public class NoParamsWidgetEditorUI : BaseWidgetEditorUI<Widget>
+    public class NoParamsWidgetEditorUI : BaseWidgetEditorUI<AppWidget>
     {
-        private Widget originalData;
+        private AppWidget originalData;
 
-        protected override void SetData(Widget widget)
+        protected override void SetData(AppWidget widget)
         {
             originalData = widget;
         }
 
-        protected override Widget GetData()
+        protected override AppWidget GetData()
         {
             return originalData;
         }

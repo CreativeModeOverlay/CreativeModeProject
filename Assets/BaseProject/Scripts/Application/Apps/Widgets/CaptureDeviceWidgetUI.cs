@@ -3,7 +3,7 @@ using CreativeMode;
 using UniRx;
 using UnityEngine.UI;
 
-public class CaptureDeviceWidgetUI : BaseWidgetUI<CaptureDeviceWidget>
+public class CaptureDeviceWidgetUI : BaseAppWidgetUI<CaptureDeviceAppWidget>
 {
     private IDeviceCaptureManager DeviceCapture => Instance<IDeviceCaptureManager>.Get();
     
@@ -13,11 +13,11 @@ public class CaptureDeviceWidgetUI : BaseWidgetUI<CaptureDeviceWidget>
     private string currentDeviceName;
     private IDisposable currentCapture;
     
-    protected override void SetData(CaptureDeviceWidget data)
+    protected override void SetData(CaptureDeviceAppWidget data)
     {
         base.SetData(data);
 
-        focusableContainer.Focus = data.focus;
+        //focusableContainer.Focus = data.focus;
         CaptureDevice(data.deviceName);
     }
     

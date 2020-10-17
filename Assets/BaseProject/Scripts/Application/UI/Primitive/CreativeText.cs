@@ -24,24 +24,24 @@ public class CreativeText : Text
     private List<PlaceholderIcon> placeholderIcons 
         = new List<PlaceholderIcon>();
 
-    private CreativeUIManager uiManager;
+    private CreativeWidgetManager widgetManager;
 
     protected override void Awake()
     {
         base.Awake();
-        uiManager = CreativeUIManager.Instance;
+        widgetManager = CreativeWidgetManager.Instance;
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        uiManager.RegisterText(this);
+        widgetManager.RegisterText(this);
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        uiManager.UnregisterText(this);
+        widgetManager.UnregisterText(this);
     }
 
     public void SetSpannedText(SpannedText spannedText)
@@ -110,11 +110,11 @@ public class CreativeText : Text
 
                 case UrlIconTag icon:
                     
-                    GetOrCreateLayer(uiManager.AtlasTexture); // just create layer for later if it not exists
+                    GetOrCreateLayer(widgetManager.AtlasTexture); // just create layer for later if it not exists
                     var newIcon = new PlaceholderIcon
                     {
-                        atlas = uiManager.AtlasTexture,
-                        rect = uiManager.GetIcon(icon.url),
+                        atlas = widgetManager.AtlasTexture,
+                        rect = widgetManager.GetIcon(icon.url),
                         isModifier = icon.isModifier,
                         color = colorStack.Peek()
                     };

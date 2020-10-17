@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CaptureDesktopWidgetUI : BaseWidgetUI<CaptureDesktopWidget>
+public class CaptureDesktopWidgetUI : BaseAppWidgetUI<CaptureDesktopWidget>
 {
     private IDesktopCaptureManager DesktopCapture => Instance<IDesktopCaptureManager>.Get();
     

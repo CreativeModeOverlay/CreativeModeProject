@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.elringus.unity.rawinput": "https://github.com/CreativeModeOverlay/CM-UnityRawInput-UPM.git#9f28df1e3357759ffd834fb40d92442857c3f623",
-    "com.hecomi.udesktopduplication": "https://github.com/CreativeModeOverlay/CM-uDesktopDuplication-UPM.git#b06e431ac785d7a542e217c1039f2e48112628e3",
+    "com.hecomi.udesktopduplication": "https://github.com/CreativeModeOverlay/CM-uDesktopDuplication-UPM.git#3617cf9fcfba26f48bb1eea387e7f4ff4cd8581b",
     "com.mono.taglib": "https://github.com/CreativeModeOverlay/CM-TagLib-UPM.git#1de018e0e850dfe2449b1f7abbdb57a916b8aea7",
     "com.naudio.upm": "https://github.com/CreativeModeOverlay/CM-NAudio-UPM.git#c4a002f3eb5182cf44103f11d8f5001d0fdf83c6",
     "com.neuecc.unirx": "https://github.com/CreativeModeOverlay/CM-UniRx-UPM.git#7.1.0",

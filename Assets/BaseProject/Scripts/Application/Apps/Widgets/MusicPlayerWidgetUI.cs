@@ -4,7 +4,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MusicPlayerWidgetUI : BaseWidgetUI<MusicPlayerWidget>
+public class MusicPlayerWidgetUI : BaseAppWidgetUI<MusicPlayerWidget>
 {
     private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
     

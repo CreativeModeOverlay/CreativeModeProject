@@ -4,7 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextNoteWidgetUI : BaseWidgetUI<TextNoteWidget>
+public class TextNoteWidgetUI : BaseAppWidgetUI<TextNoteWidget>
 {
     public Text titleText;
     public Text counterText;

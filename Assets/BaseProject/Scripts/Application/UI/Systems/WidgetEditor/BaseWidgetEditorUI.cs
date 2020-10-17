@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CreativeMode
 {
     public abstract class BaseWidgetEditorUI<T> : MonoBehaviour, IWidgetEditorUI
-        where T : Widget
+        where T : AppWidget
     {
         public UIContentSize size = UIContentSize.GetDefault();
 
@@ -13,7 +13,7 @@ namespace CreativeMode
 
         public Type DataType => typeof(T);
 
-        public Widget Data
+        public AppWidget Data
         {
             get => GetData();
             set

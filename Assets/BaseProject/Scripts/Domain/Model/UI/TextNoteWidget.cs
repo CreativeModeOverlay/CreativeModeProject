@@ -3,7 +3,7 @@
 namespace CreativeMode
 {
     [Serializable]
-    public class TextNoteWidget : Widget
+    public class TextNoteWidget : AppWidget
     {
         public int[] noteId;
     }

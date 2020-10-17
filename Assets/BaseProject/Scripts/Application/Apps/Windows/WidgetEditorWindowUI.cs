@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class WidgetEditorWindowUI : WindowUI
 {
     [Header("References")]
-    public WidgetUIRenderer widgetRenderer;
+    public AppWidgetUIRenderer widgetRenderer;
 
-    private IWidgetManager Manager => Instance<IWidgetManager>.Get();
-    private IWidgetUIFactory Factory => Instance<IWidgetUIFactory>.Get();
+    private IAppWidgetManager Manager => Instance<IAppWidgetManager>.Get();
+    private IAppWidgetUIFactory Factory => Instance<IAppWidgetUIFactory>.Get();
     private IDesktopUIManager UIManager => Instance<IDesktopUIManager>.Get();
-    private IWidgetRegistry WidgetRegistry => Instance<IWidgetRegistry>.Get();
+    private IAppWidgetRegistry WidgetRegistry => Instance<IAppWidgetRegistry>.Get();
 
     public RectTransform widgetListRoot;
     public RectTransform widgetEditorRoot;
@@ -24,10 +24,11 @@ public class WidgetEditorWindowUI : WindowUI
     public GenericButton resetButton;
     public GenericButton applyButton;
     public InputField nameInputField;
+    public DragAndDropSource dragAndDropSource;
 
     public GenericButton widgetListButtonPrefab;
 
-    private WidgetData currentWidgetData;
+    private AppWidgetData currentWidgetData;
     private IWidgetEditorUI currentWidgetEditorUi;
 
     private Dictionary<int, GenericButton> widgetButtonsById 
@@ -54,10 +55,16 @@ public class WidgetEditorWindowUI : WindowUI
             UIManager.ShowContextMenu(position, contextMenuBuilder.Build());
         };
         
+        dragAndDropSource.SetObjectProvider(() => new DraggedObject
+        {
+            name = currentWidgetData.name,
+            value = currentWidgetData.data
+        });
+        
         OnCloseWidgetEditor();
     }
 
-    private void OnShowWidgetEditor(WidgetData data)
+    private void OnShowWidgetEditor(AppWidgetData data)
     {
         OnCloseWidgetEditor();
         
@@ -80,7 +87,7 @@ public class WidgetEditorWindowUI : WindowUI
         resetButton.OnClick = ApplyWidgetData;
         applyButton.OnClick = () =>
         {
-            Manager.UpdateWidget(new WidgetData
+            Manager.UpdateWidget(new AppWidgetData
             {
                 id = data.id,
                 data = currentWidgetEditorUi.Data,
@@ -103,7 +110,7 @@ public class WidgetEditorWindowUI : WindowUI
         currentWidgetEditorUi = null;
     }
 
-    private void OnNewWidgetAdded(WidgetData data)
+    private void OnNewWidgetAdded(AppWidgetData data)
     {
         var instance = Instantiate(widgetListButtonPrefab, widgetListRoot);
         var info = WidgetRegistry.GetWidgetInfo(data.type);
@@ -116,7 +123,7 @@ public class WidgetEditorWindowUI : WindowUI
         widgetButtonsById[data.id] = instance;
     }
 
-    private void OnWidgetUpdated(WidgetData data)
+    private void OnWidgetUpdated(AppWidgetData data)
     {
         if(widgetButtonsById.TryGetValue(data.id, out var button))
             button.Text = data.name;
@@ -127,7 +134,7 @@ public class WidgetEditorWindowUI : WindowUI
         }
     }
 
-    private void OnWidgetRemoved(WidgetData data)
+    private void OnWidgetRemoved(AppWidgetData data)
     {
         if (widgetButtonsById.TryGetValue(data.id, out var widget))
             Destroy(widget.gameObject);

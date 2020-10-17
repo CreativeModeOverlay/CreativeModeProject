@@ -29,7 +29,8 @@ namespace CreativeMode
         private IOverlayTransition sceneTransition;
         private LayerContainer globalContainer;
 
-        private Dictionary<IOverlayElement, LayerContainer> elementContainers;
+        private Dictionary<IOverlayElement, LayerContainer> elementContainers = 
+            new Dictionary<IOverlayElement, LayerContainer>();
 
         private void OnDestroy()
         {
@@ -122,7 +123,6 @@ namespace CreativeMode
                 : outputTexture;
             
             captureInterface = new UnityCapture.Interface(UnityCapture.ECaptureDevice.CaptureDevice1);
-            elementContainers = new Dictionary<IOverlayElement, LayerContainer>();
             globalContainer = new LayerContainer();
             globalContainer.OnElementEnabled();
 

@@ -21,13 +21,7 @@ public class RectPositionControlWidget : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private UIContentSize contentSize = UIContentSize.GetDefault();
     [SerializeField] private float resizeHandleSize = 8;
-
-    [Header("Cursors")]
-    public CursorTexture horizontalResizeCursor;
-    public CursorTexture verticalResizeCursor;
-    public CursorTexture leftRightResizeCursor;
-    public CursorTexture topBottomResizeCursor;
-
+    
     [Header("Animation")] 
     public bool animateSquashAndStretch;
     public bool animateShake;
@@ -122,22 +116,22 @@ public class RectPositionControlWidget : MonoBehaviour
         {
             case Side.Top:
             case Side.Bottom: 
-                watcher.CursorTexture = verticalResizeCursor;
+                watcher.CursorType = CursorType.VerticalResize;
                 break;
             
             case Side.Left:
             case Side.Right:
-                watcher.CursorTexture = horizontalResizeCursor;
+                watcher.CursorType = CursorType.HorizontalResize;
                 break;
             
             case Side.Top | Side.Left:
             case Side.Bottom | Side.Right:
-                watcher.CursorTexture = leftRightResizeCursor;
+                watcher.CursorType = CursorType.DiagonalResize;
                 break;
             
             case Side.Top | Side.Right:
             case Side.Bottom | Side.Left:
-                watcher.CursorTexture = topBottomResizeCursor;
+                watcher.CursorType = CursorType.InverseDiagonalResize;
                 break;
         }
     }
@@ -159,7 +153,6 @@ public class RectPositionControlWidget : MonoBehaviour
         isDragActive = false;
         
         AnimateWindowToPosition(dragStartRect.Resize(delta, side, contentSize));
-        OnClearCursor();
     }
 
     private void AnimateWindowToPosition(Rect rect)
@@ -264,18 +257,6 @@ public class RectPositionControlWidget : MonoBehaviour
         return targetRect.parent.AsRectTransform().rect;
     }
 
-    private void OnSetNewCursor(CursorTexture cursor)
-    {
-        if (!isDragActive)
-            Cursor.SetCursor(cursor.cursor, cursor.hotspot, CursorMode.Auto);
-    }
-
-    private void OnClearCursor()
-    {
-        if (!isDragActive)
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-    }
-
     private class MoveWatcher : MonoBehaviour, 
         IDragHandler, 
         IBeginDragHandler, 
@@ -286,16 +267,14 @@ public class RectPositionControlWidget : MonoBehaviour
     {
         public Side Side { get; set; }
         public RectPositionControlWidget Owner { get; set; }
-        public CursorTexture CursorTexture { get; set; }
+        public CursorType CursorType { get; set; }
         public bool UseDragThreshold { get; set; }
 
         private Vector2 lastDragDelta;
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (CursorTexture != null && CursorTexture.cursor != null)
-                Owner.OnSetNewCursor(CursorTexture);
-            
+            CursorManager.Instance.LockCursor(this, CursorType);
             Owner.OnDragStarted();
         }
         
@@ -307,18 +286,18 @@ public class RectPositionControlWidget : MonoBehaviour
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            CursorManager.Instance.UnlockCursor(this);
             Owner.OnDragEnded(lastDragDelta, Side);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (CursorTexture != null && CursorTexture.cursor != null)
-                Owner.OnSetNewCursor(CursorTexture);
+            CursorManager.Instance.SetCursor(CursorType);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Owner.OnClearCursor();
+            CursorManager.Instance.SetCursor(CursorType.Default);
         }
 
         public void OnInitializePotentialDrag(PointerEventData eventData)

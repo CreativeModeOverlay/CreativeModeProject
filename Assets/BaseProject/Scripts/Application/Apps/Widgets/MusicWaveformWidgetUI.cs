@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MusicWaveformWidgetUI : BaseWidgetUI<MusicWaveformWidget>
+public class MusicWaveformWidgetUI : BaseAppWidgetUI<MusicWaveformWidget>
 {
     private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
     

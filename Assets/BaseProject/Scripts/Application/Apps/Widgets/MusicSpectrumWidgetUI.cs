@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasRenderer))]
-public class MusicSpectrumWidgetUI : BaseWidgetUI<MusicSpectrumWidget>
+public class MusicSpectrumWidgetUI : BaseAppWidgetUI<MusicSpectrumWidget>
 {
     private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
     
