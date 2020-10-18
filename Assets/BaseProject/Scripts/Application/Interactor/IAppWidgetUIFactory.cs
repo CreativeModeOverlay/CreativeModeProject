@@ -8,6 +8,6 @@ namespace CreativeMode
         
         UIContentSize GetSizeInfo(Type widgetType);
         IAppWidgetUI CreateWidgetUI(Type widgetType);
-        IWidgetEditorUI CreateWidgetEditorUI(Type widgetType);
+        IAppWidgetEditorUI CreateWidgetEditorUI(Type widgetType);
     }
 }

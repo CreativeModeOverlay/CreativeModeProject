@@ -30,17 +30,17 @@ namespace CreativeMode.Impl
             return Instantiate(prefab).GetComponent<IAppWidgetUI>();
         }
 
-        public IWidgetEditorUI CreateWidgetEditorUI(Type widgetType)
+        public IAppWidgetEditorUI CreateWidgetEditorUI(Type widgetType)
         {
             foreach (var prefab in widgetEditorPrefabs)
             {
-                if (prefab.GetComponent<IWidgetEditorUI>().DataType == widgetType)
+                if (prefab.GetComponent<IAppWidgetEditorUI>().DataType == widgetType)
                 {
-                    return Instantiate(prefab).GetComponent<IWidgetEditorUI>();
+                    return Instantiate(prefab).GetComponent<IAppWidgetEditorUI>();
                 }
             }
             
-            return Instantiate(defaultWidgetEditorPrefab).GetComponent<IWidgetEditorUI>();
+            return Instantiate(defaultWidgetEditorPrefab).GetComponent<IAppWidgetEditorUI>();
         }
 
         private GameObject GetWidgetPrefab(Type widgetType)

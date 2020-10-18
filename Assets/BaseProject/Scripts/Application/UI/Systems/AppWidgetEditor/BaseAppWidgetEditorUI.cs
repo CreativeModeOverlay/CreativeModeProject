@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CreativeMode
 {
-    public abstract class BaseWidgetEditorUI<T> : MonoBehaviour, IWidgetEditorUI
+    public abstract class BaseAppWidgetEditorUI<T> : MonoBehaviour, IAppWidgetEditorUI
         where T : AppWidget
     {
         public UIContentSize size = UIContentSize.GetDefault();

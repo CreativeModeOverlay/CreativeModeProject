@@ -21,9 +21,9 @@ namespace CreativeMode.Impl
 
         public AppWidgetManager()
         {
-            widgets = Storage.WidgetData.GetAll()
+            widgets = new List<AppWidgetData>();/*Storage.WidgetData.GetAll()
                 .Select(d => FromDB(d.Value, d.Key))
-                .ToList();
+                .ToList();*/
 
             widgetsSubject = new BehaviorSubject<List<AppWidgetData>>(widgets);
             widgetUpdatedSubject = new Subject<AppWidgetData>();

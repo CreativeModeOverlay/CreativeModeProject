@@ -2,7 +2,7 @@
 
 namespace CreativeMode
 {
-    public interface IWidgetEditorUI : IUIElement
+    public interface IAppWidgetEditorUI : IUIElement
     {
         Type DataType { get; }
         AppWidget Data { get; set; }

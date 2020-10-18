@@ -29,7 +29,7 @@ public class WidgetEditorWindowUI : WindowUI
     public GenericButton widgetListButtonPrefab;
 
     private AppWidgetData currentWidgetData;
-    private IWidgetEditorUI currentWidgetEditorUi;
+    private IAppWidgetEditorUI currentWidgetEditorUi;
 
     private Dictionary<int, GenericButton> widgetButtonsById 
         = new Dictionary<int, GenericButton>();

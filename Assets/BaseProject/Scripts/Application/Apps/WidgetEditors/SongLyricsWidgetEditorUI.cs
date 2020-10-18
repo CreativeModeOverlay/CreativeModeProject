@@ -2,7 +2,7 @@
 
 namespace CreativeMode
 {
-    public class SongLyricsWidgetEditorUI : BaseWidgetEditorUI<SongLyricsWidget>
+    public class SongLyricsWidgetEditorUI : BaseAppWidgetEditorUI<SongLyricsWidget>
     {
         public InputField voiceText;
         

@@ -1,6 +1,6 @@
 ﻿namespace CreativeMode
 {
-    public class NoParamsWidgetEditorUI : BaseWidgetEditorUI<AppWidget>
+    public class NoParamsWidgetEditorUI : BaseAppWidgetEditorUI<AppWidget>
     {
         private AppWidget originalData;
 
