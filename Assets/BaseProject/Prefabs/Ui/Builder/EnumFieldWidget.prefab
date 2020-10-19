@@ -15,6 +15,7 @@ MonoBehaviour:
   titleText: {fileID: 124994929136296019}
   subtitleText: {fileID: 237227240382393002}
   canvasGroup: {fileID: 803546903744787775}
+  labelLayoutElement: {fileID: 7685394668851740283}
   dropdown: {fileID: 2675688749387638550}
 --- !u!1001 &8354951670648207808
 PrefabInstance:
@@ -177,7 +178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6122303752226052346, guid: fe8f172de86b55648a88ea8a5652b443, type: 3}
       propertyPath: m_Name
-      value: BaseDropdownWidget
+      value: EnumFieldWidget
       objectReference: {fileID: 0}
     - target: {fileID: 8610883056477580839, guid: fe8f172de86b55648a88ea8a5652b443, type: 3}
       propertyPath: m_AnchorMin.y
@@ -239,6 +240,17 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 8706590447341423871, guid: fe8f172de86b55648a88ea8a5652b443, type: 3}
   m_PrefabInstance: {fileID: 8354951670648207808}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7685394668851740283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1826985888389547963, guid: fe8f172de86b55648a88ea8a5652b443, type: 3}
+  m_PrefabInstance: {fileID: 8354951670648207808}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &124994929136296019 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8236752210897017235, guid: fe8f172de86b55648a88ea8a5652b443, type: 3}

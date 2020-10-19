@@ -6,80 +6,99 @@ namespace CreativeMode
 {
     public abstract class BaseGroupWidget : BaseInterfaceWidget, ILayoutWidget
     {
-        public ToggleFieldWidget toggleFieldWidgetPrefab;
-        public IntFieldWidget intFieldWidgetPrefab;
-        public FloatFieldWidget floatFieldWidgetPrefab;
-        public TextFieldWidget textFieldWidgetPrefab;
-        public VectorFieldWidget vectorFieldWidgetPrefab;
-        public EnumFieldWidget enumFieldWidgetPrefab;
-        public GroupWidget groupWidgetPrefab;
-
-        public LayoutGroupWidget horizontalWidgetPrefab;
-        public LayoutGroupWidget verticalWidgetPrefab;
-
+        public WidgetBuilderPrefabs prefabs;
         public RectTransform widgetRoot;
 
+        [SerializeField] private float defaultMinLabelWidth = 120;
+        [SerializeField] private float labelDecorWidth;
+
+        protected virtual Orientation GroupDefaultOrientation => Orientation.Vertical;
+        
+        private LayoutParams SpaceDefaultLayoutParams => new LayoutParams
+        {
+            flexibleWidth = GroupDefaultOrientation == Orientation.Horizontal ? 1f : -1f,
+            flexibleHeight = GroupDefaultOrientation == Orientation.Vertical ? 1f : -1f
+        };
+        
         public void Clear()
         {
             for (var i = 0; i < widgetRoot.childCount; i++)
                 Destroy(widgetRoot.GetChild(i));
         }
 
+        public float DefaultMinLabelWidth
+        {
+            get => defaultMinLabelWidth;
+            set => defaultMinLabelWidth = value;
+        }
+
         public IToggleFieldWidget AddToggleField(string title = "")
         {
-            return AddInputField<ToggleFieldWidget, bool>(toggleFieldWidgetPrefab, title);
+            return AddInputField<ToggleFieldWidget, bool>(prefabs.toggleFieldWidgetPrefab, title);
         }
 
         public IIntFieldWidget AddIntField(string title = "")
         {
-            return AddInputField<IntFieldWidget, int>(intFieldWidgetPrefab, title);
+            return AddInputField<IntFieldWidget, int>(prefabs.intFieldWidgetPrefab, title);
         }
 
         public IFloatFieldWidget AddFloatField(string title = "")
         {
-            return AddInputField<FloatFieldWidget, float>(floatFieldWidgetPrefab, title);
+            return AddInputField<FloatFieldWidget, float>(prefabs.floatFieldWidgetPrefab, title);
         }
 
         public ITextFieldWidget AddTextField(string title = "")
         {
-            return AddInputField<TextFieldWidget, string>(textFieldWidgetPrefab, title);
+            return AddInputField<TextFieldWidget, string>(prefabs.textFieldWidgetPrefab, title);
         }
 
         public IVectorFieldWidget AddVector2Field(string title = "")
         {
-            return AddInputField<VectorFieldWidget, Vector4>(vectorFieldWidgetPrefab, title).SetFieldCount(2);
+            return AddInputField<VectorFieldWidget, Vector4>(prefabs.vectorFieldWidgetPrefab, title).SetFieldCount(2);
         }
 
         public IVectorFieldWidget AddVector3Field(string title = "")
         {
-            return AddInputField<VectorFieldWidget, Vector4>(vectorFieldWidgetPrefab, title).SetFieldCount(3);
+            return AddInputField<VectorFieldWidget, Vector4>(prefabs.vectorFieldWidgetPrefab, title).SetFieldCount(3);
         }
 
         public IVectorFieldWidget AddVector4Field(string title = "")
         {
-            return AddInputField<VectorFieldWidget, Vector4>(vectorFieldWidgetPrefab, title).SetFieldCount(4);
+            return AddInputField<VectorFieldWidget, Vector4>(prefabs.vectorFieldWidgetPrefab, title).SetFieldCount(4);
         }
 
         public IEnumFieldWidget AddEnumField<T>(string title = "") where T : Enum
         {
-            return AddInputField<EnumFieldWidget, Enum>(enumFieldWidgetPrefab, title).SetEnumType(typeof(T));
+            return AddInputField<EnumFieldWidget, Enum>(prefabs.enumFieldWidgetPrefab, title).SetEnumType(typeof(T));
         }
 
-        public ILayoutWidget AddHorizontalGroup()
+        public ILinearLayoutWidget AddLayout(Orientation orientation)
         {
-            return AddField(horizontalWidgetPrefab);
-        }
-
-        public ILayoutWidget AddVerticalGroup()
-        {
-            return AddField(verticalWidgetPrefab);
+            var layout = AddField(prefabs.linearLayoutWidgetPrefab);
+            layout.Orientation = orientation;
+            layout.DefaultMinLabelWidth = DefaultMinLabelWidth - layout.labelDecorWidth;
+            return layout;
         }
 
         public IGroupWidget AddGroup(string title = "")
         {
-            var group = AddField(groupWidgetPrefab);
+            var group = AddField(prefabs.groupWidgetPrefab);
             group.Title = title;
+            group.Orientation = GroupDefaultOrientation;
+            group.DefaultMinLabelWidth = DefaultMinLabelWidth - group.labelDecorWidth;
             return group;
+        }
+
+        public ISpaceWidget AddSpace()
+        {
+            return AddSpace(SpaceDefaultLayoutParams);
+        }
+
+        public ISpaceWidget AddSpace(LayoutParams p)
+        {
+            var field = AddField(prefabs.spaceWidgetPrefab);
+            field.LayoutParams = p;
+            return field;
         }
 
         private T AddInputField<T, V>(T prefab, string title)
@@ -87,6 +106,7 @@ namespace CreativeMode
         {
             var newInstance = AddField(prefab);
             newInstance.Title = title;
+            newInstance.MinLabelWidth = defaultMinLabelWidth;
             return newInstance;
         }
 
@@ -109,8 +129,16 @@ namespace CreativeMode
             if (result == null && newInstance is Component componentInstance)
                 result = componentInstance.gameObject.GetComponentInChildren<T>();
 
-            Debug.Log($"Unknown prefab type {prefab.GetType().Name}");
             return result;
+        }
+
+        protected void SetLinearLayoutOrientation(LinearLayoutGroup group, Orientation orientation)
+        {
+            group.Orientation = orientation;
+            group.childControlWidth = true;
+            group.childControlHeight = true;
+            group.childForceExpandWidth = orientation == Orientation.Vertical;
+            group.childForceExpandHeight = orientation == Orientation.Horizontal;
         }
     }
 }

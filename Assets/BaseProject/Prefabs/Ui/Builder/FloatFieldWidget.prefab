@@ -15,6 +15,7 @@ MonoBehaviour:
   titleText: {fileID: 5365658004410444936}
   subtitleText: {fileID: 5224311168808560241}
   canvasGroup: {fileID: 4678239568001759716}
+  labelLayoutElement: {fileID: 2405685281369879200}
   inputField: {fileID: 1704682245783309537}
   placeholderText: {fileID: 1422517009896052996}
 --- !u!1001 &6966087594341979588
@@ -252,6 +253,17 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 2324123333306199072, guid: 8a612c105f7457c41b15cf0a3b0c5df4, type: 3}
   m_PrefabInstance: {fileID: 6966087594341979588}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2405685281369879200 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4741786582899337060, guid: 8a612c105f7457c41b15cf0a3b0c5df4, type: 3}
+  m_PrefabInstance: {fileID: 6966087594341979588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5365658004410444936 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3087822570634869068, guid: 8a612c105f7457c41b15cf0a3b0c5df4, type: 3}

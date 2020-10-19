@@ -4,4 +4,9 @@
     {
         LayoutParams LayoutParams { get; set; }
     }
+
+    public interface ISpaceWidget : IInterfaceWidget
+    {
+        
+    }
 }

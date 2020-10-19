@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3666533819275965240}
+  - component: {fileID: 1751512851881359042}
   - component: {fileID: 4144268153670050410}
   m_Layer: 0
-  m_Name: BaseLayoutGroupWidget
+  m_Name: LayoutGroupWidget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,6 +37,33 @@ RectTransform:
   m_AnchoredPosition: {x: -462.875, y: 0}
   m_SizeDelta: {x: 400, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1751512851881359042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3666533819275965241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab07cfe81ab4720b8ab842a213961d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 8
+    m_Right: 8
+    m_Top: 6
+    m_Bottom: 6
+  m_ChildAlignment: 0
+  m_Spacing: 2
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+  layoutOrientation: 0
 --- !u!114 &4144268153670050410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,13 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e166107a9d8e47d98aef8575d398821c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleFieldWidgetPrefab: {fileID: 7207222165512983235, guid: 7b68c47b8544bf94c8ffa8a46b8dad14, type: 3}
-  intFieldWidgetPrefab: {fileID: 7730274878541980328, guid: 9fb437ab76a2e184093dd01605d3a674, type: 3}
-  floatFieldWidgetPrefab: {fileID: 2464116485678231115, guid: c426042eaf4e1e54fbba1cf9e2dec15c, type: 3}
-  textFieldWidgetPrefab: {fileID: 3735221429833376276, guid: 949370dfc8ca9a14bb95059e6f2c5a7e, type: 3}
-  vectorFieldWidgetPrefab: {fileID: 7519963460068505271, guid: a0bf8e84d35364f44bab27faaeb7d46c, type: 3}
-  enumFieldWidgetPrefab: {fileID: 4445346966672587625, guid: 148e0a4cb8344af4ba13ddddc57d547a, type: 3}
-  groupWidgetPrefab: {fileID: 0}
-  horizontalWidgetPrefab: {fileID: 1662014239559842663, guid: 11217bf84b9d57945bf57804e4ef3d08, type: 3}
-  verticalWidgetPrefab: {fileID: 3234844173468474520, guid: ebf326c4f7bef2f47a90c789fe4de9bf, type: 3}
+  prefabs: {fileID: 11400000, guid: 65e6efbe965b6984784dd0d17e374f4c, type: 2}
   widgetRoot: {fileID: 3666533819275965240}
+  defaultMinLabelWidth: 120
+  labelDecorWidth: 0
+  linearLayout: {fileID: 1751512851881359042}

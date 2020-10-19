@@ -331,6 +331,10 @@ PrefabInstance:
       propertyPath: m_MinHeight
       value: 28
       objectReference: {fileID: 0}
+    - target: {fileID: 883366392566001491, guid: a7d9e22e2f00c2e44a7d66408bfb5873, type: 3}
+      propertyPath: m_MinWidth
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 2216184267887858661, guid: a7d9e22e2f00c2e44a7d66408bfb5873, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0

@@ -8,6 +8,7 @@ namespace CreativeMode
     {
         string Title { get; set; }
         string Subtitle { get; set; }
+        float MinLabelWidth { get; set; }
         
         T Value { get; set; }
         

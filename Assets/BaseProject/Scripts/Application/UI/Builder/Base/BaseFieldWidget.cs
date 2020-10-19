@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CreativeMode
@@ -8,6 +9,7 @@ namespace CreativeMode
         public Text titleText;
         public Text subtitleText;
         public CanvasGroup canvasGroup;
+        public LayoutElement labelLayoutElement;
 
         public string Title
         {
@@ -27,6 +29,12 @@ namespace CreativeMode
                 subtitleText.text = value;
                 UpdateTextFieldVisibility(subtitleText);
             }
+        }
+
+        public float MinLabelWidth
+        {
+            get => labelLayoutElement.minWidth;
+            set => labelLayoutElement.minWidth = value;
         }
 
         public bool IsVisible

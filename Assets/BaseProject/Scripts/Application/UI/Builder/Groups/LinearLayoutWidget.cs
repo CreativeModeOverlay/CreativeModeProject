@@ -1,17 +1,8 @@
-﻿using UnityEngine.UI;
-
-namespace CreativeMode
+﻿namespace CreativeMode
 {
-    public class GroupWidget : BaseGroupWidget, IGroupWidget
+    public class LinearLayoutWidget : BaseGroupWidget, ILinearLayoutWidget
     {
-        public Text titleText;
         public LinearLayoutGroup linearLayout;
-
-        public string Title
-        {
-            get => titleText.text;
-            set => titleText.text = value;
-        }
 
         public Orientation Orientation
         {
@@ -19,7 +10,7 @@ namespace CreativeMode
             set => SetLinearLayoutOrientation(linearLayout, value);
         }
 
-        protected override Orientation GroupDefaultOrientation => Orientation;
+        protected override Orientation GroupDefaultOrientation => linearLayout.Orientation;
 
         private void Awake()
         {

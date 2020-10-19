@@ -1107,6 +1107,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2269678372100072222, guid: a7d9e22e2f00c2e44a7d66408bfb5873, type: 3}
+      propertyPath: m_MinHeight
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269678372100072222, guid: a7d9e22e2f00c2e44a7d66408bfb5873, type: 3}
+      propertyPath: m_MinWidth
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 3246161095342425507, guid: a7d9e22e2f00c2e44a7d66408bfb5873, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
