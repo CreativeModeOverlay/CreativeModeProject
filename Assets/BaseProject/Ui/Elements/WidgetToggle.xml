@@ -1,0 +1,8 @@
+<Panel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd" Color="#880000" FlexGrow="0" FlexShrink="1" AspectRatio="1"
+       JustifyContent="Center">
+    <Panel.Toggle GraphicId="Check" IsOn="@IsOn" ToggleTransition="Fade"/>
+    <Image Id="Check" Width="24" Height="24" AlignSelf="Center" Sprite="Icons/checkIcon"/>
+</Panel>
+
+

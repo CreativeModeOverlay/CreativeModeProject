@@ -1,0 +1,5 @@
+<Panel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd"
+       FlexDirection="Row" PaddingHorizontal="8" PaddingVertical="8" Color="#880000" JustifyContent="Center">
+    <Text Text="@Text" VerticalOverflow="Overflow"/>
+</Panel>

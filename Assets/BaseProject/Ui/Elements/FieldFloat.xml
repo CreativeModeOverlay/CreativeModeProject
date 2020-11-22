@@ -1,0 +1,5 @@
+<Field xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd"
+    Title="@Title" Subtitle="@Subtitle">
+    <Field.FloatField FieldId="Text" />
+    <EditableText Id="Text" Placeholder="Float value" ContentType="DecimalNumber"/>
+</Field>

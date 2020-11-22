@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efddafb617fd40fcbfbdf1fa97485f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  labelRoot: {fileID: 6478534143028845389}
   titleText: {fileID: 124994929136296019}
   subtitleText: {fileID: 237227240382393002}
   canvasGroup: {fileID: 803546903744787775}
@@ -240,12 +241,17 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 8706590447341423871, guid: fe8f172de86b55648a88ea8a5652b443, type: 3}
   m_PrefabInstance: {fileID: 8354951670648207808}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6478534143028845389 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3033913484333261453, guid: fe8f172de86b55648a88ea8a5652b443, type: 3}
+  m_PrefabInstance: {fileID: 8354951670648207808}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7685394668851740283 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1826985888389547963, guid: fe8f172de86b55648a88ea8a5652b443, type: 3}
   m_PrefabInstance: {fileID: 8354951670648207808}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6478534143028845389}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}

@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class WidgetEditorWindowUI : WindowUI
 {
-    [Header("References")]
-    public AppWidgetUIRenderer widgetRenderer;
-
     private IAppWidgetManager Manager => Instance<IAppWidgetManager>.Get();
     private IAppWidgetUIFactory Factory => Instance<IAppWidgetUIFactory>.Get();
     private IDesktopUIManager UIManager => Instance<IDesktopUIManager>.Get();
@@ -24,7 +21,6 @@ public class WidgetEditorWindowUI : WindowUI
     public GenericButton resetButton;
     public GenericButton applyButton;
     public InputField nameInputField;
-    public DragAndDropSource dragAndDropSource;
 
     public GenericButton widgetListButtonPrefab;
 
@@ -54,13 +50,7 @@ public class WidgetEditorWindowUI : WindowUI
             var position = Input.mousePosition;
             UIManager.ShowContextMenu(position, contextMenuBuilder.Build());
         };
-        
-        dragAndDropSource.SetObjectProvider(() => new DraggedObject
-        {
-            name = currentWidgetData.name,
-            value = currentWidgetData.data
-        });
-        
+
         OnCloseWidgetEditor();
     }
 
@@ -78,7 +68,6 @@ public class WidgetEditorWindowUI : WindowUI
         
         void ApplyWidgetData()
         {
-            widgetRenderer.Data = data.data;
             nameInputField.text = data.name;
             currentWidgetEditorUi.Data = data.data;
         }
@@ -127,11 +116,6 @@ public class WidgetEditorWindowUI : WindowUI
     {
         if(widgetButtonsById.TryGetValue(data.id, out var button))
             button.Text = data.name;
-
-        if (currentWidgetData?.id == data.id)
-        {
-            widgetRenderer.Data = data.data;
-        }
     }
 
     private void OnWidgetRemoved(AppWidgetData data)

@@ -6,5 +6,6 @@ namespace CreativeMode
     public class CaptureDeviceAppWidget : AppWidget
     {
         public string deviceName;
+        public FocusParams focus = FocusParams.GetDefault();
     }
 }

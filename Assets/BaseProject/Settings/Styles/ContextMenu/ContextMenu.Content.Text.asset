@@ -81,7 +81,7 @@ MonoBehaviour:
     color:
       applyType: 0
       ownValue: {r: 1, g: 1, b: 1, a: 1}
-      resolvedValue: {r: 0.452952, g: 0.9528302, b: 0.40899786, a: 1}
+      resolvedValue: {r: 1, g: 1, b: 1, a: 1}
       resolvedAsset: {fileID: 11400000, guid: 17409bb388ed8f740ad4d6f970540607, type: 2}
     material:
       applyType: 0

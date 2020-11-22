@@ -8,16 +8,28 @@ namespace CreativeMode
     {
         public Vector2 focusCenter;
         public bool normalizedFocusCenter;
-        
+
         public float zoom;
         public bool zoomUseContainerSize;
         public ZoomType zoomType;
 
         public RectOffset crop;
 
-        public static bool operator ==(FocusParams c1, FocusParams c2) => c1.Equals(c2);
-        public static bool operator !=(FocusParams c1, FocusParams c2) => !c1.Equals(c2);
-        
         public enum ZoomType { Fit, Crop, }
+
+        public static FocusParams GetDefault()
+        {
+            return new FocusParams
+            {
+                focusCenter = new Vector2(0.5f, 0.5f),
+                normalizedFocusCenter = true,
+                
+                zoom = 1f,
+                zoomUseContainerSize = true,
+                zoomType = ZoomType.Crop,
+                
+                crop = new RectOffset()
+            };
+        }
     }
 }

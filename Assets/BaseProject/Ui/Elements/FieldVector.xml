@@ -1,0 +1,9 @@
+<Field xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd"
+    Title="@Title" Subtitle="@Subtitle">
+    <Field.VectorField XFieldId="X" YFieldId="Y" ZFieldId="Z" WFieldId="W" 
+                       Dimension="@Dimension" />
+    <EditableText Id="X" Placeholder="X"  ContentType="DecimalNumber"/>
+    <EditableText Id="Y" Placeholder="Y"  MarginLeft="4" ContentType="DecimalNumber"/>
+    <EditableText Id="Z" Placeholder="Z"  MarginLeft="4" ContentType="DecimalNumber"/>
+    <EditableText Id="W" Placeholder="W"  MarginLeft="4" ContentType="DecimalNumber"/>
+</Field>

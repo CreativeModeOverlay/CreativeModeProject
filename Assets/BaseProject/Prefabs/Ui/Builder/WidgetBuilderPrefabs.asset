@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95beaed9f4284e89ada961db6bd317e2, type: 3}
   m_Name: WidgetBuilderPrefabs
   m_EditorClassIdentifier: 
+  buttonWidgetPrefab: {fileID: 7431627439528431672, guid: 860c1ad581d89bc489e222c754d73d18, type: 3}
   toggleFieldWidgetPrefab: {fileID: 7207222165512983235, guid: 7b68c47b8544bf94c8ffa8a46b8dad14, type: 3}
   intFieldWidgetPrefab: {fileID: 7730274878541980328, guid: 9fb437ab76a2e184093dd01605d3a674, type: 3}
   floatFieldWidgetPrefab: {fileID: 2464116485678231115, guid: c426042eaf4e1e54fbba1cf9e2dec15c, type: 3}
@@ -20,4 +21,5 @@ MonoBehaviour:
   enumFieldWidgetPrefab: {fileID: 4445346966672587625, guid: 148e0a4cb8344af4ba13ddddc57d547a, type: 3}
   linearLayoutWidgetPrefab: {fileID: 4144268153670050410, guid: 3bcf18b1023b37a4facbd97be365b729, type: 3}
   groupWidgetPrefab: {fileID: 6064794572842674034, guid: 2d07ef6e8e363334e8990e5c42181208, type: 3}
+  listWidgetPrefab: {fileID: 2881963530853915293, guid: ec149f65847dbb542b069eb93de79afa, type: 3}
   spaceWidgetPrefab: {fileID: 1778825268685086575, guid: d4eef7d49640d7643a4eff2acdf32eac, type: 3}

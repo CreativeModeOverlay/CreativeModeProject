@@ -1,0 +1,18 @@
+<Panel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd" 
+       FlexGrow="1" Color="#00000088">
+    
+    <Panel Width="100%" FlexDirection="Row" JustifyContent="SpaceBetween">
+        <Text Id="Title" MarginHorizontal="8" MarginVertical="4" FontSize="16" AlignSelf="Center" Text="TitleText" />
+        
+        <Panel Id="Close" Color="#ffffffff">
+            <Panel.Button Attrs="InvisibleButton" />
+            <Image Margin="4" Sprite="Icons/closeIcon" Width="24" Height="24" AlignSelf="Center"  />
+        </Panel>
+    </Panel>
+        
+    <Panel Id="Content" Color="#00000088" FlexGrow="1" MarginHorizontal="2" MarginBottom="2">
+        <ChildRoot />
+    </Panel>
+    
+</Panel>

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using CreativeMode.Impl;
 using SQLite;
+using ThreeDISevenZeroR.XmlUI;
 using UniRx;
 using UnityEngine;
 using UnityRawInput;
@@ -17,7 +18,9 @@ namespace CreativeMode
         [Header("Application settings")]
         public int framerate = 60;
 
-        [Header("Twitch settings")]
+        [Header("Twitch settings")] 
+        [SerializeField] public string twitchClientId;
+        [SerializeField] public string twitchAccessToken;
         [SerializeField] public string twitchOauth;
         [SerializeField] public string twitchUsername;
         [SerializeField] public string twitchChannelToJoin;
@@ -61,11 +64,14 @@ namespace CreativeMode
             Instance<IAppWidgetManager>.Bind().Instance(new AppWidgetManager());
             Instance<IAppWidgetRegistry>.Bind().UnityObject<AppWidgetRegistry>();
             Instance<IAppWidgetUIFactory>.Bind().UnityObject<AppWidgetUIFactory>();
+            Instance<LayoutInflater>.Bind().UnityObject<LayoutInflater>();
 
             Instance<ImageLoader>.Bind().Instance(new ImageLoader { MaxThreadCount = 4 });
             Instance<AudioLoader>.Bind().Instance(new AudioLoader { MaxThreadCount = 2 });
 
-            Instance<IChatClient>.Bind().Instance(new TwitchClient(twitchOauth, twitchUsername, twitchChannelToJoin));
+            Instance<IChatClient>.Bind().Instance(new TwitchClient(
+                twitchClientId, twitchAccessToken, twitchOauth, twitchUsername, twitchChannelToJoin));
+            
             Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
         }
 

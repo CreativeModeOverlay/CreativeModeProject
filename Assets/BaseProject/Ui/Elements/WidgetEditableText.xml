@@ -1,0 +1,12 @@
+<Panel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd" Color="#880000" 
+       MinWidth="32" Padding="2">
+    <Panel.InputField TextId="Text" PlaceholderId="Placeholder" 
+                      ContentType="@ContentType" 
+                      CharacterValidation="@CharacterValidation" />
+
+    <Text Id="Text" Text="@Value" Alignment="MiddleLeft" FlexGrow="1" FlexShrink="1"/>
+    <Text Id="Placeholder" Text="@Placeholder" Alignment="MiddleLeft" FontStyle="Italic" Alpha="0.5" PositionType="Absolute"
+          Left="2" Right="2" Top="2" Bottom="2"/>
+
+</Panel>

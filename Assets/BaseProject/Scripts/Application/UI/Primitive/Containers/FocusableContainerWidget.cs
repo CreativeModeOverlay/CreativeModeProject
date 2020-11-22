@@ -30,7 +30,7 @@ namespace CreativeMode
             get => focus;
             set
             {
-                if(focus == value)
+                if(focus.Equals(value))
                     return;
 
                 focus = value;

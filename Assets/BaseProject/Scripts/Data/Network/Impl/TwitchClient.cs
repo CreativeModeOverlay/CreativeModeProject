@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using Newtonsoft.Json;
+using TwitchLib.Api;
+using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
 using TwitchLib.Unity;
@@ -20,26 +21,35 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
         private const string twitchEmotePlaceholder2x = "https://static-cdn.jtvnw.net/emoticons/v1/{0}/2.0";
         private const string twitchEmotePlaceholder4x = "https://static-cdn.jtvnw.net/emoticons/v1/{0}/4.0";
         
-        private const string bttvGlobalEmoteApi = "https://api.betterttv.net/2/emotes";
-        private const string bttvChannelEmoteApi = "https://api.betterttv.net/2/channels/{0}";
+        private const string bttvGlobalEmoteApi = "https://api.betterttv.net/3/cached/emotes/global";
+        private const string bttvChannelEmoteApi = "https://api.betterttv.net/3/cached/users/twitch/{0}";
+        private const string bttvEmoteUrlTemplate = "https://cdn.betterttv.net/emote/{0}/{1}";
         private const string ffzEmoteApi = "https://api.frankerfacez.com/v1/room/{0}";
         
         public IObservable<ChatMessageRemote> ChatMessages { get; }
         public IObservable<Unit> OnChatCleared { get; }
 
         private IObservable<Client> Client { get; }
-        private Dictionary<string, Color> dynamicUserColors = new Dictionary<string, Color>();
+        
+        private readonly Dictionary<string, Color> dynamicUserColors = new Dictionary<string, Color>();
+        private readonly TwitchAPI twitchClient;
 
-        public TwitchClient(string oauth, string username, string joinChannel)
+        public TwitchClient(string clientId, string accessToken, string oauth, string username, string joinChannel)
         {
-            Client = CreateTwitchClientObservable(oauth, username, joinChannel);
+            twitchClient = new TwitchAPI();
+            twitchClient.Settings.ClientId = clientId;
+            twitchClient.Settings.AccessToken = accessToken;
+
+            Client = CreateTwitchClientObservable(clientId, oauth, username, joinChannel);
             ChatMessages = CreateChatMessageObservable(joinChannel);
             OnChatCleared = CreateClearChatObservable();
         }
 
-        private IObservable<Client> CreateTwitchClientObservable(string oauth, string username, string joinChannel)
+        private IObservable<Client> CreateTwitchClientObservable(string clientId, string oauth, 
+            string username, string joinChannel)
         {
-            if (string.IsNullOrWhiteSpace(oauth) || 
+            if (string.IsNullOrWhiteSpace(clientId) || 
+                string.IsNullOrWhiteSpace(oauth) || 
                 string.IsNullOrWhiteSpace(username) || 
                 string.IsNullOrWhiteSpace(joinChannel))
             {
@@ -68,7 +78,7 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
                 
                 client.Initialize(credentials, joinChannel);
                 client.Connect();
-                
+
                 Debug.Log("Twitch client creation end");
                 s.OnNext(client);
 
@@ -219,11 +229,17 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
 
         private IObservable<ExternalEmote[]> GetExternalEmotesForChannel(string channelName)
         {
-            return GetBttvEmoteByUrl(bttvGlobalEmoteApi)
+            return GetGlobalBttvEmotes()
                 .Merge(GetBttvEmoteByChannelName(channelName))
                 .Merge(GetFfzEmotesByChannelName(channelName))
                 .ToList()
                 .Select(l => l.SelectMany(e => e).ToArray());
+        }
+
+        private IObservable<ExternalEmote[]> GetGlobalBttvEmotes()
+        {
+            return GetResponse<BttvEmote[]>(bttvGlobalEmoteApi)
+                .Select(r => ConvertBttvEmotes(r).ToArray());
         }
 
         private IObservable<ExternalEmote[]> GetBttvEmoteByChannelName(string channelName)
@@ -231,10 +247,22 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
             if (string.IsNullOrWhiteSpace(channelName))
                 return Observable.Empty<ExternalEmote[]>();
 
-            return GetBttvEmoteByUrl(string.Format(bttvChannelEmoteApi, channelName));
+            return GetChatUser(channelName)
+                .SelectMany(user =>
+                {
+                    var url = string.Format(bttvChannelEmoteApi, user.Id);
+                    return GetResponse<BttvResponse>(url)
+                        .Select(r =>
+                        {
+                            var result = new List<ExternalEmote>();
+                            result.AddRange(ConvertBttvEmotes(r.channelEmotes));
+                            result.AddRange(ConvertBttvEmotes(r.sharedEmotes));
+                            return result.ToArray();
+                        });
+                });
         }
-        
-        private IObservable<ExternalEmote[]> GetBttvEmoteByUrl(string url)
+
+        private IObservable<T> GetResponse<T>(string url)
         {
             return Observable.Start(() =>
             {
@@ -244,27 +272,20 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
                 {
                     var reader = new StreamReader(stream);
                     var jsonText = reader.ReadToEnd();
-                    var response = JsonConvert.DeserializeObject<BttvResponse>(jsonText);
-                    
-                    return response.emotes.Select(e =>
-                    {
-                        string GetEmoteUrl(string size)
-                        {
-                            return "http:" + response.urlTemplate
-                                .Replace("{{id}}", e.id)
-                                .Replace("{{image}}", size);
-                        }
-                        
-                        return new ExternalEmote
-                        {
-                            name = e.code,
-                            isModifier = IsModifierEmote(e.code),
-                            url1x = GetEmoteUrl("1x"),
-                            url2x = GetEmoteUrl("2x"),
-                            url4x = GetEmoteUrl("3x"),
-                        };
-                    }).ToArray();
+                    return JsonConvert.DeserializeObject<T>(jsonText);
                 }
+            });
+        }
+
+        private IEnumerable<ExternalEmote> ConvertBttvEmotes(BttvEmote[] emotes)
+        {
+            return emotes.Select(e => new ExternalEmote
+            {
+                name = e.code,
+                isModifier = IsModifierEmote(e.code),
+                url1x = String.Format(bttvEmoteUrlTemplate, e.id, "1x"),
+                url2x = String.Format(bttvEmoteUrlTemplate, e.id, "2x"),
+                url4x = String.Format(bttvEmoteUrlTemplate, e.id, "3x"),
             });
         }
 
@@ -309,6 +330,13 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
                 }
             });
         }
+        
+        private IObservable<User> GetChatUser(string userName)
+        {
+            return Observable.Start(() => twitchClient.Helix.Users
+                .GetUsersAsync(logins: new List<string> {"3di70r"})
+                .Result.Users.First());
+        }
 
         public bool IsModifierEmote(string name)
         {
@@ -336,19 +364,18 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
         }
         
 #pragma warning disable 649
-        private struct BttvEmoteResponse
-        {
-            public string id;
-            public string channel;
-            public string code;
-            public string imageType;
-            public bool modifierEmote;
-        }
-        
         private struct BttvResponse
         {
-            public string urlTemplate;
-            public BttvEmoteResponse[] emotes;
+            public BttvEmote[] channelEmotes;
+            public BttvEmote[] sharedEmotes;
+        }
+        
+        private struct BttvEmote
+        {
+            public string id;
+            public string code;
+            public string imageType;
+            public string userId;
         }
         
         private struct FrankerFaceZResponse

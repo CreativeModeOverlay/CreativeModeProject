@@ -22,14 +22,14 @@ namespace CreativeMode.Impl
 
         private void Awake()
         {
-            RegisterWidget<CaptureDesktopWidget>(captureDesktop);
+            RegisterWidget<CaptureDesktopAppWidget>(captureDesktop);
             RegisterWidget<CaptureDeviceAppWidget>(captureDevice);
-            RegisterWidget<MusicPlayerWidget>(musicPlayer);
-            RegisterWidget<MusicSpectrumWidget>(musicSpectrum);
-            RegisterWidget<MusicWaveformWidget>(musicWaveform);
-            RegisterWidget<SongLyricsWidget>(songLyrics);
-            RegisterWidget<TextNoteWidget>(textNote);
-            RegisterWidget<TimerWidget>(timer);
+            RegisterWidget<MusicPlayerAppWidget>(musicPlayer);
+            RegisterWidget<MusicSpectrumAppWidget>(musicSpectrum);
+            RegisterWidget<MusicWaveformAppWidget>(musicWaveform);
+            RegisterWidget<SongLyricsAppWidget>(songLyrics);
+            RegisterWidget<TextNoteAppWidget>(textNote);
+            RegisterWidget<TimerAppWidget>(timer);
         }
 
         public List<AppWidgetInfo> GetWidgets()

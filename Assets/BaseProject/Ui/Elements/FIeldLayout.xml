@@ -1,0 +1,13 @@
+<Panel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd" 
+       PaddingHorizontal="4" PaddingVertical="2" FlexDirection="Row" FlexGrow="1">
+    
+    <Panel MinWidth="100" MinHeight="28" FlexDirection="Column" JustifyContent="Center">
+        <Text Text="@Title" Width="100%" FontSize="12" Color="#ffffff" />
+        <Text Text="@Subtitle" Width="100%" FontSize="10" Color="#ffffff88" />
+    </Panel>
+    
+    <Panel MarginLeft="8" FlexGrow="1" FlexDirection="Row" FlexBasis="0">
+        <ChildRoot />
+    </Panel>
+    
+</Panel>

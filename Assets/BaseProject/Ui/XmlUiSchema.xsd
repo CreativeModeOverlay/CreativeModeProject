@@ -1,0 +1,1982 @@
+﻿<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="String">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="ThreeDISevenZeroR.XmlUI.Visibility">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Visible" />
+          <xs:enumeration value="Invisible" />
+          <xs:enumeration value="Gone" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Boolean">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="False" />
+          <xs:enumeration value="True" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="YogaValue">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Auto" />
+          <xs:enumeration value="100%" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value=".*" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Facebook.Yoga.YogaDirection">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Inherit" />
+          <xs:enumeration value="LTR" />
+          <xs:enumeration value="RTL" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Facebook.Yoga.YogaFlexDirection">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Column" />
+          <xs:enumeration value="ColumnReverse" />
+          <xs:enumeration value="Row" />
+          <xs:enumeration value="RowReverse" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Facebook.Yoga.YogaJustify">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="FlexStart" />
+          <xs:enumeration value="Center" />
+          <xs:enumeration value="FlexEnd" />
+          <xs:enumeration value="SpaceBetween" />
+          <xs:enumeration value="SpaceAround" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Facebook.Yoga.YogaAlign">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Auto" />
+          <xs:enumeration value="FlexStart" />
+          <xs:enumeration value="Center" />
+          <xs:enumeration value="FlexEnd" />
+          <xs:enumeration value="Stretch" />
+          <xs:enumeration value="Baseline" />
+          <xs:enumeration value="SpaceBetween" />
+          <xs:enumeration value="SpaceAround" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Facebook.Yoga.YogaPositionType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Relative" />
+          <xs:enumeration value="Absolute" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Facebook.Yoga.YogaWrap">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NoWrap" />
+          <xs:enumeration value="Wrap" />
+          <xs:enumeration value="WrapReverse" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Float">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:float" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Facebook.Yoga.YogaOverflow">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Visible" />
+          <xs:enumeration value="Hidden" />
+          <xs:enumeration value="Scroll" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.Sprite">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.UI.Type">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Simple" />
+          <xs:enumeration value="Sliced" />
+          <xs:enumeration value="Tiled" />
+          <xs:enumeration value="Filled" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="ThreeDISevenZeroR.XmlUI.ShadowType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Disabled" />
+          <xs:enumeration value="Shadow" />
+          <xs:enumeration value="Outline" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="HtmlColor">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="red" />
+          <xs:enumeration value="cyan" />
+          <xs:enumeration value="blue" />
+          <xs:enumeration value="darkblue" />
+          <xs:enumeration value="lightblue" />
+          <xs:enumeration value="purple" />
+          <xs:enumeration value="yellow" />
+          <xs:enumeration value="lime" />
+          <xs:enumeration value="fuchsia" />
+          <xs:enumeration value="white" />
+          <xs:enumeration value="silver" />
+          <xs:enumeration value="grey" />
+          <xs:enumeration value="black" />
+          <xs:enumeration value="orange" />
+          <xs:enumeration value="brown" />
+          <xs:enumeration value="maroon" />
+          <xs:enumeration value="green" />
+          <xs:enumeration value="olive" />
+          <xs:enumeration value="navy" />
+          <xs:enumeration value="teal" />
+          <xs:enumeration value="aqua" />
+          <xs:enumeration value="magenta" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="#[0-9a-f]{3,8}" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.Material">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.Font">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.FontStyle">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Normal" />
+          <xs:enumeration value="Bold" />
+          <xs:enumeration value="Italic" />
+          <xs:enumeration value="BoldAndItalic" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="Integer">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:integer" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.TextAnchor">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="UpperLeft" />
+          <xs:enumeration value="UpperCenter" />
+          <xs:enumeration value="UpperRight" />
+          <xs:enumeration value="MiddleLeft" />
+          <xs:enumeration value="MiddleCenter" />
+          <xs:enumeration value="MiddleRight" />
+          <xs:enumeration value="LowerLeft" />
+          <xs:enumeration value="LowerCenter" />
+          <xs:enumeration value="LowerRight" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.HorizontalWrapMode">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Wrap" />
+          <xs:enumeration value="Overflow" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.VerticalWrapMode">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Truncate" />
+          <xs:enumeration value="Overflow" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.UI.Transition">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None" />
+          <xs:enumeration value="ColorTint" />
+          <xs:enumeration value="SpriteSwap" />
+          <xs:enumeration value="Animation" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.UI.Mode">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None" />
+          <xs:enumeration value="Horizontal" />
+          <xs:enumeration value="Vertical" />
+          <xs:enumeration value="Automatic" />
+          <xs:enumeration value="Explicit" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.UI.ContentType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Standard" />
+          <xs:enumeration value="Autocorrected" />
+          <xs:enumeration value="IntegerNumber" />
+          <xs:enumeration value="DecimalNumber" />
+          <xs:enumeration value="Alphanumeric" />
+          <xs:enumeration value="Name" />
+          <xs:enumeration value="EmailAddress" />
+          <xs:enumeration value="Password" />
+          <xs:enumeration value="Pin" />
+          <xs:enumeration value="Custom" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.UI.LineType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="SingleLine" />
+          <xs:enumeration value="MultiLineSubmit" />
+          <xs:enumeration value="MultiLineNewline" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.UI.CharacterValidation">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None" />
+          <xs:enumeration value="Integer" />
+          <xs:enumeration value="Decimal" />
+          <xs:enumeration value="Alphanumeric" />
+          <xs:enumeration value="Name" />
+          <xs:enumeration value="EmailAddress" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="UnityEngine.UI.ToggleTransition">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None" />
+          <xs:enumeration value="Fade" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="@.+|\$.+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:group name="LayoutElements">
+    <xs:choice>
+      <xs:element ref="Panel" />
+      <xs:element ref="Text" />
+      <xs:element ref="Image" />
+      <xs:element ref="RectMask" />
+      <xs:element ref="EditableText" />
+      <xs:element ref="Button" />
+      <xs:element ref="Toggle" />
+      <xs:element ref="Field" />
+      <xs:element ref="BooleanField" />
+      <xs:element ref="IntField" />
+      <xs:element ref="FloatField" />
+      <xs:element ref="TextField" />
+      <xs:element ref="VectorField" />
+      <xs:element ref="ChildRoot" />
+    </xs:choice>
+  </xs:group>
+  <xs:element name="BaseComponent.Mask">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="ShowMaskGraphic" type="Boolean" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.Button">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="TargetGraphicId" type="String" />
+      <xs:attribute name="Transition" type="UnityEngine.UI.Transition" />
+      <xs:attribute name="NavigationMode" type="UnityEngine.UI.Mode" />
+      <xs:attribute name="NormalColor" type="HtmlColor" />
+      <xs:attribute name="HighlightedColor" type="HtmlColor" />
+      <xs:attribute name="PressedColor" type="HtmlColor" />
+      <xs:attribute name="SelectedColor" type="HtmlColor" />
+      <xs:attribute name="DisabledColor" type="HtmlColor" />
+      <xs:attribute name="ColorMultiplier" type="Float" />
+      <xs:attribute name="ColorFadeDuration" type="Float" />
+      <xs:attribute name="HighlightedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="PressedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="SelectedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="DisabledSprite" type="UnityEngine.Sprite" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.InputField">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="TextId" type="String" />
+      <xs:attribute name="PlaceholderId" type="String" />
+      <xs:attribute name="CharacterLimit" type="Integer" />
+      <xs:attribute name="ContentType" type="UnityEngine.UI.ContentType" />
+      <xs:attribute name="LineType" type="UnityEngine.UI.LineType" />
+      <xs:attribute name="CharacterValidation" type="UnityEngine.UI.CharacterValidation" />
+      <xs:attribute name="CaretBlinkRate" type="Float" />
+      <xs:attribute name="CaretWidth" type="Integer" />
+      <xs:attribute name="CustomCaretColor" type="Boolean" />
+      <xs:attribute name="CaretColor" type="HtmlColor" />
+      <xs:attribute name="SelectionColor" type="HtmlColor" />
+      <xs:attribute name="HideMobileInput" type="Boolean" />
+      <xs:attribute name="ReadOnly" type="Boolean" />
+      <xs:attribute name="TargetGraphicId" type="String" />
+      <xs:attribute name="Transition" type="UnityEngine.UI.Transition" />
+      <xs:attribute name="NavigationMode" type="UnityEngine.UI.Mode" />
+      <xs:attribute name="NormalColor" type="HtmlColor" />
+      <xs:attribute name="HighlightedColor" type="HtmlColor" />
+      <xs:attribute name="PressedColor" type="HtmlColor" />
+      <xs:attribute name="SelectedColor" type="HtmlColor" />
+      <xs:attribute name="DisabledColor" type="HtmlColor" />
+      <xs:attribute name="ColorMultiplier" type="Float" />
+      <xs:attribute name="ColorFadeDuration" type="Float" />
+      <xs:attribute name="HighlightedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="PressedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="SelectedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="DisabledSprite" type="UnityEngine.Sprite" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.Toggle">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="ToggleTransition" type="UnityEngine.UI.ToggleTransition" />
+      <xs:attribute name="GraphicId" type="String" />
+      <xs:attribute name="IsOn" type="Boolean" />
+      <xs:attribute name="TargetGraphicId" type="String" />
+      <xs:attribute name="Transition" type="UnityEngine.UI.Transition" />
+      <xs:attribute name="NavigationMode" type="UnityEngine.UI.Mode" />
+      <xs:attribute name="NormalColor" type="HtmlColor" />
+      <xs:attribute name="HighlightedColor" type="HtmlColor" />
+      <xs:attribute name="PressedColor" type="HtmlColor" />
+      <xs:attribute name="SelectedColor" type="HtmlColor" />
+      <xs:attribute name="DisabledColor" type="HtmlColor" />
+      <xs:attribute name="ColorMultiplier" type="Float" />
+      <xs:attribute name="ColorFadeDuration" type="Float" />
+      <xs:attribute name="HighlightedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="PressedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="SelectedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="DisabledSprite" type="UnityEngine.Sprite" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.DragAndDropSource">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.DragAndDropReceiver">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.Rigidbody2D">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.UiCollider">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.ChatMessageController">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.TextField">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="FieldId" type="String" />
+      <xs:attribute name="Value" type="String" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.ToggleField">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="ToggleId" type="String" />
+      <xs:attribute name="Value" type="Boolean" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.IntField">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="FieldId" type="String" />
+      <xs:attribute name="Value" type="Integer" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.FloatField">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="FieldId" type="String" />
+      <xs:attribute name="Value" type="Float" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BaseComponent.VectorField">
+    <xs:complexType>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="XFieldId" type="String" />
+      <xs:attribute name="YFieldId" type="String" />
+      <xs:attribute name="ZFieldId" type="String" />
+      <xs:attribute name="WFieldId" type="String" />
+      <xs:attribute name="Dimension" type="Integer" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Panel.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="Panel.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="Panel.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="Panel.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="Panel.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="Panel.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="Panel.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="Panel.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="Panel.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="Panel.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="Panel.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="Panel.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="Panel.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="Panel.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="Panel">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Panel.Mask" />
+        <xs:element ref="Panel.Button" />
+        <xs:element ref="Panel.InputField" />
+        <xs:element ref="Panel.Toggle" />
+        <xs:element ref="Panel.DragAndDropSource" />
+        <xs:element ref="Panel.DragAndDropReceiver" />
+        <xs:element ref="Panel.Rigidbody2D" />
+        <xs:element ref="Panel.UiCollider" />
+        <xs:element ref="Panel.ChatMessageController" />
+        <xs:element ref="Panel.TextField" />
+        <xs:element ref="Panel.ToggleField" />
+        <xs:element ref="Panel.IntField" />
+        <xs:element ref="Panel.FloatField" />
+        <xs:element ref="Panel.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Sprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="SpriteType" type="UnityEngine.UI.Type" />
+      <xs:attribute name="EffectType" type="ThreeDISevenZeroR.XmlUI.ShadowType" />
+      <xs:attribute name="EffectColor" type="HtmlColor" />
+      <xs:attribute name="EffectOffset" type="String" />
+      <xs:attribute name="EffectUseGraphicAlpha" type="Boolean" />
+      <xs:attribute name="Color" type="HtmlColor" />
+      <xs:attribute name="Material" type="UnityEngine.Material" />
+      <xs:attribute name="RaycastTarget" type="Boolean" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Text.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="Text.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="Text.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="Text.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="Text.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="Text.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="Text.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="Text.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="Text.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="Text.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="Text.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="Text.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="Text.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="Text.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="Text">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Text.Mask" />
+        <xs:element ref="Text.Button" />
+        <xs:element ref="Text.InputField" />
+        <xs:element ref="Text.Toggle" />
+        <xs:element ref="Text.DragAndDropSource" />
+        <xs:element ref="Text.DragAndDropReceiver" />
+        <xs:element ref="Text.Rigidbody2D" />
+        <xs:element ref="Text.UiCollider" />
+        <xs:element ref="Text.ChatMessageController" />
+        <xs:element ref="Text.TextField" />
+        <xs:element ref="Text.ToggleField" />
+        <xs:element ref="Text.IntField" />
+        <xs:element ref="Text.FloatField" />
+        <xs:element ref="Text.VectorField" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Text" type="String" />
+      <xs:attribute name="Font" type="UnityEngine.Font" />
+      <xs:attribute name="FontStyle" type="UnityEngine.FontStyle" />
+      <xs:attribute name="FontSize" type="Integer" />
+      <xs:attribute name="LineSpacing" type="Integer" />
+      <xs:attribute name="Alignment" type="UnityEngine.TextAnchor" />
+      <xs:attribute name="AlignByGeometry" type="Boolean" />
+      <xs:attribute name="HorizontalOverflow" type="UnityEngine.HorizontalWrapMode" />
+      <xs:attribute name="VerticalOverflow" type="UnityEngine.VerticalWrapMode" />
+      <xs:attribute name="BestFit" type="Boolean" />
+      <xs:attribute name="MinSize" type="Integer" />
+      <xs:attribute name="MaxSize" type="Integer" />
+      <xs:attribute name="EffectType" type="ThreeDISevenZeroR.XmlUI.ShadowType" />
+      <xs:attribute name="EffectColor" type="HtmlColor" />
+      <xs:attribute name="EffectOffset" type="String" />
+      <xs:attribute name="EffectUseGraphicAlpha" type="Boolean" />
+      <xs:attribute name="Color" type="HtmlColor" />
+      <xs:attribute name="Material" type="UnityEngine.Material" />
+      <xs:attribute name="RaycastTarget" type="Boolean" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Image.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="Image.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="Image.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="Image.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="Image.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="Image.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="Image.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="Image.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="Image.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="Image.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="Image.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="Image.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="Image.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="Image.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="Image">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Image.Mask" />
+        <xs:element ref="Image.Button" />
+        <xs:element ref="Image.InputField" />
+        <xs:element ref="Image.Toggle" />
+        <xs:element ref="Image.DragAndDropSource" />
+        <xs:element ref="Image.DragAndDropReceiver" />
+        <xs:element ref="Image.Rigidbody2D" />
+        <xs:element ref="Image.UiCollider" />
+        <xs:element ref="Image.ChatMessageController" />
+        <xs:element ref="Image.TextField" />
+        <xs:element ref="Image.ToggleField" />
+        <xs:element ref="Image.IntField" />
+        <xs:element ref="Image.FloatField" />
+        <xs:element ref="Image.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Sprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="SpriteType" type="UnityEngine.UI.Type" />
+      <xs:attribute name="EffectType" type="ThreeDISevenZeroR.XmlUI.ShadowType" />
+      <xs:attribute name="EffectColor" type="HtmlColor" />
+      <xs:attribute name="EffectOffset" type="String" />
+      <xs:attribute name="EffectUseGraphicAlpha" type="Boolean" />
+      <xs:attribute name="Color" type="HtmlColor" />
+      <xs:attribute name="Material" type="UnityEngine.Material" />
+      <xs:attribute name="RaycastTarget" type="Boolean" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RectMask.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="RectMask.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="RectMask.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="RectMask.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="RectMask.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="RectMask.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="RectMask.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="RectMask.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="RectMask.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="RectMask.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="RectMask.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="RectMask.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="RectMask.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="RectMask.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="RectMask">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="RectMask.Mask" />
+        <xs:element ref="RectMask.Button" />
+        <xs:element ref="RectMask.InputField" />
+        <xs:element ref="RectMask.Toggle" />
+        <xs:element ref="RectMask.DragAndDropSource" />
+        <xs:element ref="RectMask.DragAndDropReceiver" />
+        <xs:element ref="RectMask.Rigidbody2D" />
+        <xs:element ref="RectMask.UiCollider" />
+        <xs:element ref="RectMask.ChatMessageController" />
+        <xs:element ref="RectMask.TextField" />
+        <xs:element ref="RectMask.ToggleField" />
+        <xs:element ref="RectMask.IntField" />
+        <xs:element ref="RectMask.FloatField" />
+        <xs:element ref="RectMask.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EditableText.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="EditableText.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="EditableText.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="EditableText.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="EditableText.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="EditableText.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="EditableText.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="EditableText.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="EditableText.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="EditableText.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="EditableText.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="EditableText.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="EditableText.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="EditableText.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="EditableText">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="EditableText.Mask" />
+        <xs:element ref="EditableText.Button" />
+        <xs:element ref="EditableText.InputField" />
+        <xs:element ref="EditableText.Toggle" />
+        <xs:element ref="EditableText.DragAndDropSource" />
+        <xs:element ref="EditableText.DragAndDropReceiver" />
+        <xs:element ref="EditableText.Rigidbody2D" />
+        <xs:element ref="EditableText.UiCollider" />
+        <xs:element ref="EditableText.ChatMessageController" />
+        <xs:element ref="EditableText.TextField" />
+        <xs:element ref="EditableText.ToggleField" />
+        <xs:element ref="EditableText.IntField" />
+        <xs:element ref="EditableText.FloatField" />
+        <xs:element ref="EditableText.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="ContentType" type="UnityEngine.UI.ContentType" />
+      <xs:attribute name="CharacterValidation" type="UnityEngine.UI.CharacterValidation" />
+      <xs:attribute name="LineType" type="UnityEngine.UI.LineType" />
+      <xs:attribute name="Value" type="String" />
+      <xs:attribute name="TextMinHeight" type="YogaValue" />
+      <xs:attribute name="TextMaxHeight" type="YogaValue" />
+      <xs:attribute name="MeasureText" type="Boolean" />
+      <xs:attribute name="Placeholder" type="String" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Button.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="Button.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="Button.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="Button.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="Button.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="Button.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="Button.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="Button.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="Button.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="Button.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="Button.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="Button.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="Button.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="Button.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="Button">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Button.Mask" />
+        <xs:element ref="Button.Button" />
+        <xs:element ref="Button.InputField" />
+        <xs:element ref="Button.Toggle" />
+        <xs:element ref="Button.DragAndDropSource" />
+        <xs:element ref="Button.DragAndDropReceiver" />
+        <xs:element ref="Button.Rigidbody2D" />
+        <xs:element ref="Button.UiCollider" />
+        <xs:element ref="Button.ChatMessageController" />
+        <xs:element ref="Button.TextField" />
+        <xs:element ref="Button.ToggleField" />
+        <xs:element ref="Button.IntField" />
+        <xs:element ref="Button.FloatField" />
+        <xs:element ref="Button.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Text" type="String" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Toggle.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="Toggle.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="Toggle.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="Toggle.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="Toggle.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="Toggle.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="Toggle.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="Toggle.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="Toggle.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="Toggle.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="Toggle.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="Toggle.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="Toggle.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="Toggle.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="Toggle">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Toggle.Mask" />
+        <xs:element ref="Toggle.Button" />
+        <xs:element ref="Toggle.InputField" />
+        <xs:element ref="Toggle.Toggle" />
+        <xs:element ref="Toggle.DragAndDropSource" />
+        <xs:element ref="Toggle.DragAndDropReceiver" />
+        <xs:element ref="Toggle.Rigidbody2D" />
+        <xs:element ref="Toggle.UiCollider" />
+        <xs:element ref="Toggle.ChatMessageController" />
+        <xs:element ref="Toggle.TextField" />
+        <xs:element ref="Toggle.ToggleField" />
+        <xs:element ref="Toggle.IntField" />
+        <xs:element ref="Toggle.FloatField" />
+        <xs:element ref="Toggle.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="IsOn" type="Boolean" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Field.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="Field.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="Field.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="Field.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="Field.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="Field.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="Field.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="Field.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="Field.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="Field.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="Field.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="Field.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="Field.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="Field.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="Field">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Field.Mask" />
+        <xs:element ref="Field.Button" />
+        <xs:element ref="Field.InputField" />
+        <xs:element ref="Field.Toggle" />
+        <xs:element ref="Field.DragAndDropSource" />
+        <xs:element ref="Field.DragAndDropReceiver" />
+        <xs:element ref="Field.Rigidbody2D" />
+        <xs:element ref="Field.UiCollider" />
+        <xs:element ref="Field.ChatMessageController" />
+        <xs:element ref="Field.TextField" />
+        <xs:element ref="Field.ToggleField" />
+        <xs:element ref="Field.IntField" />
+        <xs:element ref="Field.FloatField" />
+        <xs:element ref="Field.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Title" type="String" />
+      <xs:attribute name="Subtitle" type="String" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BooleanField.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="BooleanField.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="BooleanField.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="BooleanField.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="BooleanField.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="BooleanField.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="BooleanField.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="BooleanField.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="BooleanField.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="BooleanField.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="BooleanField.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="BooleanField.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="BooleanField.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="BooleanField.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="BooleanField">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="BooleanField.Mask" />
+        <xs:element ref="BooleanField.Button" />
+        <xs:element ref="BooleanField.InputField" />
+        <xs:element ref="BooleanField.Toggle" />
+        <xs:element ref="BooleanField.DragAndDropSource" />
+        <xs:element ref="BooleanField.DragAndDropReceiver" />
+        <xs:element ref="BooleanField.Rigidbody2D" />
+        <xs:element ref="BooleanField.UiCollider" />
+        <xs:element ref="BooleanField.ChatMessageController" />
+        <xs:element ref="BooleanField.TextField" />
+        <xs:element ref="BooleanField.ToggleField" />
+        <xs:element ref="BooleanField.IntField" />
+        <xs:element ref="BooleanField.FloatField" />
+        <xs:element ref="BooleanField.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Title" type="String" />
+      <xs:attribute name="Subtitle" type="String" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IntField.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="IntField.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="IntField.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="IntField.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="IntField.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="IntField.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="IntField.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="IntField.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="IntField.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="IntField.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="IntField.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="IntField.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="IntField.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="IntField.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="IntField">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="IntField.Mask" />
+        <xs:element ref="IntField.Button" />
+        <xs:element ref="IntField.InputField" />
+        <xs:element ref="IntField.Toggle" />
+        <xs:element ref="IntField.DragAndDropSource" />
+        <xs:element ref="IntField.DragAndDropReceiver" />
+        <xs:element ref="IntField.Rigidbody2D" />
+        <xs:element ref="IntField.UiCollider" />
+        <xs:element ref="IntField.ChatMessageController" />
+        <xs:element ref="IntField.TextField" />
+        <xs:element ref="IntField.ToggleField" />
+        <xs:element ref="IntField.IntField" />
+        <xs:element ref="IntField.FloatField" />
+        <xs:element ref="IntField.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Title" type="String" />
+      <xs:attribute name="Subtitle" type="String" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FloatField.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="FloatField.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="FloatField.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="FloatField.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="FloatField.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="FloatField.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="FloatField.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="FloatField.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="FloatField.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="FloatField.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="FloatField.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="FloatField.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="FloatField.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="FloatField.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="FloatField">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="FloatField.Mask" />
+        <xs:element ref="FloatField.Button" />
+        <xs:element ref="FloatField.InputField" />
+        <xs:element ref="FloatField.Toggle" />
+        <xs:element ref="FloatField.DragAndDropSource" />
+        <xs:element ref="FloatField.DragAndDropReceiver" />
+        <xs:element ref="FloatField.Rigidbody2D" />
+        <xs:element ref="FloatField.UiCollider" />
+        <xs:element ref="FloatField.ChatMessageController" />
+        <xs:element ref="FloatField.TextField" />
+        <xs:element ref="FloatField.ToggleField" />
+        <xs:element ref="FloatField.IntField" />
+        <xs:element ref="FloatField.FloatField" />
+        <xs:element ref="FloatField.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Title" type="String" />
+      <xs:attribute name="Subtitle" type="String" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TextField.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="TextField.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="TextField.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="TextField.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="TextField.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="TextField.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="TextField.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="TextField.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="TextField.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="TextField.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="TextField.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="TextField.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="TextField.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="TextField.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="TextField">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="TextField.Mask" />
+        <xs:element ref="TextField.Button" />
+        <xs:element ref="TextField.InputField" />
+        <xs:element ref="TextField.Toggle" />
+        <xs:element ref="TextField.DragAndDropSource" />
+        <xs:element ref="TextField.DragAndDropReceiver" />
+        <xs:element ref="TextField.Rigidbody2D" />
+        <xs:element ref="TextField.UiCollider" />
+        <xs:element ref="TextField.ChatMessageController" />
+        <xs:element ref="TextField.TextField" />
+        <xs:element ref="TextField.ToggleField" />
+        <xs:element ref="TextField.IntField" />
+        <xs:element ref="TextField.FloatField" />
+        <xs:element ref="TextField.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Title" type="String" />
+      <xs:attribute name="Subtitle" type="String" />
+      <xs:attribute name="Value" type="String" />
+      <xs:attribute name="TextMinHeight" type="YogaValue" />
+      <xs:attribute name="TextMaxHeight" type="YogaValue" />
+      <xs:attribute name="ContentType" type="UnityEngine.UI.ContentType" />
+      <xs:attribute name="CharacterValidation" type="UnityEngine.UI.CharacterValidation" />
+      <xs:attribute name="LineType" type="UnityEngine.UI.LineType" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VectorField.Mask" substitutionGroup="BaseComponent.Mask" />
+  <xs:element name="VectorField.Button" substitutionGroup="BaseComponent.Button" />
+  <xs:element name="VectorField.InputField" substitutionGroup="BaseComponent.InputField" />
+  <xs:element name="VectorField.Toggle" substitutionGroup="BaseComponent.Toggle" />
+  <xs:element name="VectorField.DragAndDropSource" substitutionGroup="BaseComponent.DragAndDropSource" />
+  <xs:element name="VectorField.DragAndDropReceiver" substitutionGroup="BaseComponent.DragAndDropReceiver" />
+  <xs:element name="VectorField.Rigidbody2D" substitutionGroup="BaseComponent.Rigidbody2D" />
+  <xs:element name="VectorField.UiCollider" substitutionGroup="BaseComponent.UiCollider" />
+  <xs:element name="VectorField.ChatMessageController" substitutionGroup="BaseComponent.ChatMessageController" />
+  <xs:element name="VectorField.TextField" substitutionGroup="BaseComponent.TextField" />
+  <xs:element name="VectorField.ToggleField" substitutionGroup="BaseComponent.ToggleField" />
+  <xs:element name="VectorField.IntField" substitutionGroup="BaseComponent.IntField" />
+  <xs:element name="VectorField.FloatField" substitutionGroup="BaseComponent.FloatField" />
+  <xs:element name="VectorField.VectorField" substitutionGroup="BaseComponent.VectorField" />
+  <xs:element name="VectorField">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="VectorField.Mask" />
+        <xs:element ref="VectorField.Button" />
+        <xs:element ref="VectorField.InputField" />
+        <xs:element ref="VectorField.Toggle" />
+        <xs:element ref="VectorField.DragAndDropSource" />
+        <xs:element ref="VectorField.DragAndDropReceiver" />
+        <xs:element ref="VectorField.Rigidbody2D" />
+        <xs:element ref="VectorField.UiCollider" />
+        <xs:element ref="VectorField.ChatMessageController" />
+        <xs:element ref="VectorField.TextField" />
+        <xs:element ref="VectorField.ToggleField" />
+        <xs:element ref="VectorField.IntField" />
+        <xs:element ref="VectorField.FloatField" />
+        <xs:element ref="VectorField.VectorField" />
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Attrs" type="xs:string" />
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Title" type="String" />
+      <xs:attribute name="Subtitle" type="String" />
+      <xs:attribute name="Dimension" type="Integer" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AttributeCollection">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="Attrs" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Attrs">
+    <xs:complexType>
+      <xs:attribute name="Id" type="String" />
+      <xs:attribute name="Visibility" type="ThreeDISevenZeroR.XmlUI.Visibility" />
+      <xs:attribute name="UseMeasure" type="Boolean" />
+      <xs:attribute name="Left" type="YogaValue" />
+      <xs:attribute name="Top" type="YogaValue" />
+      <xs:attribute name="Right" type="YogaValue" />
+      <xs:attribute name="Bottom" type="YogaValue" />
+      <xs:attribute name="Start" type="YogaValue" />
+      <xs:attribute name="End" type="YogaValue" />
+      <xs:attribute name="Margin" type="YogaValue" />
+      <xs:attribute name="MarginHorizontal" type="YogaValue" />
+      <xs:attribute name="MarginVertical" type="YogaValue" />
+      <xs:attribute name="MarginStart" type="YogaValue" />
+      <xs:attribute name="MarginEnd" type="YogaValue" />
+      <xs:attribute name="MarginTop" type="YogaValue" />
+      <xs:attribute name="MarginLeft" type="YogaValue" />
+      <xs:attribute name="MarginBottom" type="YogaValue" />
+      <xs:attribute name="MarginRight" type="YogaValue" />
+      <xs:attribute name="Padding" type="YogaValue" />
+      <xs:attribute name="PaddingHorizontal" type="YogaValue" />
+      <xs:attribute name="PaddingVertical" type="YogaValue" />
+      <xs:attribute name="PaddingStart" type="YogaValue" />
+      <xs:attribute name="PaddingEnd" type="YogaValue" />
+      <xs:attribute name="PaddingTop" type="YogaValue" />
+      <xs:attribute name="PaddingLeft" type="YogaValue" />
+      <xs:attribute name="PaddingBottom" type="YogaValue" />
+      <xs:attribute name="PaddingRight" type="YogaValue" />
+      <xs:attribute name="StyleDirection" type="Facebook.Yoga.YogaDirection" />
+      <xs:attribute name="FlexDirection" type="Facebook.Yoga.YogaFlexDirection" />
+      <xs:attribute name="JustifyContent" type="Facebook.Yoga.YogaJustify" />
+      <xs:attribute name="AlignItems" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignSelf" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="AlignContent" type="Facebook.Yoga.YogaAlign" />
+      <xs:attribute name="PositionType" type="Facebook.Yoga.YogaPositionType" />
+      <xs:attribute name="Wrap" type="Facebook.Yoga.YogaWrap" />
+      <xs:attribute name="Flex" type="Float" />
+      <xs:attribute name="FlexGrow" type="Float" />
+      <xs:attribute name="FlexShrink" type="Float" />
+      <xs:attribute name="FlexBasis" type="YogaValue" />
+      <xs:attribute name="Width" type="YogaValue" />
+      <xs:attribute name="Height" type="YogaValue" />
+      <xs:attribute name="MinWidth" type="YogaValue" />
+      <xs:attribute name="MinHeight" type="YogaValue" />
+      <xs:attribute name="MaxWidth" type="YogaValue" />
+      <xs:attribute name="MaxHeight" type="YogaValue" />
+      <xs:attribute name="AspectRatio" type="Float" />
+      <xs:attribute name="Overflow" type="Facebook.Yoga.YogaOverflow" />
+      <xs:attribute name="Alpha" type="Float" />
+      <xs:attribute name="BlocksRaycasts" type="Boolean" />
+      <xs:attribute name="Interactable" type="Boolean" />
+      <xs:attribute name="Sprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="SpriteType" type="UnityEngine.UI.Type" />
+      <xs:attribute name="EffectType" type="ThreeDISevenZeroR.XmlUI.ShadowType" />
+      <xs:attribute name="EffectColor" type="HtmlColor" />
+      <xs:attribute name="EffectOffset" type="String" />
+      <xs:attribute name="EffectUseGraphicAlpha" type="Boolean" />
+      <xs:attribute name="Color" type="HtmlColor" />
+      <xs:attribute name="Material" type="UnityEngine.Material" />
+      <xs:attribute name="RaycastTarget" type="Boolean" />
+      <xs:attribute name="Text" type="String" />
+      <xs:attribute name="Font" type="UnityEngine.Font" />
+      <xs:attribute name="FontStyle" type="UnityEngine.FontStyle" />
+      <xs:attribute name="FontSize" type="Integer" />
+      <xs:attribute name="LineSpacing" type="Integer" />
+      <xs:attribute name="Alignment" type="UnityEngine.TextAnchor" />
+      <xs:attribute name="AlignByGeometry" type="Boolean" />
+      <xs:attribute name="HorizontalOverflow" type="UnityEngine.HorizontalWrapMode" />
+      <xs:attribute name="VerticalOverflow" type="UnityEngine.VerticalWrapMode" />
+      <xs:attribute name="BestFit" type="Boolean" />
+      <xs:attribute name="MinSize" type="Integer" />
+      <xs:attribute name="MaxSize" type="Integer" />
+      <xs:attribute name="ContentType" type="String" />
+      <xs:attribute name="CharacterValidation" type="String" />
+      <xs:attribute name="LineType" type="String" />
+      <xs:attribute name="Value" type="String" />
+      <xs:attribute name="TextMinHeight" type="String" />
+      <xs:attribute name="TextMaxHeight" type="String" />
+      <xs:attribute name="MeasureText" type="String" />
+      <xs:attribute name="Placeholder" type="String" />
+      <xs:attribute name="IsOn" type="String" />
+      <xs:attribute name="Title" type="String" />
+      <xs:attribute name="Subtitle" type="String" />
+      <xs:attribute name="Dimension" type="String" />
+      <xs:attribute name="ShowMaskGraphic" type="Boolean" />
+      <xs:attribute name="TargetGraphicId" type="String" />
+      <xs:attribute name="Transition" type="UnityEngine.UI.Transition" />
+      <xs:attribute name="NavigationMode" type="UnityEngine.UI.Mode" />
+      <xs:attribute name="NormalColor" type="HtmlColor" />
+      <xs:attribute name="HighlightedColor" type="HtmlColor" />
+      <xs:attribute name="PressedColor" type="HtmlColor" />
+      <xs:attribute name="SelectedColor" type="HtmlColor" />
+      <xs:attribute name="DisabledColor" type="HtmlColor" />
+      <xs:attribute name="ColorMultiplier" type="Float" />
+      <xs:attribute name="ColorFadeDuration" type="Float" />
+      <xs:attribute name="HighlightedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="PressedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="SelectedSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="DisabledSprite" type="UnityEngine.Sprite" />
+      <xs:attribute name="TextId" type="String" />
+      <xs:attribute name="PlaceholderId" type="String" />
+      <xs:attribute name="CharacterLimit" type="Integer" />
+      <xs:attribute name="CaretBlinkRate" type="Float" />
+      <xs:attribute name="CaretWidth" type="Integer" />
+      <xs:attribute name="CustomCaretColor" type="Boolean" />
+      <xs:attribute name="CaretColor" type="HtmlColor" />
+      <xs:attribute name="SelectionColor" type="HtmlColor" />
+      <xs:attribute name="HideMobileInput" type="Boolean" />
+      <xs:attribute name="ReadOnly" type="Boolean" />
+      <xs:attribute name="ToggleTransition" type="UnityEngine.UI.ToggleTransition" />
+      <xs:attribute name="GraphicId" type="String" />
+      <xs:attribute name="FieldId" type="String" />
+      <xs:attribute name="ToggleId" type="String" />
+      <xs:attribute name="XFieldId" type="String" />
+      <xs:attribute name="YFieldId" type="String" />
+      <xs:attribute name="ZFieldId" type="String" />
+      <xs:attribute name="WFieldId" type="String" />
+      <xs:attribute name="Attrs.Parent" type="xs:string" />
+      <xs:attribute name="Attrs.Name" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ElementCollection">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="Element" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Element">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="LayoutElements" minOccurs="0" maxOccurs="unbounded" />
+      </xs:choice>
+      <xs:attribute name="Name" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChildRoot" />
+</xs:schema>

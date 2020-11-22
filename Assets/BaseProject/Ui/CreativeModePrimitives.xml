@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ElementCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="XmlUiSchema.xsd">
+    
+    <!-- Widgets -->
+
+    <Element Name="EditableText">
+        <Panel Sprite="Backgrounds/BottomBorder2px" MinWidth="32" Padding="2" RaycastTarget="True" BlocksRaycasts="True" >
+            <Panel.InputField TextId="Text" PlaceholderId="Placeholder" ContentType="@ContentType" CharacterValidation="@CharacterValidation" LineType="@LineType" />
+
+            <Text Attrs="BlackShadow" Id="Text" Text="@Value" MinHeight="@TextMinHeight" MaxHeight="@TextMaxHeight" Alignment="MiddleLeft" FlexGrow="1" UseMeasure="@MeasureText" />
+            <Text Attrs="BlackShadow" Id="Placeholder" Text="@Placeholder" Alignment="MiddleLeft" FontStyle="Italic" Alpha="0.5" PositionType="Absolute"
+                  Left="2" Right="2" Top="2" Bottom="2"/>
+
+        </Panel>
+    </Element>
+    
+    <Element Name="Button">
+        <Panel Color="#880000" FlexDirection="Row" PaddingHorizontal="8" PaddingVertical="8" JustifyContent="Center">
+            <Panel.Button />
+            <Text Text="@Text" VerticalOverflow="Overflow"/>
+        </Panel>
+    </Element>
+    
+    <Element Name="Toggle">
+        <Panel Sprite="Backgrounds/FullBorder2px" FlexGrow="0" FlexShrink="1" AspectRatio="1" JustifyContent="Center">
+            <Panel.Toggle GraphicId="Check" IsOn="@IsOn" ToggleTransition="Fade"/>
+            <Image Id="Check" Width="24" Height="24" AlignSelf="Center" Sprite="Icons/checkIcon"/>
+        </Panel>
+    </Element>
+    
+    <!-- Layouts -->
+    
+    <Element Name="Field">
+        <Panel PaddingHorizontal="4" PaddingVertical="2" FlexDirection="Row">
+
+            <Panel MinWidth="100" MinHeight="28" FlexDirection="Column" JustifyContent="Center">
+                <Text Attrs="BlackShadow" Text="@Title" Width="100%" FontSize="12" Color="#ffffff" />
+                <Text Attrs="BlackShadow" Text="@Subtitle" Width="100%" FontSize="10" Color="#ffffff88" />
+            </Panel>
+
+            <Panel MarginLeft="8" FlexGrow="1" FlexBasis="0" FlexDirection="Row" >
+                <ChildRoot />
+            </Panel>
+
+        </Panel>
+    </Element>
+    
+    <!-- Fields -->
+    
+    <Element Name="BooleanField">
+        <Field Title="@Title" Subtitle="@Subtitle">
+            <Field.ToggleField ToggleId="Toggle" />
+            <Toggle Id="Toggle" />
+        </Field>
+    </Element>
+
+    <Element Name="IntField">
+        <Field Title="@Title" Subtitle="@Subtitle">
+            <Field.IntField FieldId="Text" />
+            <EditableText Id="Text" Width="100%" Placeholder="Int value" ContentType="IntegerNumber"/>
+        </Field>
+    </Element>
+    
+    <Element Name="FloatField">
+        <Field Title="@Title" Subtitle="@Subtitle">
+            <Field.FloatField FieldId="Text" />
+            <EditableText Id="Text" Width="100%" Placeholder="Float value" ContentType="DecimalNumber"/>
+        </Field>
+    </Element>
+    
+    <Element Name="TextField">
+        <Field Title="@Title" Subtitle="@Subtitle">
+            <Field.TextField FieldId="Text" Value="@Value" />
+            <EditableText Id="Text" Width="100%" Placeholder="Input text here" 
+                          TextMinHeight="@TextMinHeight" TextMaxHeight="@TextMaxHeight" ContentType="@ContentType" CharacterValidation="@CharacterValidation" LineType="@LineType" />
+        </Field>
+    </Element>
+    
+    <Element Name="VectorField">
+        <Field Title="@Title" Subtitle="@Subtitle">
+            <Field.VectorField XFieldId="X" YFieldId="Y" ZFieldId="Z" WFieldId="W" Dimension="@Dimension" />
+            <EditableText Id="X" Placeholder="X" FlexGrow="1" MeasureText="False" ContentType="DecimalNumber"/>
+            <EditableText Id="Y" Placeholder="Y" FlexGrow="1" MeasureText="False" MarginLeft="4" ContentType="DecimalNumber"/>
+            <EditableText Id="Z" Placeholder="Z" FlexGrow="1" MeasureText="False" MarginLeft="4" ContentType="DecimalNumber"/>
+            <EditableText Id="W" Placeholder="W" FlexGrow="1" MeasureText="False" MarginLeft="4" ContentType="DecimalNumber"/>
+        </Field>
+    </Element>
+    
+</ElementCollection>

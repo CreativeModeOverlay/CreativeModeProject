@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using CreativeMode.Generic;
+using CreativeMode.Serializer;
 using Newtonsoft.Json;
 
 namespace CreativeMode
@@ -10,11 +11,13 @@ namespace CreativeMode
         public static readonly JsonNetEntitySerializer<T> Instance 
             = new JsonNetEntitySerializer<T>();
         
-        private static JsonSerializerSettings jsonSettings = new JsonSerializerSettings
+        private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings
         {
-            TypeNameHandling = TypeNameHandling.Auto
+            TypeNameHandling = TypeNameHandling.Auto,
+            ContractResolver = new WhitelistContractResolver()
+                .AddUnityTypes()
         };
-        
+
         private JsonNetEntitySerializer() { }
 
         public byte[] Serialize(T value)

@@ -1,0 +1,20 @@
+<Panel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd"
+       FlexDirection="Row">
+    <Panel.Rigidbody2D />
+    <Panel.ChatMessageController />
+
+    <Panel FlexDirection="Row" Padding="8">
+        <Image Id="IsModerator" Attrs="FallingChat.Icon" Sprite="Ui/Icons/TwitchModeratorIcon" />
+        <Image Id="IsBroadcaster" Attrs="FallingChat.Icon" Sprite="Ui/Icons/TwitchBroadcasterIcon" />
+        <Text Id="Author" Attrs="FallingChat.Author" Text="Username" MaxWidth="150" />
+    </Panel>
+    
+    <Panel Color="#00000088" MaxWidth="400" MaxHeight="800">
+        <Panel.UiCollider />
+        
+        <Text Id="Text" Attrs="FallingChat.Message" Margin="8" />
+        <Image Id="Highlight" Color="#00000000" PositionType="Absolute" Left="0" Right="0" Top="0" Bottom="0"/>
+    </Panel>
+
+</Panel>

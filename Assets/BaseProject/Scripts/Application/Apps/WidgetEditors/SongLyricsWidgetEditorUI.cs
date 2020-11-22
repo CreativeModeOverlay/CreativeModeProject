@@ -2,18 +2,18 @@
 
 namespace CreativeMode
 {
-    public class SongLyricsWidgetEditorUI : BaseAppWidgetEditorUI<SongLyricsWidget>
+    public class SongLyricsWidgetEditorUI : BaseAppWidgetEditorUI<SongLyricsAppWidget>
     {
         public InputField voiceText;
         
-        protected override void SetData(SongLyricsWidget widget)
+        protected override void SetData(SongLyricsAppWidget widget)
         {
             voiceText.text = widget.voice;
         }
 
-        protected override SongLyricsWidget GetData()
+        protected override SongLyricsAppWidget GetData()
         {
-            return new SongLyricsWidget
+            return new SongLyricsAppWidget
             {
                 voice = voiceText.text
             };

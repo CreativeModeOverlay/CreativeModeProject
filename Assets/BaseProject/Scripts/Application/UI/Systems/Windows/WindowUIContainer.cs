@@ -1,32 +1,21 @@
 ﻿using System;
 using CreativeMode;
+using ThreeDISevenZeroR.XmlUI;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WindowUIContainer : MonoBehaviour, IWindowUIContainer
 {
-    [Header("References")]
-    [SerializeField] private RectPositionControlWidget rectControlWidget;
-    [SerializeField] private RectTransform contentRoot;
-    [SerializeField] private Graphic backgroundGraphic;
-    [SerializeField] private Text windowTitle;
-    
-    [Header("Settings")]
-    [SerializeField] private RectOffset decorPadding;
+    [Header("References")] 
+    [SerializeField] private RectTransform windowTransform;
+    [SerializeField] private XmlLayoutElement contentRoot;
+
+    private Text windowTitle;
+    private Graphic backgroundGraphic;
     
     public IWindowUI WindowUI { get; private set; }
     public WindowManager Manager { get; set; }
-
-    public RectOffset DecorPadding
-    {
-        get => decorPadding;
-        set
-        {
-            decorPadding = value;
-            UpdateContainerSize();
-        }
-    }
-
+    
     public Color BackgroundColor
     {
         get
@@ -59,13 +48,30 @@ public class WindowUIContainer : MonoBehaviour, IWindowUIContainer
         }
     }
 
+    private void Start()
+    {
+        windowTitle = contentRoot.FindComponentById<Text>("Title");
+        backgroundGraphic = contentRoot.FindComponentById<Graphic>("Content");
+    }
+
+    private void Update()
+    {
+        var delta = windowTransform.sizeDelta;
+
+        if (!Mathf.Approximately(contentRoot.Width.Value, delta.x))
+            contentRoot.Width = delta.x;
+
+        if (!Mathf.Approximately(contentRoot.Height.Value, delta.y))
+            contentRoot.Height = delta.y;
+    }
+
     public void PutWindow(IWindowUI window)
     {
         if(WindowUI != null)
             throw new ArgumentException("Container already contains window");
         
-        TransformUtils.FillRectParent(window.Root, contentRoot);
-        UpdateContainerSize();
+        /*TransformUtils.FillRectParent(window.Root, contentRoot);
+        UpdateContainerSize();*/
         
         WindowUI = window;
     }
@@ -85,8 +91,6 @@ public class WindowUIContainer : MonoBehaviour, IWindowUIContainer
     {
         if(WindowUI == null)
             return;
-        
-        rectControlWidget.ContentSize = WindowUI.Size.Apply(decorPadding);
     }
 
     public void Close()

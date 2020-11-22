@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AttributeCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="XmlUiSchema.xsd">
+
+    <Attrs Attrs.Name="BlackOutline"
+           EffectColor="black"
+           EffectType="Outline"
+           EffectOffset="1"/>
+
+    <Attrs Attrs.Name="BlackShadow"
+           EffectColor="black"
+           EffectType="Shadow"
+           EffectOffset="1, -1"/>
+
+    <Attrs Attrs.Name="FallingChat.Message" 
+           Attrs.Parent="BlackOutline"
+           Font="Fonts/Oswald-Regular"
+           FontSize="20" />
+
+    <Attrs Attrs.Name="FallingChat.Author"
+           Attrs.Parent="BlackOutline"
+           FontStyle="Bold"
+           FontSize="16" />
+
+    <Attrs Attrs.Name="FallingChat.Icon"
+           Width="16"
+           Height="16"
+           MarginRight="4"/>
+    
+    <Attrs Attrs.Name="InvisibleButton"
+           NormalColor="#ffffff00"
+           PressedColor="#ffffff88"
+           HighlightedColor="#ffffff44"
+           NavigationMode="None"/>
+
+</AttributeCollection>

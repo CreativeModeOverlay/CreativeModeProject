@@ -1,0 +1,19 @@
+<Panel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd"
+       FlexDirection="Row" MinWidth="480" MinHeight="240">
+
+    <Panel Color="#00000088" Width="200">
+        <Panel Id="WidgetList" FlexGrow="1" FlexShrink="1" />
+        <Button Id="CreateNewButton" Text="Create new" />
+    </Panel>
+    
+    <Panel Width="100%" FlexGrow="1" FlexShrink="1">
+        <Panel Id="WidgetEditor" FlexGrow="1" FlexShrink="1" />
+        <Panel FlexDirection="Row" JustifyContent="FlexEnd" Width="100%" FlexShrink="1">
+            <Button Id="DeleteButton" Text="Delete" MarginRight="8" />
+            <Button Id="ApplyButton" Text="Apply" MarginRight="8" />
+            <Button Id="OkButton" Text="Ok" />
+        </Panel>
+    </Panel>
+    
+</Panel>

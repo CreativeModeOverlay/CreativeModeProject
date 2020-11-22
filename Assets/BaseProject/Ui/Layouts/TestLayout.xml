@@ -1,0 +1,13 @@
+<Panel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../XmlUiSchema.xsd" 
+       FlexDirection="Column" JustifyContent="FlexStart" Sprite="Backgrounds/FullBorder2px" FlexGrow="1" Padding="4">
+    
+    <TextField Title="TestField1" Subtitle="TestSubtitle" TextMinHeight="100" TextMaxHeight="200" ContentType="Standard" LineType="MultiLineNewline" />
+    <BooleanField Title="Check" />
+    <IntField Title="Int"/>
+    <FloatField Title="Float" />
+    <VectorField Title="Vector2" Dimension="2" />
+    <VectorField Title="Vector3" Dimension="3" />
+    <VectorField Title="Vector4" Dimension="4" />
+
+</Panel>
