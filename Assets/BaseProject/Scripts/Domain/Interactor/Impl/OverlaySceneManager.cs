@@ -128,16 +128,19 @@ namespace CreativeMode
 
             if (defaultTransitionObject)
                 DefaultTransition = defaultTransitionObject.GetComponent<IOverlayTransition>();
-   
-            Observable.EveryEndOfFrame()
-                .Subscribe(f => {
-                    globalContainer?.Render(renderTexture);
 
-                    if (renderTexture != outputTexture)
-                        Graphics.Blit(renderTexture, outputTexture);
+            if (!renderToEditorWindow)
+            {
+                Observable.EveryEndOfFrame()
+                    .Subscribe(f => {
+                        globalContainer?.Render(renderTexture);
+
+                        if (renderTexture != outputTexture)
+                            Graphics.Blit(renderTexture, outputTexture);
                     
-                    captureInterface.SendTexture(outputTexture, outputTimeout, doubleBuffering);
-                });
+                        captureInterface.SendTexture(outputTexture, outputTimeout, doubleBuffering);
+                    });
+            }
         }
 
         private void LateUpdate()

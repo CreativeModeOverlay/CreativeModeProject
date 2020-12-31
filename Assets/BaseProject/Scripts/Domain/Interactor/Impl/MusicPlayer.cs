@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using DG.Tweening;
-using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,16 +9,18 @@ namespace CreativeMode.Impl
 {
     public class MusicPlayer : MonoBehaviour, IMusicPlayer
     {
-        private IMusicPlaylistProvider Playlist => Instance<IMusicPlaylistProvider>.Get();
-        private AudioLoader AudioLoader => Instance<AudioLoader>.Get();
+        private IMediaPlaylistProvider Playlist => Instance<IMediaPlaylistProvider>.Get();
+        private IMediaProvider MediaProvider => Instance<IMediaProvider>.Get();
         
         [FormerlySerializedAs("visualizer")]
-        public MusicVisualizationProvider visualizationProvider;
+        public MediaVisualizationProvider visualizationProvider;
         
-        public IObservable<AudioMetadata> CurrentMusic => onMusicChangedSubject;
+        public IObservable<MediaMetadata> CurrentMedia => onMusicChangedSubject;
 
         public float FadeInDuration { get; set; } = 0.5f;
         public float FadeOutDuration { get; set; } = 0.5f;
+
+        public bool IsBuffering => vlcMediaPlayer.IsBuffering;
 
         public float Pitch
         {
@@ -36,35 +38,33 @@ namespace CreativeMode.Impl
 
         public float Position
         {
-            get => sourceState == AudioSourceState.Finished ? Duration : outputAudioSource.time;
-            set => outputAudioSource.time = value;
+            get => vlcMediaPlayer.Position;
+            set => vlcMediaPlayer.Position = value;
         }
 
-        public float Duration => outputAudioSource.clip 
-            ? outputAudioSource.clip.length 
-            : 0;
+        public float Duration => vlcMediaPlayer.Duration;
         
         public AudioSource outputAudioSource;
+        public VlcMediaPlayerBehaviour vlcMediaPlayer;
         
-        private readonly ReplaySubject<AudioMetadata> onMusicChangedSubject = 
-            new ReplaySubject<AudioMetadata>(1);
-
-        private AudioMetadata currentMusicInfo;
-        private SharedAsset<AudioAsset> currentMusic;
-        
+        private readonly ReplaySubject<MediaMetadata> onMusicChangedSubject = 
+            new ReplaySubject<MediaMetadata>(1);
+ 
         private AudioSourceState sourceState;
         private MediaPlayerState playerState;
         private IDisposable musicLoadDisposable;
 
         private void Update()
         {
-            if (sourceState == AudioSourceState.Playing && !outputAudioSource.isPlaying)
+            if (sourceState == AudioSourceState.Playing && 
+                vlcMediaPlayer.State == VlcMediaPlayerBehaviour.PlaybackState.Finished)
             {
                 sourceState = AudioSourceState.Finished;
                 OnPlaybackFinished();
             }
 
-            if (playerState == MediaPlayerState.WaitForVisualizersAndPlay && !visualizationProvider.IsMusicChangeAnimationActive)
+            if (playerState == MediaPlayerState.WaitForVisualizersAndPlay && 
+                !visualizationProvider.IsMusicChangeAnimationActive)
                 Play();
         }
 
@@ -90,7 +90,7 @@ namespace CreativeMode.Impl
                 outputAudioSource.volume = 1f;
             }
 
-            if (outputAudioSource.clip)
+            if (vlcMediaPlayer.IsMediaSet)
             {
                 PlaySource();
             }
@@ -172,7 +172,7 @@ namespace CreativeMode.Impl
 
         public void Next()
         {
-            OnNextPlaylistEntry(Playlist.AdvanceToNext());
+            OnNextPlaylistEntry(Playlist.AdvanceToNext(Playlist.CurrentSet));
         }
         
         public void Previous()
@@ -180,11 +180,11 @@ namespace CreativeMode.Impl
             OnNextPlaylistEntry(Playlist.ReturnToPrevious());
         }
 
-        private void OnNextPlaylistEntry([CanBeNull] string url)
+        private void OnNextPlaylistEntry(MediaMetadata meta)
         {
-            if (url != null)
+            if (meta != null)
             {
-                LoadMedia(url);
+                LoadMedia(meta);
             }
             else
             {
@@ -194,31 +194,29 @@ namespace CreativeMode.Impl
 
         private void OnPlaybackFinished()
         {
+            Debug.Log("Playback finished!");
             Next();
         }
 
-        private void LoadMedia(string url)
+        private void LoadMedia(MediaMetadata entry)
         {
-            Debug.Log($"Loading music: {url}");
+            Debug.Log($"Loading music: {entry.url}");
+            
+            vlcMediaPlayer.Stop();
+            onMusicChangedSubject.OnNext(entry);
+            
             musicLoadDisposable?.Dispose();
-            musicLoadDisposable = AudioLoader.GetAsset(url)
-                .Subscribe(OnMediaLoaded);
+            musicLoadDisposable = MediaProvider.GetMediaByUrl(entry.url)
+                .ObserveOn(Scheduler.MainThread)
+                .Subscribe(r => OnMediaDataGet(r.First()));
         }
 
-        private void OnMediaLoaded(SharedAsset<AudioAsset> audio)
+        private void OnMediaDataGet(MediaInfo media)
         {
-            outputAudioSource.clip = null;
             sourceState = AudioSourceState.Stopped;
-            currentMusic.Dispose();
             
-            var asset = audio.Asset;
+            vlcMediaPlayer.SetMedia(media.streamUrl, media.audioStreamUrl);
             
-            currentMusic = audio;
-            currentMusicInfo = asset.Meta;
-            
-            onMusicChangedSubject.OnNext(asset.Meta);
-            outputAudioSource.clip = audio.Asset.Clip;
-            sourceState = AudioSourceState.Stopped;
             DOTween.Kill(outputAudioSource);
 
             switch (playerState)
@@ -246,18 +244,12 @@ namespace CreativeMode.Impl
 
         private void PlaySource()
         {
-            if(!outputAudioSource.clip)
-                return;
-            
             switch (sourceState)
             {
                 case AudioSourceState.Finished: 
-                case AudioSourceState.Stopped: 
-                    outputAudioSource.Play();
-                    break;
-                
+                case AudioSourceState.Stopped:
                 case AudioSourceState.Paused: 
-                    outputAudioSource.UnPause(); 
+                    vlcMediaPlayer.Play();
                     break;
             }
             
@@ -266,13 +258,10 @@ namespace CreativeMode.Impl
 
         private void PauseSource()
         {
-            if(!outputAudioSource.clip)
-                return;
-            
             switch (sourceState)
             {
                 case AudioSourceState.Playing:
-                    outputAudioSource.Pause();
+                    vlcMediaPlayer.Pause();
                     sourceState = AudioSourceState.Paused;
                     break;
             }
@@ -280,19 +269,17 @@ namespace CreativeMode.Impl
 
         private void StopSource()
         {
-            if(!outputAudioSource.clip)
-                return;
-            
             switch (sourceState)
             {
                 case AudioSourceState.Paused:
                 case AudioSourceState.Playing:
-                    outputAudioSource.Stop();
+                    vlcMediaPlayer.Stop();
                     sourceState = AudioSourceState.Stopped;
                     break;
             }
         }
 
+        // Expected audio source state
         private enum AudioSourceState
         {
             Stopped,
@@ -301,6 +288,7 @@ namespace CreativeMode.Impl
             Finished
         }
         
+        // Music player logic state
         private enum MediaPlayerState
         {
             Stopped,

@@ -16,7 +16,10 @@ public class MusicPlayerAppWidgetUI : BaseAppWidgetUI<MusicPlayerAppWidget>
 
     public Image backgroundSongProgress;
     public Image foregroundSongProgress;
-    public CanvasGroup pauseIcon;
+    
+    public Image dimIconBackground;
+    public Image pauseIcon;
+    public Image bufferingIcon;
 
     public CreativeImage albumArtwork;
     public Sprite noArtworkDummy;
@@ -27,13 +30,14 @@ public class MusicPlayerAppWidgetUI : BaseAppWidgetUI<MusicPlayerAppWidget>
     private bool isMusicDisplaying;
     private float currentProgress;
     private bool currentIsPaused = true;
+    private bool currentIsBuffering = true;
 
     private readonly object songChangeAnimateId = new object();
     private readonly object albumSlideAnimateId = new object();
 
     private void Awake()
     {
-        MusicPlayer.CurrentMusic
+        MusicPlayer.CurrentMedia
             .Subscribe(AnimateSongChange)
             .AddTo(this);
     }
@@ -41,8 +45,17 @@ public class MusicPlayerAppWidgetUI : BaseAppWidgetUI<MusicPlayerAppWidget>
     private void Update()
     {
         UpdatePlaybackInfo();
+        RotateBufferingIcon();
     }
 
+    private void RotateBufferingIcon()
+    {
+        var bufferTransform = bufferingIcon.transform;
+        var iconRotation = bufferTransform.eulerAngles;
+        iconRotation.z += Time.deltaTime * 360;
+        bufferTransform.eulerAngles = iconRotation;
+    }
+    
     private void OnDestroy()
     {
         DOTween.Kill(this);
@@ -63,16 +76,31 @@ public class MusicPlayerAppWidgetUI : BaseAppWidgetUI<MusicPlayerAppWidget>
             SetProgress(MusicPlayer.NormalizedPosition);
 
         var isPaused = !MusicPlayer.IsPlaying;
+        var isBuffering = MusicPlayer.IsBuffering;
+        var isDimShown = isPaused || isBuffering;
         var isPauseChanged = currentIsPaused != isPaused;
+        var isBufferingChanged = currentIsBuffering != isBuffering;
+        var isSomethingChanged = isPauseChanged || isBufferingChanged;
 
         if (isPauseChanged)
         {
             currentIsPaused = isPaused;
             pauseIcon.DOFade(isPaused ? 1f : 0f, 0.25f);
         }
+
+        if (isBufferingChanged)
+        {
+            currentIsBuffering = isBuffering;
+            bufferingIcon.DOFade(isBuffering ? 1f : 0f, 0.25f);
+        }
+
+        if (isSomethingChanged)
+        {
+            dimIconBackground.DOFade(isDimShown ? 0.5f : 0f, 0.25f);
+        }
     }
 
-    private void AnimateSongChange(AudioMetadata info)
+    private void AnimateSongChange(MediaMetadata info)
     {
         if (albumCoverTinter != null)
             albumCoverTinter.PauseTintUpdates = true;
@@ -91,12 +119,11 @@ public class MusicPlayerAppWidgetUI : BaseAppWidgetUI<MusicPlayerAppWidget>
         var infoLine = info.DottedInfoLine;
 
         progressAnimationActive = true;
-        albumArtwork.PreloadImage(info.coverUrl);
+        albumArtwork.PreloadImage(info.thumbnailUrl);
 
         var initialAnimationDuration = animateFinish ? 0.25f : 0.5f;
 
-        sequence.Append(
-                DOTween.To(SetProgress, 1f, 0f, initialAnimationDuration)
+        sequence.Append(DOTween.To(SetProgress, 1f, 0f, initialAnimationDuration)
                 .SetEase(Ease.InSine)
                 .OnStart(() =>
                 {
@@ -116,7 +143,7 @@ public class MusicPlayerAppWidgetUI : BaseAppWidgetUI<MusicPlayerAppWidget>
                     if (albumCoverTinter != null)
                         albumCoverTinter.PauseTintUpdates = false;
                     
-                    albumArtwork.SetImage(info.coverUrl, noArtworkDummy, s =>
+                    albumArtwork.SetImage(info.thumbnailUrl, noArtworkDummy, s =>
                     {
                         var sprite = s.StaticImage;
                         albumArtworkAspectRatio.aspectRatio = sprite.rect.width / sprite.rect.height;

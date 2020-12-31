@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1666054705394887638}
   - component: {fileID: 5779224098725679293}
   - component: {fileID: 6198268130216512907}
+  - component: {fileID: 2116175357586784807}
   m_Layer: 0
   m_Name: PanelWidgetUIContainer
   m_TagString: Untagged
@@ -51,9 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6055b9e7eb4e759d4158e0dc26ca70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  widgetRoot: {fileID: 1934835629228744703}
+  widgetRenderer: {fileID: 2116175357586784807}
   widgetCanvasGroup: {fileID: 6198268130216512907}
-  errorText: {fileID: 0}
 --- !u!222 &1666054705394887638
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -104,3 +104,16 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2116175357586784807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335757438388297850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa23290fe7a94706984700eaf781614d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  widgetRoot: {fileID: 1934835629228744703}

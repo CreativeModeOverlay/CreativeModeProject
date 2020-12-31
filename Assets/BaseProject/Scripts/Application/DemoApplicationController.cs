@@ -9,12 +9,17 @@ namespace CreativeMode
 {
     public class DemoApplicationController : MonoBehaviour
     {
+        private const int MusicSetMain = 0;
+        private const int MusicSetBrb = 1;
+        
         private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
-        private IMusicPlaylistProvider MusicPlaylist => Instance<IMusicPlaylistProvider>.Get();
+        private IMediaPlaylistProvider MediaPlaylist => Instance<IMediaPlaylistProvider>.Get();
+        private IMediaProvider MediaProvider => Instance<IMediaProvider>.Get();
         private IInputManager InputManager => Instance<IInputManager>.Get();
         private IOverlayManager OverlayManager => Instance<IOverlayManager>.Get();
         private IChatInteractor ChatInteractor => Instance<IChatInteractor>.Get();
         private IDesktopCaptureManager CaptureManager => Instance<IDesktopCaptureManager>.Get();
+        private IAppWidgetManager WidgetManager => Instance<IAppWidgetManager>.Get();
         
         public CameraOverlayScene idleScene;
         public CameraOverlayScene mainScene;
@@ -29,12 +34,19 @@ namespace CreativeMode
         private void Awake()
         {
             SubscribeHotkeys();
+            InitMusicPlaylist();
+            
+            /*var panel = WidgetManager.GetPanel("top");
+            panel.widgets.Clear();
+            panel.AddWidget(WidgetManager.CreateWidget(typeof(MusicPlayerAppWidget)));
+            panel.AddWidget(WidgetManager.CreateWidget(typeof(MusicSpectrumAppWidget)));
+            panel.AddWidget(WidgetManager.CreateWidget(typeof(MusicWaveformAppWidget)));
+            WidgetManager.UpdatePanel(panel);*/
         }
 
         private void Start()
         {
             OnShowMainScreen();
-            SetMusicPlaylist(@"D:\Music\Stream\BRB");
         }
 
         private void SubscribeHotkeys()
@@ -55,6 +67,9 @@ namespace CreativeMode
                 .Subscribe(_ => { OnMediaPlayPause(); });
             
             InputManager.OnHotkeyPressed(RawKey.MediaNextTrack)
+                .Subscribe(_ => { OnMediaNextTrack(); });
+            
+            InputManager.OnHotkeyPressed(RawKey.F12)
                 .Subscribe(_ => { OnMediaNextTrack(); });
             
             InputManager.OnHotkeyPressed(RawKey.MediaPrevTrack)
@@ -84,7 +99,7 @@ namespace CreativeMode
                 return;
 
             OverlayManager.Show(mainScene, transitionCrossfade);
-            SetMusicPlaylist(@"D:\Music\Stream\BRB");
+            //SetMusicPlaylist(@"D:\Music\Stream\BRB");
             mainMixerSnapshot.TransitionTo(2f);
             
             currentScene = mainScene;
@@ -97,7 +112,7 @@ namespace CreativeMode
 
             OverlayManager.Show(musicScene, transitionCrossfade);
             
-            SetMusicPlaylist(@"D:\Path\To\Your\BRB\Music");
+            //SetMusicPlaylist(@"D:\Path\To\Your\BRB\Music");
             musicBrbMixerSnapshot.TransitionTo(3f);
             
             currentScene = musicScene;
@@ -125,15 +140,11 @@ namespace CreativeMode
             MusicPlayer.Next();
         }
 
-        private void SetMusicPlaylist(string path)
+        private void InitMusicPlaylist()
         {
-            MusicPlaylist.ClearPlaylist();
-            MusicPlaylist.AddToPlaylist(Directory.GetFiles(path)
-                .Where(f => f.EndsWith("mp3"))
-                .ToArray());
-            MusicPlaylist.Shuffle = true;
-            MusicPlaylist.SkipRepeats = true;
-            MusicPlaylist.ResetQueueToPlaylist();
+            MediaPlaylist.Shuffle = true;
+            MediaPlaylist.SkipRepeats = false;
+            MediaPlaylist.CurrentSet = MusicSetMain;
         }
     }
 }

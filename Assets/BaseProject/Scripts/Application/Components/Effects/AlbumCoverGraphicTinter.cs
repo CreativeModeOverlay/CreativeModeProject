@@ -7,7 +7,7 @@ namespace CreativeMode
 {
     public class AlbumCoverGraphicTinter : MonoBehaviour
     {
-        private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
+        private IMediaVisualizationProvider MusicVisualizer => Instance<IMediaVisualizationProvider>.Get();
 
         public Graphic[] tintBackground;
         public Graphic[] tintVibrant;

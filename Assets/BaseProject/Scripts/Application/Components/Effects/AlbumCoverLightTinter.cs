@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AlbumCoverLightTinter : MonoBehaviour
 {
-    private IMusicVisualizationProvider MusicPlayer => Instance<IMusicVisualizationProvider>.Get();
+    private IMediaVisualizationProvider MusicPlayer => Instance<IMediaVisualizationProvider>.Get();
     
     public Light[] vibrantLights;
     public Light[] backgroundLights;

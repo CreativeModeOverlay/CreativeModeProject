@@ -6,7 +6,8 @@ using CreativeMode;
 using ThreeDISevenZeroR.UnityGifDecoder;
 using UniRx;
 using UnityEngine;
- 
+using WebP;
+
 public class ImageLoader : AssetLoader<ImageAsset>
 {
     protected override IObservable<SharedAsset<ImageAsset>.IReferenceProvider> CreateAssetProvider(string url)
@@ -20,9 +21,15 @@ public class ImageLoader : AssetLoader<ImageAsset>
                 }
             })
             .ObserveOnMainThread()
-            .SelectMany(b => IsGifImage(b)
-                ? LoadAnimatedImage(b)
-                : LoadNonAnimatedImage(b))
+            .SelectMany(b =>
+            {
+                switch (GetHandlerType(b))
+                {
+                    case HandlerType.Gif: return LoadGifImage(b);
+                    case HandlerType.Webp: return LoadWebp(b);
+                    default: return LoadUsingUnity(b);
+                }
+            })
             .Select(frames =>
             {
                 var asset = new ImageAsset(new ImageMetadata {url = url}, frames);
@@ -73,13 +80,11 @@ public class ImageLoader : AssetLoader<ImageAsset>
         }
     }
 
-    private IObservable<ImageFrame[]> LoadNonAnimatedImage(byte[] data)
+    private IObservable<ImageFrame[]> CreateGenericSingleFrame(Func<Texture2D> creator)
     {
         return Observable.Start(() =>
         {
-            var texture = CreateTexture(0, 0, true);
-            texture.LoadImage(data);
-            texture.Apply(true, true);
+            var texture = creator();
 
             return new[]
             {
@@ -94,7 +99,29 @@ public class ImageLoader : AssetLoader<ImageAsset>
         }, Scheduler.MainThread);
     }
 
-    private IObservable<ImageFrame[]> LoadAnimatedImage(byte[] data)
+    private IObservable<ImageFrame[]> LoadUsingUnity(byte[] data)
+    {
+        return CreateGenericSingleFrame(() =>
+        {
+            var t = CreateTexture(0, 0, true);
+            t.LoadImage(data);
+            t.Apply(true, true);
+            return t;
+        });
+    }
+
+    private IObservable<ImageFrame[]> LoadWebp(byte[] data)
+    {
+        return CreateGenericSingleFrame(() =>
+        {
+            Texture2DExt.GetWebPDimensions(data, out var width, out var height);
+            var texture = CreateTexture(width, height, true);
+            texture.LoadWebP(data, out _);
+            return texture;
+        });
+    }
+    
+    private IObservable<ImageFrame[]> LoadGifImage(byte[] data)
     {
         var spriteList = new List<Sprite>();
         var nanoPool = new Queue<Color32[]>();
@@ -186,19 +213,29 @@ public class ImageLoader : AssetLoader<ImageAsset>
         };
     }
 
-    private bool IsGifImage(byte[] bytes)
+    private HandlerType GetHandlerType(byte[] bytes)
     {
-        return bytes.Length > 3 && 
-               bytes[0] == 'G' && 
-               bytes[1] == 'I' && 
-               bytes[2] == 'F';
+        if (bytes.Length > 3 && bytes[0] == 'G' && bytes[1] == 'I' && bytes[2] == 'F')
+            return HandlerType.Gif;
+
+        if (bytes.Length > 4 && bytes[0] == 'R' && bytes[1] == 'I' && bytes[2] == 'F' && bytes[3] == 'F')
+            return HandlerType.Webp;
+        
+        return HandlerType.Default;
     }
-    
+
     private struct GifFrameData
     {
         public int width;
         public int height;
         public float duration;
         public Color32[] colors;
+    }
+    
+    private enum HandlerType
+    {
+        Gif,
+        Webp,
+        Default
     }
 }

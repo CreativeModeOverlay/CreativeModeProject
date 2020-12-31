@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class SongLyricsAppWidgetUI : BaseAppWidgetUI<SongLyricsAppWidget>
 {
     private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
-    private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
+    private IMediaVisualizationProvider MusicVisualizer => Instance<IMediaVisualizationProvider>.Get();
     
     public Text textLinePrefab;
     public RectTransform textRoot;
@@ -29,7 +29,7 @@ public class SongLyricsAppWidgetUI : BaseAppWidgetUI<SongLyricsAppWidget>
     public LyricFont[] fonts;
     public LyricVoice[] voices;
 
-    private AudioMetadata currentMetadata;
+    private MediaMetadata currentMetadata;
     private CompositeDisposable compositeDisposable;
     private SongLyrics currentLyrics;
     private SongLyrics.Line currentLine;
@@ -43,7 +43,8 @@ public class SongLyricsAppWidgetUI : BaseAppWidgetUI<SongLyricsAppWidget>
     {
         compositeDisposable = new CompositeDisposable();
         
-        MusicPlayer.CurrentMusic.Subscribe(OnNewMusic).AddTo(compositeDisposable);
+        MusicPlayer.CurrentMedia.Subscribe(OnNewMusic).AddTo(compositeDisposable);
+
         MusicVisualizer.MusicPalette.Subscribe(p =>
         {
             topLineColor = p.VibrantColor;
@@ -74,7 +75,7 @@ public class SongLyricsAppWidgetUI : BaseAppWidgetUI<SongLyricsAppWidget>
         DOTween.Kill(this);
     }
 
-    private void OnNewMusic(AudioMetadata m)
+    private void OnNewMusic(MediaMetadata m)
     {
         ClearLyrics();
 
@@ -85,7 +86,7 @@ public class SongLyricsAppWidgetUI : BaseAppWidgetUI<SongLyricsAppWidget>
 
     private void UpdateData()
     {
-        var voiceName = Data.voice ?? "";
+        /*var voiceName = Data.voice ?? "";
         var newLyrics = currentMetadata.lyrics?.FirstOrDefault(w => w.voice == voiceName);
 
         if (currentLyrics != newLyrics)
@@ -95,7 +96,7 @@ public class SongLyricsAppWidgetUI : BaseAppWidgetUI<SongLyricsAppWidget>
             
             currentLine = null;
             ClearLyrics();
-        }
+        }*/
     }
 
     private void Update()

@@ -11,7 +11,6 @@ namespace CreativeMode.Impl
         private StorageStateDB stateDB;
         
         // ReSharper disable once UseMethodAny.2
-        public bool IsQueueEmpty => connection.Table<QueueEntryDB>().Count() == 0;
         public int HistorySize => connection.Table<HistoryEntryDB>().Count();
 
         public int HistoryPosition
@@ -44,6 +43,16 @@ namespace CreativeMode.Impl
             }
         }
 
+        public int CurrentSetId
+        {
+            get => stateDB.CurrentSetId;
+            set
+            {
+                stateDB.CurrentSetId = value;
+                SaveState();
+            }
+        }
+
         public MusicPlayerStorage(SQLiteConnection c)
         {
             connection = c;
@@ -51,7 +60,7 @@ namespace CreativeMode.Impl
             connection.CreateTable<PlaylistEntryDB>();
             connection.CreateTable<QueueEntryDB>();
             connection.CreateTable<StorageStateDB>();
-            connection.CreateTable<PlayedMusicEntryDB>();
+            connection.CreateTable<PlayedMediaEntryDB>();
 
             stateDB = connection.Table<StorageStateDB>().FirstOrDefault() ?? new StorageStateDB
             {
@@ -66,103 +75,115 @@ namespace CreativeMode.Impl
             connection.InsertOrReplace(stateDB);
         }
 
-        public void AddHistory(string url)
+        public void AddHistory(HistoryEntryDB entry)
         {
-            connection.Insert(new HistoryEntryDB { Url = url, Date = DateTime.Now});
+            connection.Insert(entry);
         }
 
-        public List<string> GetHistory(int offset, int maxCount)
+        public List<HistoryEntryDB> GetHistory(int offset, int maxCount)
         {
             return connection.Table<HistoryEntryDB>()
                 .OrderByDescending(h => h.Id)
                 .Skip(offset).Take(maxCount)
-                .Select(i => i.Url).ToList();
+                .ToList();
         }
 
-        public string GetHistory(int offset)
+        public HistoryEntryDB GetHistoryAt(int offset)
         {
             return connection.Table<HistoryEntryDB>()
-                .Skip(offset).Take(1).FirstOrDefault()?.Url;
+                .Skip(offset).Take(1).FirstOrDefault();
         }
 
-        public void AddPlayedSong(string url)
+        public void AddPlayedMedia(string url)
         {
-            connection.InsertOrReplace(new PlayedMusicEntryDB { Url = url , Date = DateTime.Now });
+            connection.InsertOrReplace(new PlayedMediaEntryDB { Url = url , Date = DateTime.Now });
         }
 
-        public List<string> GetPlayedSongs(TimeSpan duration)
+        public List<string> GetPlayedMedia(TimeSpan duration)
         {
             var expirationDate = DateTime.Now - duration;
             
-            return connection.Table<PlayedMusicEntryDB>()
+            return connection.Table<PlayedMediaEntryDB>()
                 .Where(d => d.Date > expirationDate)
                 .Select(i => i.Url).ToList();
         }
 
-        public void RemoveFromPlayedSongs(List<string> songs)
+        public void RemoveFromPlayedMedia(IEnumerable<string> songs)
         {
             var songSet = new HashSet<string>(songs);
-            connection.Table<PlayedMusicEntryDB>()
+            connection.Table<PlayedMediaEntryDB>()
                 .Where(i => songSet.Contains(i.Url))
                 .Delete();
         }
 
-        public void ClearPlaylist()
+        public void ClearPlaylist(int setId)
         {
-            connection.DeleteAll<PlaylistEntryDB>();
+            connection.Table<PlaylistEntryDB>()
+                .Delete(e => e.SetId == setId);
         }
 
-        public void AddToPlaylist(ICollection<string> items)
+        public void AddToPlaylist(IEnumerable<PlaylistEntryDB> items)
         {
-            connection.InsertAll(items.Select(url => new PlaylistEntryDB { Url = url }));
+            connection.InsertAll(items);
         }
 
-        public List<string> GetPlaylist()
+        public List<PlaylistEntryDB> GetPlaylist(int setId)
         {
             return connection.Table<PlaylistEntryDB>()
-                .Select(e => e.Url)
+                .Where(e => e.SetId == setId)
                 .ToList();
         }
 
-        public void ClearQueue()
+        public void ClearQueue(int setId)
         {
-            connection.DeleteAll<QueueEntryDB>();
+            connection.Table<QueueEntryDB>()
+                .Delete(e => e.SetId == setId);
         }
 
-        public void AddToQueue(ICollection<string> items)
+        public void AddToQueue(IEnumerable<QueueEntryDB> items)
         {
-            connection.InsertAll(items.Select(i => new QueueEntryDB {Url = i}));
+            connection.InsertAll(items);
         }
 
-        public List<string> GetQueue(int offset = 0, int size = 25)
+        public List<QueueEntryDB> GetQueue(int setId, int offset = 0, int size = 25)
         {
             return connection.Table<QueueEntryDB>()
                 .Skip(offset)
                 .Take(size)
-                .Select(q => q.Url)
                 .ToList();
         }
 
-        public string PopQueue()
+        public QueueEntryDB PopQueue(int setId)
         {
             try
             {
                 connection.BeginTransaction();
                 
-                var result = connection
-                    .Table<QueueEntryDB>()
-                    .Take(1).FirstOrDefault();
+                var result = PeekQueue(setId);
 
                 if (result == null) 
                     return null;
 
                 connection.Delete(result);
-                return result.Url;
+                return result;
             }
             finally
             {
                 connection.Commit();
             }
+        }
+
+        public QueueEntryDB PeekQueue(int setId)
+        {
+            return connection
+                .Table<QueueEntryDB>()
+                .Take(1)
+                .FirstOrDefault(e => e.SetId == setId);
+        }
+
+        public int GetQueueSize(int setId)
+        {
+            return connection.Table<QueueEntryDB>().Count(e => e.SetId == setId);
         }
     }
 }

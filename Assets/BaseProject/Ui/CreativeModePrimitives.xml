@@ -6,6 +6,7 @@
 
     <Element Name="EditableText">
         <Panel Sprite="Backgrounds/BottomBorder2px" MinWidth="32" Padding="2" RaycastTarget="True" BlocksRaycasts="True" >
+
             <Panel.InputField TextId="Text" PlaceholderId="Placeholder" ContentType="@ContentType" CharacterValidation="@CharacterValidation" LineType="@LineType" />
 
             <Text Attrs="BlackShadow" Id="Text" Text="@Value" MinHeight="@TextMinHeight" MaxHeight="@TextMaxHeight" Alignment="MiddleLeft" FlexGrow="1" UseMeasure="@MeasureText" />

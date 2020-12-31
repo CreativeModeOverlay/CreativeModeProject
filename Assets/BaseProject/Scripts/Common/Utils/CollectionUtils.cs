@@ -21,7 +21,7 @@ public static class CollectionUtils
         return hasDeletions;
     }
     
-    public static ICollection<T> Shuffle<T>(this ICollection<T> collection)
+    public static ICollection<T> Shuffle<T>(this IEnumerable<T> collection)
     {
         return Shuffle(collection.ToArray());
     }

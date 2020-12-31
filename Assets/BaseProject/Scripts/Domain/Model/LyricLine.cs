@@ -4,8 +4,6 @@ namespace CreativeMode
 {
     public struct LyricLine
     {
-        public AudioMetadata metadata;
-        
         public string voiceId;
         public string voiceDisplayName;
         public SongLyrics lyrics;

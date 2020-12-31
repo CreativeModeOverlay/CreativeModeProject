@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CanvasRenderer))]
 public class MusicSpectrumAppWidgetUI : BaseAppWidgetUI<MusicSpectrumAppWidget>
 {
-    private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
+    private IMediaVisualizationProvider MusicVisualizer => Instance<IMediaVisualizationProvider>.Get();
     
     [Header("Spectrum")]
     public AudioChannel channel;

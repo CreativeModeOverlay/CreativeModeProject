@@ -1,5 +1,6 @@
 {
     "name": "CreativeMode.Domain",
+    "rootNamespace": "",
     "references": [
         "GUID:bb1ebb280400a6a408c8f8a272eeaf41",
         "GUID:bcbdbe8e10b675a4593c765c2bffbf19",
@@ -8,7 +9,8 @@
         "GUID:8b7b77280707fb94bb6a14fa1ae6133f",
         "GUID:7547219be89abee4ba3cf7f48b516b7b",
         "GUID:979687d3583de504baa51066df850e39",
-        "GUID:723092ca6fbc6134cbb893bd23d11e82"
+        "GUID:723092ca6fbc6134cbb893bd23d11e82",
+        "GUID:c41573cd24f9c1d46904fc3bab387021"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

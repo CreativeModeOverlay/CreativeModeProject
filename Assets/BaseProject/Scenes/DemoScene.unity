@@ -555,7 +555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &473814482
 Transform:
   m_ObjectHideFlags: 0
@@ -579,7 +579,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 473814481}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 522aa44154bd4cb38ef1377bc9dbfdc3, type: 3}
   m_Name: 
@@ -849,6 +849,7 @@ GameObject:
   - component: {fileID: 530087505}
   - component: {fileID: 530087504}
   - component: {fileID: 530087503}
+  - component: {fileID: 530087506}
   - component: {fileID: 530087502}
   m_Layer: 0
   m_Name: MusicPlayer
@@ -981,6 +982,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualizationProvider: {fileID: 530087504}
   outputAudioSource: {fileID: 530087502}
+  vlcMediaPlayer: {fileID: 530087506}
 --- !u!114 &530087504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,6 +1014,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dcd79b3cd2547448910b30e3842460a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &530087506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530087500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e248a16d2fafaf4cb40a9396d604e74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 530087502}
+  maxBufferSize: 4400000
 --- !u!1 &594468806
 GameObject:
   m_ObjectHideFlags: 0
@@ -1356,11 +1372,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfc612ce151cdd14d8a93c9f770a6798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attributeCollections:
-  - {fileID: 4900000, guid: 2210466f95fe1dc4aa39b7bafbfddb07, type: 3}
-  elementCollections:
-  - {fileID: 0}
-  - {fileID: 0}
+  attributeCollections: []
+  elementCollections: []
 --- !u!224 &1246893485 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1654320833516343265, guid: 5a5c68c25c3c81247ac7c3254dd333fa, type: 3}
@@ -1769,7 +1782,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950018054}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5681f7f23c3c48a1a9ca5972d1297c7c, type: 3}
   m_Name: 
@@ -1798,6 +1811,7 @@ MonoBehaviour:
   twitchOauth: 
   twitchUsername: 
   twitchChannelToJoin: 
+  youtubeDlPath: C:\Users\Three\Documents\Projects\Unity\CreativeModeOpenSource\youtube-dl.exe
 --- !u!1 &1989554845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2488,7 +2502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1654320833516343265, guid: 5a5c68c25c3c81247ac7c3254dd333fa, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 1654320833516343265, guid: 5a5c68c25c3c81247ac7c3254dd333fa, type: 3}
       propertyPath: m_AnchorMin.x

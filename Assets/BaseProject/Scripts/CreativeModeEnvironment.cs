@@ -25,10 +25,12 @@ namespace CreativeMode
         [SerializeField] public string twitchUsername;
         [SerializeField] public string twitchChannelToJoin;
 
+        public string youtubeDlPath = "youtube-dl";
+        
         private void Awake()
         {
             MainThreadDispatcher.Initialize();
-            
+
             Application.targetFrameRate = framerate;
             WindowsUtils.DisableWindowGhosting();
             RawKeyInput.Start(true);
@@ -44,17 +46,17 @@ namespace CreativeMode
         {
             var musicPlayerDb = OpenDb("MusicPlayer");
             var chatDb = OpenDb("Chat");
-            var widgets = OpenDb("Widgets");
             var devices = OpenDb("Devices");
+            var youtubeDl = new YoutubeDL(youtubeDlPath);
 
             Instance<IMusicPlayerStorage>.Bind().Instance(new MusicPlayerStorage(musicPlayerDb));
             Instance<IChatStorage>.Bind().Instance(new ChatStorage(chatDb));
-            Instance<IWidgetStorage>.Bind().Instance(new WidgetStorage(widgets));
             Instance<IDeviceCaptureStorage>.Bind().Instance(new DeviceCaptureStorage(devices));
             
-            Instance<IMusicVisualizationProvider>.Bind().UnityObject<MusicVisualizationProvider>();
-            Instance<IMusicPlaylistProvider>.Bind().UnityObject<MusicPlaylistProvider>();
+            Instance<IMediaVisualizationProvider>.Bind().UnityObject<MediaVisualizationProvider>();
+            Instance<IMediaPlaylistProvider>.Bind().UnityObject<MediaPlaylistProvider>();
             Instance<IMusicPlayer>.Bind().UnityObject<MusicPlayer>();
+            Instance<IMediaProvider>.Bind().Instance(new MediaProvider(youtubeDl));
             Instance<IDesktopCaptureManager>.Bind().UnityObject<DesktopCaptureManager>();
             Instance<IDeviceCaptureManager>.Bind().UnityObject<DeviceCaptureManager>();
             
@@ -67,9 +69,8 @@ namespace CreativeMode
             Instance<LayoutInflater>.Bind().UnityObject<LayoutInflater>();
 
             Instance<ImageLoader>.Bind().Instance(new ImageLoader { MaxThreadCount = 4 });
-            Instance<AudioLoader>.Bind().Instance(new AudioLoader { MaxThreadCount = 2 });
 
-            Instance<IChatClient>.Bind().Instance(new TwitchClient(
+            Instance<IChatProvider>.Bind().Instance(new TwitchProvider(
                 twitchClientId, twitchAccessToken, twitchOauth, twitchUsername, twitchChannelToJoin));
             
             Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));

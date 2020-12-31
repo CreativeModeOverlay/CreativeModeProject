@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UniRx;
 
@@ -7,7 +8,6 @@ namespace CreativeMode.Impl
 {
     public class AppWidgetManager : IAppWidgetManager
     {
-        private IWidgetStorage Storage => Instance<IWidgetStorage>.Get();
         private IAppWidgetRegistry WidgetRegistry => Instance<IAppWidgetRegistry>.Get();
         
         public IObservable<IReadOnlyList<AppWidgetData>> Widgets => widgetsSubject;
@@ -21,10 +21,6 @@ namespace CreativeMode.Impl
 
         public AppWidgetManager()
         {
-            widgets = Storage.WidgetData.GetAll()
-                .Select(d => FromDB(d.Value, d.Key))
-                .ToList();
-
             widgetsSubject = new BehaviorSubject<List<AppWidgetData>>(widgets);
             widgetUpdatedSubject = new Subject<AppWidgetData>();
         }
@@ -37,13 +33,13 @@ namespace CreativeMode.Impl
 
         public void UpdatePanel(AppWidgetPanel panel)
         {
-            Storage.PanelData.Put(panel.id, ToDB(panel));
             panelWidgets.NotifyUpdate(panel.id);
         }
 
         public AppWidgetPanel GetPanel(string panelId)
         {
-            return FromDB(Storage.PanelData.Get(panelId), panelId);
+            return new AppWidgetPanel();
+            // return FromDB(Storage.PanelData.Get(panelId), panelId);
         }
 
         public AppWidgetData CreateWidget(Type dataType)
@@ -70,7 +66,7 @@ namespace CreativeMode.Impl
                 data = data
             };
             
-            widgetData.id = Storage.WidgetData.Insert(ToDB(widgetData));
+            //widgetData.id = Storage.WidgetData.Insert(ToDB(widgetData));
 
             widgets.Add(widgetData);
             widgetsSubject.OnNext(widgets);
@@ -80,12 +76,13 @@ namespace CreativeMode.Impl
 
         public AppWidgetData GetWidget(int id)
         {
-            var widgetData = Storage.WidgetData.Get(id);
+            return null;
+            /*var widgetData = Storage.WidgetData.Get(id);
 
             if (widgetData.data == null)
                 return null;
 
-            return FromDB(widgetData, id);
+            return FromDB(widgetData, id);*/
         }
 
         public void UpdateWidget(AppWidgetData data)
@@ -93,7 +90,7 @@ namespace CreativeMode.Impl
             if(data?.data == null)
                 throw new ArgumentException("Cannot update to null data");
             
-            Storage.WidgetData.Put(data.id, ToDB(data));
+            // Storage.WidgetData.Put(data.id, ToDB(data));
             widgetUpdatedSubject.OnNext(data);
         }
 
@@ -104,7 +101,7 @@ namespace CreativeMode.Impl
                 widgetsSubject.OnNext(widgets);
             }
             
-            Storage.WidgetData.Delete(id);
+            // Storage.WidgetData.Delete(id);
         }
         
         private WidgetDataDB ToDB(AppWidgetData data)

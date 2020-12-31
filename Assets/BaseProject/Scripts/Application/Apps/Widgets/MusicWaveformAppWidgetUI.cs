@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class MusicWaveformAppWidgetUI : BaseAppWidgetUI<MusicWaveformAppWidget>
 {
-    private IMusicVisualizationProvider MusicVisualizer => Instance<IMusicVisualizationProvider>.Get();
+    private IMediaVisualizationProvider MusicVisualizer => Instance<IMediaVisualizationProvider>.Get();
     
     [Header("Waveform")]
     public AudioChannel channel = AudioChannel.Center;

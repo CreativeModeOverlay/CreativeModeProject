@@ -105,7 +105,7 @@ public abstract class AssetLoader<T>
             {
                 using (stream)
                 {
-                    var memoryStream = new MemoryStream((int) stream.Length);
+                    var memoryStream = new MemoryStream(stream.Length > 0 ? (int) stream.Length : 0);
                     stream.CopyTo(memoryStream);
                     memoryStream.Position = 0;
                     return memoryStream;

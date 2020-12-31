@@ -21,12 +21,12 @@
       "dependencies": {},
       "hash": "1de018e0e850dfe2449b1f7abbdb57a916b8aea7"
     },
-    "com.naudio.upm": {
-      "version": "https://github.com/CreativeModeOverlay/CM-NAudio-UPM.git#c4a002f3eb5182cf44103f11d8f5001d0fdf83c6",
+    "com.netpyoung.webp": {
+      "version": "https://github.com/netpyoung/unity.webp.git?path=unity_project/Assets/unity.webp#0.1.1",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "c4a002f3eb5182cf44103f11d8f5001d0fdf83c6"
+      "hash": "494dd50231f85c1424614845594ed1c323098ab2"
     },
     "com.neuecc.unirx": {
       "version": "https://github.com/CreativeModeOverlay/CM-UniRx-UPM.git#7.1.0",
@@ -57,11 +57,11 @@
       "hash": "e9dd008b51f784ff0fb869f8f1c18fe92963bd43"
     },
     "com.twitchlib.unity": {
-      "version": "https://github.com/CreativeModeOverlay/CM-TwitchLib.Unity-UPM.git#2714af1c03e1555118c873500b2a18677861ef86",
+      "version": "https://github.com/CreativeModeOverlay/CM-TwitchLib.Unity-UPM.git#85cb7c8fbe9a2ee2b940c5b70c24fe12ffd10143",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "2714af1c03e1555118c873500b2a18677861ef86"
+      "hash": "85cb7c8fbe9a2ee2b940c5b70c24fe12ffd10143"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -77,7 +77,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "1.2.1",
+      "version": "2.0.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -86,14 +86,14 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.2",
+      "version": "2.0.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.vscode": {
-      "version": "1.2.1",
+      "version": "1.2.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -170,6 +170,13 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "com.videolan.libvlc.unity": {
+      "version": "https://github.com/CreativeModeOverlay/CM-LibVLCUnity-UPM.git#b6ab9326b041a4e66be157b8ffdce81a61cc9471",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "b6ab9326b041a4e66be157b8ffdce81a61cc9471"
     },
     "ru.threedisevenzeror.unitygifdecoder": {
       "version": "https://github.com/3DI70R/Unity-GifDecoder.git#1.0.3",

@@ -4,11 +4,12 @@ namespace CreativeMode
 {
     public interface IMusicPlayer
     {
-        IObservable<AudioMetadata> CurrentMusic { get; }
+        IObservable<MediaMetadata> CurrentMedia { get; }
         
         float FadeInDuration { get; set; }
         float FadeOutDuration { get; set; }
         bool IsPlaying { get; }
+        bool IsBuffering { get; }
         float Pitch { get; set; }
       
         float NormalizedPosition { get; set; }

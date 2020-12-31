@@ -8,24 +8,24 @@ using UnityEngine;
 
 public class ChatInteractor : IChatInteractor
 {
-    private IChatClient ChatClient => Instance<IChatClient>.Get();
+    private IChatProvider ChatProvider => Instance<IChatProvider>.Get();
     private IChatStorage ChatStorage => Instance<IChatStorage>.Get();
     
     private EmoteSize emoteSize;
 
     private Subject<Unit> onClearChatMessagesBehaviour = new Subject<Unit>();
     
-    public IObservable<ChatMessage> ChatMessages => ChatClient
+    public IObservable<ChatMessage> ChatMessages => ChatProvider
         .ChatMessages.Select(ConvertChatMessage);
 
     public IObservable<Unit> OnClearChatMessages => onClearChatMessagesBehaviour
-        .Concat(ChatClient.OnChatCleared);
+        .Concat(ChatProvider.OnChatCleared);
 
     public ChatInteractor(EmoteSize size)
     {
         emoteSize = size;
 
-        ChatClient.ChatMessages.Subscribe(m =>
+        ChatProvider.ChatMessages.Subscribe(m =>
         {
             ChatStorage.SaveChatMessage(new ChatMessageDB
             {
