@@ -102,17 +102,18 @@ public class MediaPlaylistProvider : MonoBehaviour, IMediaPlaylistProvider
         AddToQueue(setId, Shuffle ? mappedPlaylist.Shuffle() : mappedPlaylist);
     }
 
-    public void AddToQueue(int setId, MediaMetadata url)
+    public void AddToQueue(int setId, MediaMetadata url, int priority = 0)
     {
-        AddToQueue(setId, new[] { url });
+        AddToQueue(setId, new[] { url }, priority);
     }
         
-    public void AddToQueue(int setId, IEnumerable<MediaMetadata> urls)
+    public void AddToQueue(int setId, IEnumerable<MediaMetadata> urls, int priority = 0)
     {
         Storage.AddToQueue(urls.Select(u =>
         {
             var entry = ToDb(new QueueEntryDB(), u);
             entry.SetId = setId;
+            entry.Priority = priority;
             return entry;
         }).ToList());
     }

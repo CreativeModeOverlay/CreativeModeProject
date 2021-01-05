@@ -77,6 +77,20 @@ namespace CreativeMode
 
             InputManager.OnHotkey(RawKey.LeftControl, RawKey.LeftShift, RawKey.Z)
                 .Subscribe(z => CaptureManager.IsZoomActive = z);
+
+            ChatInteractor.ChatEvents.Subscribe(e =>
+            {
+                switch (e)
+                {
+                    case AddMediaToQueueChatEvent mediaToAdd:
+                        MediaProvider.GetMediaByUrl(mediaToAdd.mediaUrl)
+                            .Subscribe(mediaList => {
+                                Debug.Log($"Music added to queue: {mediaToAdd.mediaUrl}");
+                                MediaPlaylist.AddToQueue(MusicSetMain, mediaList.Select(m => (MediaMetadata) m), -1);
+                            });
+                        break; 
+                }
+            });
         }
 
         private void OnClearChat()

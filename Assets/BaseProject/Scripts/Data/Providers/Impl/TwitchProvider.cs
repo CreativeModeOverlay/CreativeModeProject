@@ -8,6 +8,7 @@ using TwitchLib.Api;
 using TwitchLib.Api.Helix.Models.Users;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
+using TwitchLib.PubSub.Events;
 using TwitchLib.Unity;
 using UniRx;
 using UnityEngine;
@@ -27,9 +28,11 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
         private const string ffzEmoteApi = "https://api.frankerfacez.com/v1/room/{0}";
         
         public IObservable<ChatMessageRemote> ChatMessages { get; }
+        public IObservable<ChatEventRemote> ChatEvents { get; }
         public IObservable<Unit> OnChatCleared { get; }
 
         private IObservable<Client> Client { get; }
+        private IObservable<PubSub> PubSub { get; }
         
         private readonly Dictionary<string, Color> dynamicUserColors = new Dictionary<string, Color>();
         private readonly TwitchAPI twitchClient;
@@ -41,8 +44,42 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
             twitchClient.Settings.AccessToken = accessToken;
 
             Client = CreateTwitchClientObservable(clientId, oauth, username, joinChannel);
+            PubSub = CreateTwitchPubSubObservable(oauth, joinChannel);
+            
             ChatMessages = CreateChatMessageObservable(joinChannel);
+            ChatEvents = CreateChatEventObservable();
             OnChatCleared = CreateClearChatObservable();
+        }
+
+        private IObservable<PubSub> CreateTwitchPubSubObservable(string oauth, string channelName)
+        {
+            return GetChatUser(channelName)
+                .SelectMany(u =>
+                {
+                    return Observable.CreateSafe<PubSub>(s =>
+                    {
+                        var pubSub = new PubSub();
+                        
+                        pubSub.OnPubSubServiceConnected += (sender, args) =>
+                        {
+                            pubSub.SendTopics(oauth);
+                            Debug.Log("Twitch PubSub service connected");
+                        };
+                        pubSub.OnPubSubServiceError += (sender, args) =>
+                        {
+                            Debug.Log("Twitch PubSub service error: " + args.Exception);
+                        };
+
+                        pubSub.ListenToRewards(u.Id);
+                        pubSub.Connect();
+                        
+                        s.OnNext(pubSub);
+
+                        return Disposable.Create((() => { pubSub.Disconnect(); }));
+                    }).ObserveOn(Scheduler.MainThread)
+                        .SubscribeOn(Scheduler.MainThread);
+                })
+                .Replay(1).RefCount();
         }
 
         private IObservable<Client> CreateTwitchClientObservable(string clientId, string oauth, 
@@ -63,8 +100,6 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
                 var client = new Client();
                 var credentials = new ConnectionCredentials(username, oauth);
 
-                Debug.Log("Twitch client creation start");
-                
                 client.OnConnected += (sender, args) => Debug.Log("Twitch client connected");
                 client.OnDisconnected += (sender, args) => Debug.Log("Twitch client disconnected");
                 client.OnMessageReceived += (sender, args) => Debug.Log($"Twitch message: {args.ChatMessage.Message}");
@@ -78,8 +113,6 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
                 
                 client.Initialize(credentials, joinChannel);
                 client.Connect();
-
-                Debug.Log("Twitch client creation end");
                 s.OnNext(client);
 
                 return Disposable.Create((() => { client.Disconnect(); }));
@@ -101,9 +134,23 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
                     h => c.OnMessageReceived -= h);
             });
 
-            return chatMessages.CombineLatest(bttvEmotes, ConvertMessage)
+            return chatMessages.Where(m => m.CustomRewardId == null)
+                .CombineLatest(bttvEmotes, ConvertMessage)
                 .SubscribeOn(Scheduler.ThreadPool)
                 .ObserveOn(Scheduler.MainThread)
+                .Share();
+        }
+
+        private IObservable<ChatEventRemote> CreateChatEventObservable()
+        {
+            return PubSub.SelectMany(p =>
+            {
+                return Observable.FromEvent<EventHandler<OnRewardRedeemedArgs>, ChatEventRemote>(
+                    h => (s, e) => h(ConvertEventFromReward(e)),
+                    h => p.OnRewardRedeemed += h,
+                    h => p.OnRewardRedeemed -= h);
+            }).ObserveOn(Scheduler.MainThread)
+                .SubscribeOn(Scheduler.MainThread)
                 .Share();
         }
 
@@ -117,7 +164,19 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
                     h => c.OnChatCleared -= h);
             }).Share();
         }
-        
+
+        private ChatEventRemote ConvertEventFromReward(OnRewardRedeemedArgs rewardRedeemed)
+        {
+            return new ChatEventRemote
+            {
+                authorId = rewardRedeemed.Login,
+                author = rewardRedeemed.DisplayName,
+                
+                eventId = rewardRedeemed.RewardTitle,
+                message = rewardRedeemed.Message
+            };
+        }
+
         private ChatMessageRemote ConvertMessage(TwitchChatMessage message, ExternalEmote[] externalEmotes)
         {
             var emotes = new List<ChatMessageRemote.Emote>();
@@ -334,7 +393,7 @@ using TwitchChatMessage = TwitchLib.Client.Models.ChatMessage;
         private IObservable<User> GetChatUser(string userName)
         {
             return Observable.Start(() => twitchClient.Helix.Users
-                .GetUsersAsync(logins: new List<string> {"3di70r"})
+                .GetUsersAsync(logins: new List<string> { userName })
                 .Result.Users.First());
         }
 

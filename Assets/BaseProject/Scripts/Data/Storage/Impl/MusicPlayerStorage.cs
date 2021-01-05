@@ -150,6 +150,7 @@ namespace CreativeMode.Impl
             return connection.Table<QueueEntryDB>()
                 .Skip(offset)
                 .Take(size)
+                .OrderBy(e => e.Priority)
                 .ToList();
         }
 
@@ -178,6 +179,7 @@ namespace CreativeMode.Impl
             return connection
                 .Table<QueueEntryDB>()
                 .Take(1)
+                .OrderBy(e => e.Priority)
                 .FirstOrDefault(e => e.SetId == setId);
         }
 

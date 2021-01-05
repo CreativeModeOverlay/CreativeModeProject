@@ -206,7 +206,7 @@ namespace CreativeMode.Impl
             onMusicChangedSubject.OnNext(entry);
             
             musicLoadDisposable?.Dispose();
-            musicLoadDisposable = MediaProvider.GetMediaByUrl(entry.url)
+            musicLoadDisposable = MediaProvider.GetMediaByUrl(entry.url, 1280, 720, true)
                 .ObserveOn(Scheduler.MainThread)
                 .Subscribe(r => OnMediaDataGet(r.First()));
         }

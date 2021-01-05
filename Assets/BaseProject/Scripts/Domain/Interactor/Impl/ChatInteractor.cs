@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class ChatInteractor : IChatInteractor
 {
+    private string addMusicToQueueEventName = "Добавить песню в очередь";
+    
     private IChatProvider ChatProvider => Instance<IChatProvider>.Get();
     private IChatStorage ChatStorage => Instance<IChatStorage>.Get();
     
@@ -17,6 +19,9 @@ public class ChatInteractor : IChatInteractor
     
     public IObservable<ChatMessage> ChatMessages => ChatProvider
         .ChatMessages.Select(ConvertChatMessage);
+
+    public IObservable<ChatEvent> ChatEvents => ChatProvider
+        .ChatEvents.Select(ConvertChatEvents).Where(e => e != null);
 
     public IObservable<Unit> OnClearChatMessages => onClearChatMessagesBehaviour
         .Concat(ChatProvider.OnChatCleared);
@@ -55,6 +60,31 @@ public class ChatInteractor : IChatInteractor
 
             canDropOnDesktop = true
         };
+    }
+
+    private ChatEvent ConvertChatEvents(ChatEventRemote e)
+    {
+        ChatEvent result;
+        
+        if (e.eventId == addMusicToQueueEventName)
+        {
+            result = new AddMediaToQueueChatEvent
+            {
+                mediaUrl = e.message
+            };
+        }
+        else
+        {
+            result = new UnknownChatEvent
+            {
+                eventId = e.eventId,
+                payload = e.message
+            };
+        }
+
+        result.authorId = e.authorId;
+        result.author = e.author;
+        return result;
     }
     
     private string GetEmoteUrl(ChatMessageRemote.Emote e)

@@ -6,5 +6,8 @@ namespace CreativeMode
     {
         [Indexed]
         public int SetId { get; set; }
+        
+        [Indexed]
+        public int Priority { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace CreativeMode
             get => source.time;
         }
 
-        public float Duration => vlcPlayer?.Length / 1000f ?? 0;
+        public float Duration { get; private set; }
 
         public Texture VideoTexture => outputVideo;
 
@@ -61,6 +61,7 @@ namespace CreativeMode
 
         private bool isDestroyed;
         private bool isVlcPlaying;
+        private bool isVlcPlaybackFinished;
         private bool isUnitySourcePlaying;
 
         private short[] audioShortBuffer = new short[0];
@@ -94,6 +95,8 @@ namespace CreativeMode
             vlcPlayer.Media = newMedia;
             vlcMedia = newMedia;
             State = PlaybackState.Idle;
+            
+            isVlcPlaybackFinished = false;
         }
 
         public void Play()
@@ -143,6 +146,7 @@ namespace CreativeMode
             vlcPlayer.NothingSpecial += (o, a) => OnVlcStateChanged(VLCState.NothingSpecial);
             vlcPlayer.Opening += (o, a) => OnVlcStateChanged(VLCState.Opening);
             vlcPlayer.Playing += (o, a) => OnVlcStateChanged(VLCState.Playing);
+            vlcPlayer.LengthChanged += (sender, args) => Duration = args.Length / 1000f;
             vlcPlayer.Paused += (o, a) => OnVlcStateChanged(VLCState.Paused);
             vlcPlayer.Stopped += (o, a) => OnVlcStateChanged(VLCState.Stopped);
             vlcPlayer.EndReached += (o, a) => OnVlcStateChanged(VLCState.Ended);
@@ -230,6 +234,9 @@ namespace CreativeMode
 
         private void UpdateAudio()
         {
+            if (isVlcPlaybackFinished && currentBuffer.isDrained && source.time > Duration)
+                State = PlaybackState.Finished;
+            
             var currentRate = outputAudio ? outputAudio.frequency : 0;
             var currentChannelCount = outputAudio ? outputAudio.channels : 0;
 
@@ -328,18 +335,17 @@ namespace CreativeMode
 
         private int OnVlcAudioSetup(ref IntPtr opaque, ref IntPtr format, ref uint rate, ref uint channels)
         {
-            // Debug.Log("AudioSetup");
             isVlcPlaying = true;
+            isVlcPlaybackFinished = false;
             
             SetFormat((int) rate, (int) channels);
             CreateNewBuffer();
             return 0;
         }
-
+        
         private void OnVlcAudioCleanup(IntPtr opaque)
         {
-            // Debug.Log("AudioCleanup");
-            PauseOutput(true);
+            
         }
 
         private void OnVlcPlayAudio(IntPtr data, IntPtr samples, uint count, long pts)
@@ -362,24 +368,27 @@ namespace CreativeMode
 
         private void OnVlcDrainAudio(IntPtr data)
         {
-            // Debug.Log("DrainAudio");
+            Debug.Log("OnVlcDrainAudio");
+            currentBuffer.shouldDrain = true;
         }
 
         private void OnVlcFlushAudio(IntPtr data, long pts)
         {
-            // Debug.Log("FlushAudio");
-            CreateNewBuffer();
+            Debug.Log("OnVlcFlushAudio");
+            
+            if(!currentBuffer.shouldDrain) 
+                CreateNewBuffer();
         }
 
         private void OnVlcResumeAudio(IntPtr data, long pts)
         {
-            // Debug.Log("ResumeAudio");
+            Debug.Log("OnVlcResumeAudio");
             PauseOutput(false);
         }
 
         private void OnVlcPauseAudio(IntPtr data, long pts)
         {
-            // Debug.Log("PauseAudio");
+            Debug.Log("OnVlcPauseAudio");
             PauseOutput(true);
         }
 
@@ -405,13 +414,14 @@ namespace CreativeMode
                 case VLCState.Buffering:
                     State = PlaybackState.Playing;
                     break;
-                    
-                case VLCState.Ended:
-                    State = PlaybackState.Finished;
-                    break;
-                    
+                
                 case VLCState.Error:
                     State = PlaybackState.Error;
+                    break;
+                
+                case VLCState.Ended:
+                    isVlcPlaybackFinished = true;
+                    currentBuffer.shouldDrain = true;
                     break;
                     
                 default:
@@ -436,10 +446,12 @@ namespace CreativeMode
 
         private void CreateNewBuffer()
         {
+            Debug.Log("New buffer created");
             var oldBuffer = currentBuffer;
 
             if (oldBuffer != null)
             {
+                oldBuffer.shouldDrain = false;
                 oldBuffer.isReady = false;
                 oldBuffer.samples.Clear();
             }
@@ -448,7 +460,6 @@ namespace CreativeMode
             {
                 samples = new FixedSizeBuffer<float>(bufferSizeInSeconds * SampleRate),
                 restartPlayback = RestartReason.BufferRecreated,
-                isReady = false
             };
         }
 
@@ -488,9 +499,10 @@ namespace CreativeMode
             if (isDestroyed)
                 return;
 
-            var shouldRead = inBuffer.isReady && inBuffer.restartPlayback == RestartReason.NoRestart;
+            var shouldRead = (inBuffer.isReady || inBuffer.shouldDrain) && 
+                             inBuffer.restartPlayback == RestartReason.NoRestart;
             
-            if(shouldRead && inBuffer.samples.Buffered < outBuffer.Length)
+            if(!inBuffer.shouldDrain && shouldRead && inBuffer.samples.Buffered < outBuffer.Length)
                 Thread.Sleep(1); // Last ditch effort
             
             var count = shouldRead ? inBuffer.samples.Read(outBuffer, 0, outBuffer.Length) : 0;
@@ -500,6 +512,9 @@ namespace CreativeMode
             
             for (var i = count; i < outBuffer.Length; i++)
                 outBuffer[i] = 0;
+
+            if (inBuffer.shouldDrain && inBuffer.samples.Buffered == 0)
+                inBuffer.isDrained = true;
             
             UpdateBufferInfo();
         }
@@ -525,6 +540,9 @@ namespace CreativeMode
             public bool isReady;
             public int discardSamples;
             public RestartReason restartPlayback;
+
+            public bool shouldDrain;
+            public bool isDrained;
         }
         
         private enum RestartReason
