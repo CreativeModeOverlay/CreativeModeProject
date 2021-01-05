@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class SongLyricsAppWidgetUI : BaseAppWidgetUI<SongLyricsAppWidget>
 {
-    private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
+    private IMediaPlayer MusicPlayer => Instance<IMediaPlayer>.Get();
     private IMediaVisualizationProvider MusicVisualizer => Instance<IMediaVisualizationProvider>.Get();
     
     public Text textLinePrefab;

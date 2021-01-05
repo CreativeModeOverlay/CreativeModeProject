@@ -12,7 +12,7 @@ namespace CreativeMode
         private const int MusicSetMain = 0;
         private const int MusicSetBrb = 1;
         
-        private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
+        private IMediaPlayer MusicPlayer => Instance<IMediaPlayer>.Get();
         private IMediaPlaylistProvider MediaPlaylist => Instance<IMediaPlaylistProvider>.Get();
         private IMediaProvider MediaProvider => Instance<IMediaProvider>.Get();
         private IInputManager InputManager => Instance<IInputManager>.Get();

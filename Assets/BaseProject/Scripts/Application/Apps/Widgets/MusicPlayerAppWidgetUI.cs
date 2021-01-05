@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MusicPlayerAppWidgetUI : BaseAppWidgetUI<MusicPlayerAppWidget>
 {
-    private IMusicPlayer MusicPlayer => Instance<IMusicPlayer>.Get();
+    private IMediaPlayer MusicPlayer => Instance<IMediaPlayer>.Get();
     
     public Text backgroundSongTitle;
     public Text backgroundSongInfo;

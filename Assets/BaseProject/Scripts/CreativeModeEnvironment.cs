@@ -44,18 +44,18 @@ namespace CreativeMode
 
         private void SetupInstances()
         {
-            var musicPlayerDb = OpenDb("MusicPlayer");
-            var chatDb = OpenDb("Chat");
-            var devices = OpenDb("Devices");
+            var chatDb = DatabaseUtils.OpenDb("Chat");
+            var devices = DatabaseUtils.OpenDb("Devices");
             var youtubeDl = new YoutubeDL(youtubeDlPath);
-
-            Instance<IMusicPlayerStorage>.Bind().Instance(new MusicPlayerStorage(musicPlayerDb));
+            
+            MediaPlayerModule.Init();
+            
             Instance<IChatStorage>.Bind().Instance(new ChatStorage(chatDb));
             Instance<IDeviceCaptureStorage>.Bind().Instance(new DeviceCaptureStorage(devices));
             
             Instance<IMediaVisualizationProvider>.Bind().UnityObject<MediaVisualizationProvider>();
             Instance<IMediaPlaylistProvider>.Bind().UnityObject<MediaPlaylistProvider>();
-            Instance<IMusicPlayer>.Bind().UnityObject<MusicPlayer>();
+            Instance<IMediaPlayer>.Bind().UnityObject<MediaPlayer>();
             Instance<IMediaProvider>.Bind().Instance(new MediaProvider(youtubeDl));
             Instance<IDesktopCaptureManager>.Bind().UnityObject<DesktopCaptureManager>();
             Instance<IDeviceCaptureManager>.Bind().UnityObject<DeviceCaptureManager>();
@@ -74,37 +74,6 @@ namespace CreativeMode
                 twitchClientId, twitchAccessToken, twitchOauth, twitchUsername, twitchChannelToJoin));
             
             Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
-        }
-
-        private SQLiteConnection OpenDb(string name)
-        {
-            var originalDbName = name + ".sqlite";
-            var originalDbPath = Path.Combine(Application.persistentDataPath, originalDbName);
-            var usedDbPath = originalDbPath;
-            
-            // Copy original database if it exists,
-            // so any changes in editor will not ruin actual application state
-            if (Application.isEditor)
-            {
-                var editorDbName = "Editor-" + originalDbName;
-                var editorDbPath = Path.Combine(Application.persistentDataPath, editorDbName);
-
-                if (File.Exists(originalDbPath))
-                {
-                    if (File.Exists(editorDbPath))
-                        File.Delete(editorDbPath);
-
-                    File.Copy(originalDbPath, editorDbPath);
-                }
-
-                usedDbPath = editorDbPath;
-            }
-            
-            var connection = new SQLiteConnection(usedDbPath);
-            connection.ExecuteScalar<string> ("PRAGMA journal_mode=MEMORY"); // TODO: disable once async access to db is implemented
-            connection.AddTo(this);
-            
-            return connection;
         }
     }
 }
