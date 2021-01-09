@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using UniRx;
 
@@ -102,56 +101,6 @@ namespace CreativeMode.Impl
             }
             
             // Storage.WidgetData.Delete(id);
-        }
-        
-        private WidgetDataDB ToDB(AppWidgetData data)
-        {
-            return new WidgetDataDB
-            {
-                name = data.name,
-                data = data.data
-            };
-        }
-
-        private WidgetPanelDB ToDB(AppWidgetPanel panel)
-        {
-            return new WidgetPanelDB
-            {
-                widgets = panel.widgets.Select(w => new PanelWidgetDB
-                {
-                    widgetId = w.widgetId,
-                    width = w.layout.width,
-                    height = w.layout.height
-                }).ToList()
-            };
-        }
-
-        private AppWidgetData FromDB(WidgetDataDB data, int id)
-        {
-            return new AppWidgetData
-            {
-                id = id,
-                name = data.name,
-                type = data.data.GetType(),
-                data = (AppWidget) data.data
-            };
-        }
-
-        private AppWidgetPanel FromDB(WidgetPanelDB data, string id)
-        {
-            return new AppWidgetPanel
-            {
-                id = id,
-                widgets = data.widgets?.Select(w => new AppWidgetPanel.Widget()
-                {
-                    widgetId = w.widgetId,
-                    layout = new WidgetLayoutParams
-                    {
-                        width = w.width,
-                        height = w.height
-                    }
-                }).ToList() ?? new List<AppWidgetPanel.Widget>()
-            };
         }
     }
 }

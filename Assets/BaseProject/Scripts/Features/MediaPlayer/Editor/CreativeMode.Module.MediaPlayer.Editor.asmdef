@@ -1,0 +1,17 @@
+{
+    "name": "CreativeMode.Module.MediaPlayer.Editor",
+    "references": [
+        "GUID:23e982ce5990fe546b781521773f2b77"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

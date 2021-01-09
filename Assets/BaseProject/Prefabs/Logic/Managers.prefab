@@ -139,12 +139,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   framerate: 60
-  twitchClientId: 
-  twitchAccessToken: 
-  twitchOauth: 
-  twitchUsername: 
-  twitchChannelToJoin: 
-  youtubeDlPath: C:\Users\Three\Documents\Projects\Unity\CreativeModeOpenSource\youtube-dl.exe
 --- !u!114 &6228700178292995338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,7 +146,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6228700178292995335}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5681f7f23c3c48a1a9ca5972d1297c7c, type: 3}
   m_Name: 
@@ -172,11 +166,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6228700178907554124}
+  - component: {fileID: 6228700178907554131}
   - component: {fileID: 6228700178907554128}
   - component: {fileID: 6228700178907554129}
-  - component: {fileID: 3152172839406612599}
   - component: {fileID: 6228700178907554126}
-  - component: {fileID: 6228700178907554131}
   - component: {fileID: 6228700178907554127}
   m_Layer: 0
   m_Name: Audio
@@ -199,6 +192,20 @@ Transform:
   m_Father: {fileID: 6228700178292995339}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6228700178907554131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6228700178907554125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e248a16d2fafaf4cb40a9396d604e74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 6228700178907554127}
+  bufferSizeInSeconds: 30
 --- !u!114 &6228700178907554128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,25 +230,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8c313648a84d84badca841ef96dbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveformBufferSize: 16384
-  spectrumBufferSize: 8192
+  waveformBufferSize: 8192
+  spectrumBufferSize: 4096
   spectrumWindow: 5
-  lyricsFonts: []
-  lyricsVoices: []
   outputAudioSource: {fileID: 6228700178907554127}
   musicPlayer: {fileID: 6228700178907554126}
---- !u!114 &3152172839406612599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6228700178907554125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6e2a487b64b4f6cbefde7636ab355f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6228700178907554126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,20 +250,6 @@ MonoBehaviour:
   visualizationProvider: {fileID: 6228700178907554129}
   outputAudioSource: {fileID: 6228700178907554127}
   vlcMediaPlayer: {fileID: 6228700178907554131}
---- !u!114 &6228700178907554131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6228700178907554125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e248a16d2fafaf4cb40a9396d604e74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 6228700178907554127}
-  bufferSizeInSeconds: 30
 --- !u!82 &6228700178907554127
 AudioSource:
   m_ObjectHideFlags: 0

@@ -15,7 +15,15 @@ namespace CreativeMode.Impl
     public class MediaProvider : IMediaProvider
     {
         private static readonly string DefaultVoiceName = "Lyrics";
-        
+
+        private static readonly HashSet<string> pathMediaExtensions = new HashSet<string>()
+        {
+            ".mp3",
+            ".mp4",
+            ".wav",
+            ".ogg"
+        };
+
         private CacheDictionary<string, YoutubeDL.Response> youtubeDLResponseCache =
             new CacheDictionary<string, YoutubeDL.Response>(TimeSpan.FromMinutes(15));
         
@@ -65,6 +73,7 @@ namespace CreativeMode.Impl
             if ((pathAttrs & FileAttributes.Directory) == FileAttributes.Directory)
             {
                 return Directory.EnumerateFiles(path)
+                    .Where(p => pathMediaExtensions.Contains(Path.GetExtension(p).ToLower()))
                     .SelectMany(GetMediaFromPath)
                     .ToList();
             }

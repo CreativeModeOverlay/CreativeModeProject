@@ -98,19 +98,27 @@ public class MusicWaveformAppWidgetUI : BaseAppWidgetUI<MusicWaveformAppWidget>
         
         public override Texture mainTexture => widget.waveformTexture;
         public override Material materialForRendering => widget.waveformRenderMaterial;
+        
+        private static readonly Vector4 s_DefaultTangent = new Vector4(1.0f, 0.0f, 0.0f, -1.0f);
+        private static readonly Vector3 s_DefaultNormal = Vector3.back;
 
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             var r = GetPixelAdjustedRect();
             var v = new Vector4(r.x + widget.padding.left, r.y + widget.padding.bottom, 
                 r.x + r.width - widget.padding.right, r.y + r.height - widget.padding.top);
+            var sizeData = new Vector2(r.width, r.height);
 
             Color32 color32 = color;
             vh.Clear();
-            vh.AddVert(new Vector3(v.x, v.y), color32, new Vector2(0f, -1f));
-            vh.AddVert(new Vector3(v.x, v.w), color32, new Vector2(0f, 1f));
-            vh.AddVert(new Vector3(v.z, v.w), color32, new Vector2(1f, 1f));
-            vh.AddVert(new Vector3(v.z, v.y), color32, new Vector2(1f, -1f));
+            vh.AddVert(new Vector3(v.x, v.y), color32, new Vector2(0f, -1f), 
+                sizeData, s_DefaultNormal, s_DefaultTangent);
+            vh.AddVert(new Vector3(v.x, v.w), color32, new Vector2(0f, 1f), 
+                sizeData, s_DefaultNormal, s_DefaultTangent);
+            vh.AddVert(new Vector3(v.z, v.w), color32, new Vector2(1f, 1f), 
+                sizeData, s_DefaultNormal, s_DefaultTangent);
+            vh.AddVert(new Vector3(v.z, v.y), color32, new Vector2(1f, -1f), 
+                sizeData, s_DefaultNormal, s_DefaultTangent);
 
             vh.AddTriangle(0, 1, 2);
             vh.AddTriangle(2, 3, 0);

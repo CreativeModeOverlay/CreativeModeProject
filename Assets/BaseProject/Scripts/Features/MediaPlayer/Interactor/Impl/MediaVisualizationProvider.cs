@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CSCore.CoreAudioAPI;
+using CSCore.DSP;
+using CSCore.SoundIn;
 using UniRx;
 using UnityEngine;
 
@@ -14,9 +17,6 @@ namespace CreativeMode.Impl
         public int spectrumBufferSize = 8192;
         public FFTWindow spectrumWindow = FFTWindow.BlackmanHarris;
 
-        public LyricFont[] lyricsFonts;
-        public LyricVoice[] lyricsVoices;
-        
         public AudioSource outputAudioSource;
         public MediaPlayer musicPlayer;
 
@@ -27,32 +27,49 @@ namespace CreativeMode.Impl
         private Func<float[]> rSpectrumBuffer;
         private Func<float[]> cSpectrumBuffer;
 
+        private IAudioWaveformProvider currentProvider;
+        private IAudioWaveformProvider[] waveformProviders;
+
         public IObservable<Palette> MusicPalette { get; private set; }
+        public WaveformSource WaveformSource => currentProvider.Source;
+        
         public int ChannelCount => outputAudioSource.clip ? outputAudioSource.clip.channels : 0;
 
         public bool IsMusicChangeAnimationActive => visualizerElements.Any(e => 
             e.IsMusicChangeAnimationActive);
 
-        private ReplaySubject<LyricLine> allLyricsSubject = new ReplaySubject<LyricLine>(1);
-        private Dictionary<string, ReplaySubject<LyricLine>> lyricsSubjects 
-            = new Dictionary<string, ReplaySubject<LyricLine>>();
-
-        private List<LyricsManager> lyricsManagers = new List<LyricsManager>();
         private List<IMusicVisualizerElement> visualizerElements = new List<IMusicVisualizerElement>();
 
         private void Awake()
         {
+            waveformProviders = new IAudioWaveformProvider[]
+            {
+                new AudioSourceWaveformProvider(outputAudioSource, spectrumWindow, 
+                    WaveformSource.MediaPlayer),
+                
+                new WasapiWaveformProvider(
+                    waveformBufferSize, spectrumBufferSize * 2, WindowFunctions.Hamming,
+                    new WasapiLoopbackCapture(), WaveformSource.SystemLoopback),
+                
+                new WasapiWaveformProvider(
+                    waveformBufferSize, spectrumBufferSize * 2, WindowFunctions.Hamming, 
+                    new WasapiCapture { 
+                        Device = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Capture, Role.Communications)
+                    }, WaveformSource.Microphone)
+            };
+            currentProvider = waveformProviders[0];
+
             lWaveformBuffer = CreateBufferGetter(waveformBufferSize, buffer => 
-                outputAudioSource.GetOutputData(buffer, 0));
+                currentProvider.GetWaveform(buffer, 0));
             
             rWaveformBuffer = CreateBufferGetter(waveformBufferSize, buffer => 
-                outputAudioSource.GetOutputData(buffer, 1));
+                currentProvider.GetWaveform(buffer, 1));
 
             lSpectrumBuffer = CreateBufferGetter(spectrumBufferSize, buffer => 
-                outputAudioSource.GetSpectrumData(buffer, 0, spectrumWindow));
+                currentProvider.GetSpectrum(buffer, 0));
             
             rSpectrumBuffer = CreateBufferGetter(spectrumBufferSize, buffer => 
-                outputAudioSource.GetSpectrumData(buffer, 1, spectrumWindow));
+                currentProvider.GetSpectrum(buffer, 1));
             
             cWaveformBuffer = CreateCenterBufferGetter(waveformBufferSize, lWaveformBuffer, rWaveformBuffer);
             cSpectrumBuffer = CreateCenterBufferGetter(spectrumBufferSize, lSpectrumBuffer, rSpectrumBuffer);
@@ -72,6 +89,29 @@ namespace CreativeMode.Impl
                     });
                 })
                 .Replay(1).RefCount();
+        }
+
+        private void Update()
+        {
+            var isProviderSet = false;
+            
+            for (var i = 0; i < waveformProviders.Length; i++)
+            {
+                var provider = waveformProviders[i];
+                provider.Update();
+
+                if (!provider.IsSilent && !isProviderSet)
+                {
+                    currentProvider = provider;
+                    isProviderSet = true;
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var provider in waveformProviders)
+                provider.Dispose();
         }
 
         public float[] GetWaveform(AudioChannel channel)
@@ -108,26 +148,6 @@ namespace CreativeMode.Impl
             visualizerElements.Remove(visualizer);
         }
 
-        public IObservable<LyricLine> GetLyrics(string voiceId)
-        {
-            return GetLyricsSubject(voiceId);
-        }
-
-        public IObservable<LyricLine> GetAllLyrics()
-        {
-            return allLyricsSubject;
-        }
-
-        private ReplaySubject<LyricLine> GetLyricsSubject(string voiceId)
-        {
-            if (lyricsSubjects.TryGetValue(voiceId, out var subject))
-                return subject;
-            
-            subject = new ReplaySubject<LyricLine>(1);
-            lyricsSubjects[voiceId] = subject;
-            return subject;
-        }
-  
         private Func<float[]> CreateBufferGetter(int size, Action<float[]> value)
         {
             var buffer = new float[size];
@@ -159,28 +179,6 @@ namespace CreativeMode.Impl
                     buffer[i] = (l[i] + r[i]) / 2f;
                 }
             });
-        }
-        
-        [Serializable]
-        public class LyricFont
-        {
-            public string name;
-            public Font font;
-            public float scale = 1f;
-            public bool alignByGeometry;
-        }
-    
-        [Serializable]
-        public class LyricVoice
-        {
-            public string voiceName;
-            public string displayName;
-        }
-        
-        public struct LyricsManager
-        {
-            public ReplaySubject<LyricLine> lyricLine;
-            public LyricsSampler lyricsSampler;
         }
     }
 }

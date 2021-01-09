@@ -5,7 +5,8 @@ namespace CreativeMode
     public interface IMediaVisualizationProvider
     {
         IObservable<Palette> MusicPalette { get; }
-        
+
+        WaveformSource WaveformSource { get; }
         int ChannelCount { get; }
 
         float[] GetWaveform(AudioChannel channel);
@@ -13,8 +14,5 @@ namespace CreativeMode
         
         void AddVisualizer(IMusicVisualizerElement visualizer);
         void RemoveVisualizer(IMusicVisualizerElement visualizer);
-
-        IObservable<LyricLine> GetLyrics(string voiceId = "");
-        IObservable<LyricLine> GetAllLyrics();
     }
 }

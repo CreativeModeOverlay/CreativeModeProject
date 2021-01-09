@@ -1,6 +1,5 @@
-﻿using System.IO;
+﻿using System.Linq;
 using CreativeMode.Impl;
-using SQLite;
 using ThreeDISevenZeroR.XmlUI;
 using UniRx;
 using UnityEngine;
@@ -18,22 +17,12 @@ namespace CreativeMode
         [Header("Application settings")]
         public int framerate = 60;
 
-        [Header("Twitch settings")] 
-        [SerializeField] public string twitchClientId;
-        [SerializeField] public string twitchAccessToken;
-        [SerializeField] public string twitchOauth;
-        [SerializeField] public string twitchUsername;
-        [SerializeField] public string twitchChannelToJoin;
-
-        public string youtubeDlPath = "youtube-dl";
-        
         private void Awake()
         {
             MainThreadDispatcher.Initialize();
 
             Application.targetFrameRate = framerate;
             WindowsUtils.DisableWindowGhosting();
-            RawKeyInput.Start(true);
             SetupInstances();
         }
 
@@ -44,36 +33,28 @@ namespace CreativeMode
 
         private void SetupInstances()
         {
-            var chatDb = DatabaseUtils.OpenDb("Chat");
-            var devices = DatabaseUtils.OpenDb("Devices");
-            var youtubeDl = new YoutubeDL(youtubeDlPath);
-            
+            CommonUtilsModule.Init();
             MediaPlayerModule.Init();
+            VideoCaptureModule.Init();
+            OverlaySceneModule.Init();
+            InputModule.Init();
+            ChatModule.Init();
             
-            Instance<IChatStorage>.Bind().Instance(new ChatStorage(chatDb));
-            Instance<IDeviceCaptureStorage>.Bind().Instance(new DeviceCaptureStorage(devices));
+            Instance<IDesktopUIManager>.BindUnityObject<DesktopUIManager>();
             
-            Instance<IMediaVisualizationProvider>.Bind().UnityObject<MediaVisualizationProvider>();
-            Instance<IMediaPlaylistProvider>.Bind().UnityObject<MediaPlaylistProvider>();
-            Instance<IMediaPlayer>.Bind().UnityObject<MediaPlayer>();
-            Instance<IMediaProvider>.Bind().Instance(new MediaProvider(youtubeDl));
-            Instance<IDesktopCaptureManager>.Bind().UnityObject<DesktopCaptureManager>();
-            Instance<IDeviceCaptureManager>.Bind().UnityObject<DeviceCaptureManager>();
-            
-            Instance<IDesktopUIManager>.Bind().UnityObject<DesktopUIManager>();
-            Instance<IOverlayManager>.Bind().UnityObject<OverlaySceneManager>();
-            Instance<IInputManager>.Bind().Instance(new InputManager());
-            Instance<IAppWidgetManager>.Bind().Instance(new AppWidgetManager());
-            Instance<IAppWidgetRegistry>.Bind().UnityObject<AppWidgetRegistry>();
-            Instance<IAppWidgetUIFactory>.Bind().UnityObject<AppWidgetUIFactory>();
-            Instance<LayoutInflater>.Bind().UnityObject<LayoutInflater>();
+            Instance<IAppWidgetManager>.Bind(() => new AppWidgetManager());
+            Instance<IAppWidgetRegistry>.BindUnityObject<AppWidgetRegistry>();
+            Instance<IAppWidgetUIFactory>.BindUnityObject<AppWidgetUIFactory>();
+            Instance<LayoutInflater>.BindUnityObject<LayoutInflater>();
 
-            Instance<ImageLoader>.Bind().Instance(new ImageLoader { MaxThreadCount = 4 });
-
-            Instance<IChatProvider>.Bind().Instance(new TwitchProvider(
-                twitchClientId, twitchAccessToken, twitchOauth, twitchUsername, twitchChannelToJoin));
-            
-            Instance<IChatInteractor>.Bind().Instance(new ChatInteractor(EmoteSize.Size2x));
+            Instance<IMediaProvider>.Get().GetMediaByUrl(@"E:\Music\Stream\VGM")
+                .ObserveOn(Scheduler.MainThread)
+                .Subscribe(m =>
+                {
+                    Instance<IMediaPlaylistProvider>.Get().ResetQueueToPlaylist(0);
+                    Instance<IMediaPlaylistProvider>.Get()
+                        .AddToQueue(0, CollectionUtils.Shuffle(m.Select(i => (MediaMetadata) i)));
+                });
         }
     }
 }

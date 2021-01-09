@@ -1,0 +1,18 @@
+{
+    "name": "CreativeMode.Module.OverlayScene",
+    "references": [
+        "GUID:7cb641a08c25f5c4bb4fd845e509003a",
+        "GUID:bcbdbe8e10b675a4593c765c2bffbf19",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:8b7b77280707fb94bb6a14fa1ae6133f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

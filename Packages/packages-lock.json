@@ -14,13 +14,6 @@
       "dependencies": {},
       "hash": "3617cf9fcfba26f48bb1eea387e7f4ff4cd8581b"
     },
-    "com.mono.taglib": {
-      "version": "https://github.com/CreativeModeOverlay/CM-TagLib-UPM.git#1de018e0e850dfe2449b1f7abbdb57a916b8aea7",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "1de018e0e850dfe2449b1f7abbdb57a916b8aea7"
-    },
     "com.netpyoung.webp": {
       "version": "https://github.com/netpyoung/unity.webp.git?path=unity_project/Assets/unity.webp#0.1.1",
       "depth": 0,
@@ -70,7 +63,7 @@
       "dependencies": {}
     },
     "com.unity.ext.nunit": {
-      "version": "1.0.0",
+      "version": "1.0.5",
       "depth": 2,
       "source": "registry",
       "dependencies": {},
@@ -100,7 +93,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.core": {
-      "version": "8.2.0",
+      "version": "8.3.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -109,12 +102,12 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.universal": {
-      "version": "8.2.0",
+      "version": "8.3.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "8.2.0",
-        "com.unity.shadergraph": "8.2.0"
+        "com.unity.render-pipelines.core": "8.3.1",
+        "com.unity.shadergraph": "8.3.1"
       },
       "url": "https://packages.unity.com"
     },
@@ -126,21 +119,21 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.shadergraph": {
-      "version": "8.2.0",
+      "version": "8.3.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "8.2.0",
+        "com.unity.render-pipelines.core": "8.3.1",
         "com.unity.searcher": "4.0.9"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.1.16",
+      "version": "1.1.19",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.ext.nunit": "1.0.0",
+        "com.unity.ext.nunit": "1.0.5",
         "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
@@ -186,7 +179,7 @@
       "hash": "90ffa399087521817ab03ce9213ec33b38e4492f"
     },
     "ru.threedisevenzeror.xmlui": {
-      "version": "file:C:/Users/Three/Documents/Projects/Unity/XmlUI/Packages/XmlUI",
+      "version": "file:D:/Unity/XmlUI/Packages/XmlUI",
       "depth": 0,
       "source": "local",
       "dependencies": {}

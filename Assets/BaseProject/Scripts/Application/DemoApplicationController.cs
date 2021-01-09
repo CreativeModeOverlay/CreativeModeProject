@@ -1,9 +1,7 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityRawInput;
 
 namespace CreativeMode
 {
@@ -16,7 +14,7 @@ namespace CreativeMode
         private IMediaPlaylistProvider MediaPlaylist => Instance<IMediaPlaylistProvider>.Get();
         private IMediaProvider MediaProvider => Instance<IMediaProvider>.Get();
         private IInputManager InputManager => Instance<IInputManager>.Get();
-        private IOverlayManager OverlayManager => Instance<IOverlayManager>.Get();
+        private IOverlaySceneManager OverlayManager => Instance<IOverlaySceneManager>.Get();
         private IChatInteractor ChatInteractor => Instance<IChatInteractor>.Get();
         private IDesktopCaptureManager CaptureManager => Instance<IDesktopCaptureManager>.Get();
         private IAppWidgetManager WidgetManager => Instance<IAppWidgetManager>.Get();
@@ -51,31 +49,31 @@ namespace CreativeMode
 
         private void SubscribeHotkeys()
         {
-            InputManager.OnHotkeyPressed(RawKey.F1)
+            InputManager.OnHotkeyPressed(WindowsKeyCode.F1)
                 .Subscribe(_ => { OnShowMainScreen(); });
             
-            InputManager.OnHotkeyPressed(RawKey.F2)
+            InputManager.OnHotkeyPressed(WindowsKeyCode.F2)
                 .Subscribe(_ => { OnShowMusicIntermission(); });
             
-            InputManager.OnHotkeyPressed(RawKey.F3)
+            InputManager.OnHotkeyPressed(WindowsKeyCode.F3)
                 .Subscribe(_ => { OnShowIdleScreen(); });
 
-            InputManager.OnHotkeyPressed(RawKey.F4)
+            InputManager.OnHotkeyPressed(WindowsKeyCode.F4)
                 .Subscribe(_ => { OnClearChat(); });
             
-            InputManager.OnHotkeyPressed(RawKey.MediaPlayPause)
+            InputManager.OnHotkeyPressed(WindowsKeyCode.MediaPlayPause)
                 .Subscribe(_ => { OnMediaPlayPause(); });
             
-            InputManager.OnHotkeyPressed(RawKey.MediaNextTrack)
+            InputManager.OnHotkeyPressed(WindowsKeyCode.MediaNextTrack)
                 .Subscribe(_ => { OnMediaNextTrack(); });
             
-            InputManager.OnHotkeyPressed(RawKey.F12)
+            InputManager.OnHotkeyPressed(WindowsKeyCode.F12)
                 .Subscribe(_ => { OnMediaNextTrack(); });
             
-            InputManager.OnHotkeyPressed(RawKey.MediaPrevTrack)
+            InputManager.OnHotkeyPressed(WindowsKeyCode.MediaPrevTrack)
                 .Subscribe(_ => { OnMediaPreviousTrack(); });
 
-            InputManager.OnHotkey(RawKey.LeftControl, RawKey.LeftShift, RawKey.Z)
+            InputManager.OnHotkey(WindowsKeyCode.LeftControl, WindowsKeyCode.LeftShift, WindowsKeyCode.Z)
                 .Subscribe(z => CaptureManager.IsZoomActive = z);
 
             ChatInteractor.ChatEvents.Subscribe(e =>

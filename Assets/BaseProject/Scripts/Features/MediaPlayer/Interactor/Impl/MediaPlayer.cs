@@ -38,7 +38,7 @@ namespace CreativeMode.Impl
 
         public float Position
         {
-            get => vlcMediaPlayer.Position;
+            get => vlcMediaPlayer.AudioSourcePosition;
             set => vlcMediaPlayer.Position = value;
         }
 

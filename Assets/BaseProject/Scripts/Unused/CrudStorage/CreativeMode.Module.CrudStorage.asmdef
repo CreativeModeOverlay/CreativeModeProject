@@ -1,0 +1,15 @@
+{
+    "name": "CreativeMode.Module.CrudStorage",
+    "references": [
+        "GUID:87be3d11bcb3784428c6efa91f4b999b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
