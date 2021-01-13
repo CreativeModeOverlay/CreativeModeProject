@@ -1,0 +1,19 @@
+{
+    "name": "CreativeMode.Module.Common",
+    "references": [
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:b89b4e34254b84b42a6028250be63fd2",
+        "GUID:9e04c6f1d83f64c85a18cbf2fcccc31c",
+        "GUID:87be3d11bcb3784428c6efa91f4b999b",
+        "GUID:723092ca6fbc6134cbb893bd23d11e82"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

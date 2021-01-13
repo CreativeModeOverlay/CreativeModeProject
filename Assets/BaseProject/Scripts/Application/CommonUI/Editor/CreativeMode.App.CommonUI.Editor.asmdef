@@ -1,0 +1,15 @@
+{
+    "name": "CreativeMode.App.CommonUI.Editor",
+    "references": [
+        "GUID:99597cb38e99a4549ab4755c52e0b14f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

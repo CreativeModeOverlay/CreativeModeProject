@@ -39,12 +39,9 @@ namespace CreativeMode
             OverlaySceneModule.Init();
             InputModule.Init();
             ChatModule.Init();
+            OverlayWidgetsModule.Init();
             
             Instance<IDesktopUIManager>.BindUnityObject<DesktopUIManager>();
-            
-            Instance<IAppWidgetManager>.Bind(() => new AppWidgetManager());
-            Instance<IAppWidgetRegistry>.BindUnityObject<AppWidgetRegistry>();
-            Instance<IAppWidgetUIFactory>.BindUnityObject<AppWidgetUIFactory>();
             Instance<LayoutInflater>.BindUnityObject<LayoutInflater>();
 
             Instance<IMediaProvider>.Get().GetMediaByUrl(@"E:\Music\Stream\VGM")
