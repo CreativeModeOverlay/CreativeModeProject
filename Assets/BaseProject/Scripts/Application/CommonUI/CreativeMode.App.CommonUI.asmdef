@@ -2,6 +2,7 @@
     "name": "CreativeMode.App.CommonUI",
     "references": [
         "GUID:bcbdbe8e10b675a4593c765c2bffbf19",
+        "GUID:8847d2486b681c94bad9f7f2166f6ca3",
         "GUID:560b04d1a97f54a4e82edc0cbbb69285"
     ],
     "includePlatforms": [],

@@ -1,0 +1,15 @@
+{
+    "name": "CreativeMode.App.DesktopPhysics",
+    "references": [
+        "GUID:1980cebdcbda5c04394c20c65d489f78"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

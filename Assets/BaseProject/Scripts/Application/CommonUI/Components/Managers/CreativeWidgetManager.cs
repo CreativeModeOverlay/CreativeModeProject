@@ -23,8 +23,7 @@ namespace CreativeMode.Impl
             Instance = this;
             
             activeTexts = new List<CreativeText>();
-            iconAtlas = new IconAtlas(Instance<ImageLoader>.Get(), 
-                iconAtlasSize, iconAtlasSize, 
+            iconAtlas = new IconAtlas(iconAtlasSize, iconAtlasSize, 
                 iconSize, iconSize);
         }
 

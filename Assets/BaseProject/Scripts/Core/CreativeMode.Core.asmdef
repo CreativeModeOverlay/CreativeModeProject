@@ -1,0 +1,17 @@
+{
+    "name": "CreativeMode.Core",
+    "references": [
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:87be3d11bcb3784428c6efa91f4b999b",
+        "GUID:723092ca6fbc6134cbb893bd23d11e82"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -115,7 +115,7 @@ public class MusicPlayerAppWidgetUI : BaseAppWidgetUI<MusicPlayerAppWidget>
         var infoLine = info.DottedInfoLine;
 
         progressAnimationActive = true;
-        albumArtwork.PreloadImage(info.thumbnailUrl);
+        albumArtwork.PrefetchImage(info.thumbnailUrl);
 
         var initialAnimationDuration = animateFinish ? 0.25f : 0.5f;
 

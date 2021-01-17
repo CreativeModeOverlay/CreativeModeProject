@@ -1,0 +1,19 @@
+{
+    "name": "CreativeMode.Module.VideoCapture",
+    "references": [
+        "GUID:eceea324624284e47a1f6d7366b972f4",
+        "GUID:bcbdbe8e10b675a4593c765c2bffbf19",
+        "GUID:7547219be89abee4ba3cf7f48b516b7b",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:87be3d11bcb3784428c6efa91f4b999b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

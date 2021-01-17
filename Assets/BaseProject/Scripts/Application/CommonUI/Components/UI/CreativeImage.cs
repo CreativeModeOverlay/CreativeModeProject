@@ -6,18 +6,18 @@ using UnityEngine.UI;
 
 public class CreativeImage : Image
 {
-    private ImageLoader ImageLoader => Instance<ImageLoader>.Get();
+    private IImageLoader ImageLoader => Instance<IImageLoader>.Get();
 
     private SharedAsset<ImageAsset> currentImage;
     
-    public void PreloadImage(string url)
+    public void PrefetchImage(string url)
     {
-        ImageLoader.PreloadAsset(url);
+        ImageLoader.Prefetch(url);
     }
     
     public void SetImage(string url, Sprite noImageDummy, Action<ImageAsset> onImageSet = null)
     {
-        ImageLoader.GetAsset(url)
+        ImageLoader.GetImage(url)
             .Subscribe(img =>
             {
                 currentImage.Dispose();

@@ -14,63 +14,61 @@ namespace CreativeMode
         private IMediaPlaylistProvider MediaPlaylist => Instance<IMediaPlaylistProvider>.Get();
         private IMediaProvider MediaProvider => Instance<IMediaProvider>.Get();
         private IInputManager InputManager => Instance<IInputManager>.Get();
-        private IOverlaySceneManager OverlayManager => Instance<IOverlaySceneManager>.Get();
+        private IVideoSceneManager OverlayManager => Instance<IVideoSceneManager>.Get();
         private IChatInteractor ChatInteractor => Instance<IChatInteractor>.Get();
         private IDesktopCaptureManager CaptureManager => Instance<IDesktopCaptureManager>.Get();
 
-        public CameraOverlayScene idleScene;
-        public CameraOverlayScene mainScene;
-        public CameraOverlayScene musicScene;
+        public CameraRenderScene idleScene;
+        public CameraRenderScene mainScene;
+        public CameraRenderScene musicScene;
         public AudioMixerSnapshot mainMixerSnapshot;
         public AudioMixerSnapshot musicBrbMixerSnapshot;
 
         public ShaderBlendTransition transitionCrossfade;
 
-        private IOverlayElement currentScene;
-
-        private void Awake()
-        {
-            SubscribeHotkeys();
-            InitMusicPlaylist();
-            
-            /*var panel = WidgetManager.GetPanel("top");
-            panel.widgets.Clear();
-            panel.AddWidget(WidgetManager.CreateWidget(typeof(MusicPlayerAppWidget)));
-            panel.AddWidget(WidgetManager.CreateWidget(typeof(MusicSpectrumAppWidget)));
-            panel.AddWidget(WidgetManager.CreateWidget(typeof(MusicWaveformAppWidget)));
-            WidgetManager.UpdatePanel(panel);*/
-        }
+        private IVideoElement currentScene;
 
         private void Start()
         {
+            Instance<IMediaProvider>.Get().GetMediaByUrl(@"E:\Music\Stream\VGM")
+                .ObserveOn(Scheduler.MainThread)
+                .Subscribe(m =>
+                {
+                    Instance<IMediaPlaylistProvider>.Get().ResetQueueToPlaylist(0);
+                    Instance<IMediaPlaylistProvider>.Get()
+                        .AddToQueue(0, CollectionUtils.Shuffle(m.Select(i => (MediaMetadata) i)));
+                });
+            
+            SubscribeHotkeys();
+            InitMusicPlaylist();
             OnShowMainScreen();
         }
 
         private void SubscribeHotkeys()
         {
             InputManager.OnHotkeyPressed(WindowsKeyCode.F1)
-                .Subscribe(_ => { OnShowMainScreen(); });
+                .Subscribe(_ => OnShowMainScreen());
             
             InputManager.OnHotkeyPressed(WindowsKeyCode.F2)
-                .Subscribe(_ => { OnShowMusicIntermission(); });
+                .Subscribe(_ => OnShowMusicIntermission());
             
             InputManager.OnHotkeyPressed(WindowsKeyCode.F3)
-                .Subscribe(_ => { OnShowIdleScreen(); });
+                .Subscribe(_ => OnShowIdleScreen());
 
             InputManager.OnHotkeyPressed(WindowsKeyCode.F4)
-                .Subscribe(_ => { OnClearChat(); });
+                .Subscribe(_ => OnClearChat());
             
             InputManager.OnHotkeyPressed(WindowsKeyCode.MediaPlayPause)
-                .Subscribe(_ => { OnMediaPlayPause(); });
+                .Subscribe(_ => OnMediaPlayPause());
             
             InputManager.OnHotkeyPressed(WindowsKeyCode.MediaNextTrack)
-                .Subscribe(_ => { OnMediaNextTrack(); });
+                .Subscribe(_ => OnMediaNextTrack());
             
             InputManager.OnHotkeyPressed(WindowsKeyCode.F12)
-                .Subscribe(_ => { OnMediaNextTrack(); });
+                .Subscribe(_ => OnMediaNextTrack());
             
             InputManager.OnHotkeyPressed(WindowsKeyCode.MediaPrevTrack)
-                .Subscribe(_ => { OnMediaPreviousTrack(); });
+                .Subscribe(_ => OnMediaPreviousTrack());
 
             InputManager.OnHotkey(WindowsKeyCode.LeftControl, WindowsKeyCode.LeftShift, WindowsKeyCode.Z)
                 .Subscribe(z => CaptureManager.IsZoomActive = z);
