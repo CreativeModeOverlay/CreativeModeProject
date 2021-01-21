@@ -250,6 +250,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1250552823756362114, guid: 0aa3388929a110a478864c882abba314, type: 3}
   m_PrefabInstance: {fileID: 580526506}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &791477373 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1911492328, guid: caa3697989431bb488c529de27aa8d02, type: 3}
+  m_PrefabInstance: {fileID: 2008147519}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e18639d991c712f40a8250801773f428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &961812680
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -370,12 +381,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5681f7f23c3c48a1a9ca5972d1297c7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleScene: {fileID: 0}
-  mainScene: {fileID: 0}
+  idleScene: {fileID: 1535161337}
+  mainScene: {fileID: 1535161337}
   musicScene: {fileID: 0}
-  mainMixerSnapshot: {fileID: 0}
-  musicBrbMixerSnapshot: {fileID: 0}
-  transitionCrossfade: {fileID: 0}
+  mainMixerSnapshot: {fileID: 3025950822490852220, guid: 90a063b3016c97f479df8246e85c9149, type: 2}
+  musicBrbMixerSnapshot: {fileID: -8409839735943431946, guid: 90a063b3016c97f479df8246e85c9149, type: 2}
+  transitionCrossfade: {fileID: 791477373}
+--- !u!114 &1535161337 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3918504326989702137, guid: caa3697989431bb488c529de27aa8d02, type: 3}
+  m_PrefabInstance: {fileID: 2008147519}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 427cc27c109e9b94eaaa561874b2d2f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1680083624
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -555,12 +577,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4083590841332195143, guid: caa3697989431bb488c529de27aa8d02, type: 3}
-      propertyPath: renderToEditorWindow
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4089074418317294029, guid: caa3697989431bb488c529de27aa8d02, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: caa3697989431bb488c529de27aa8d02, type: 3}
 --- !u!1001 &1330782010180837990
 PrefabInstance:

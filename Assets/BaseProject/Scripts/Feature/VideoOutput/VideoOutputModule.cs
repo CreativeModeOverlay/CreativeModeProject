@@ -1,6 +1,6 @@
 ﻿namespace CreativeMode
 {
-    public class OverlaySceneModule : ModuleBase
+    public class VideoOutputModule : ModuleBase
     {
         protected override void Initialize()
         {

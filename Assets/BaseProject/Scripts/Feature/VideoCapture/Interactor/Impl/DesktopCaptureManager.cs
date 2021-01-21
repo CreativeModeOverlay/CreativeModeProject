@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ATL.Logging;
 using uDesktopDuplication;
 using UniRx;
 using UnityEngine;
@@ -73,6 +74,8 @@ namespace CreativeMode.Impl
 
                 return default;
             }).Share();
+            
+            OnInitialize();
         }
 
         private void OnEnable()
@@ -108,10 +111,12 @@ namespace CreativeMode.Impl
                     height = monitor.height
                 };
             }).Finally(() => {
+                Debug.Log($"Monitor capture stopped: {monitorIndex}");
                 activeMonitors.Remove(monitorIndex);
                 monitorObservables.Remove(monitorIndex);
             }).Replay(1).RefCount();
 
+            Debug.Log($"Monitor capture started: {monitorIndex}");
             activeMonitors.Add(monitorIndex);
             monitorObservables[monitorIndex] = subscription;
 
